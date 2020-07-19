@@ -1,0 +1,89 @@
+﻿@model DBContext.Models.ContentManagement
+@using Site.Helpers
+@{
+    ViewData["SubTitle"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content -->
+    <section class="container">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="Name" class="control-label col-md-2"></label>
+                    <select class="form-control select2" style="width: 100%;" id="Name" name="Name">
+                        @foreach (var item in Constants.ContentTypes)
+                        {
+            @if (Model?.Name == item)
+            {
+        <option selected value="@item">@item</option> }
+                        else
+                        {
+        <option value="@item">@item</option>}}
+                    </select>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-md-offset-1 col-md-5">
+                    <label asp-for="DisplayName" class="control-label col-md-2"></label>
+                    <input asp-for="DisplayName" class="form-control" />
+                    <span asp-validation-for="DisplayName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="IsVisible" class="control-label col-md-2"></label>
+                    <input asp-for="IsVisible" type="checkbox" />
+                    @*<input type="checkbox" name="IsVisible"
+            value="@((Model != null && Model.IsVisible) ? true:false)" @(Model?.IsVisible??false == true? "checked:checked":"") class="form-control" />*@
+                    <span asp-validation-for="IsVisible" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="ItemOrder" class="control-label col-md-2"></label>
+                    <input asp-for="ItemOrder" class="form-control" />
+                    <span asp-validation-for="ItemOrder" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="Title" class="control-label col-md-2"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="Description" class="control-label col-md-2"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="AnchorText" class="control-label col-md-2"></label>
+                    <input asp-for="AnchorText" class="form-control" />
+                    <span asp-validation-for="AnchorText" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="AnchorUrl" class="control-label col-md-2"></label>
+                    <input asp-for="AnchorUrl" class="form-control" />
+                    <span asp-validation-for="AnchorUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-11">
+                    <label asp-for="ImageUrl" class="control-label col-md-2"></label>
+                    <input type="file" name="file" value="@Model?.ImageUrl" class="form-control" />
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </section>
+
+@section Scripts {
+    
+}

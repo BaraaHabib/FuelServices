@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Latest Pending Requests</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Request Date</th>
+                                    <th>Aircraft Type</th>
+                                    <th>Quantity</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.PendingRequests != null)
+                                {
+                    @foreach (var item in (List<RequestOffers>)ViewBag.PendingRequests)
+                    {
+                    <tr>
+                        <td>@(item.Request.Customer.FirstName + item.Request.Customer.LastName)</td>
+                        <td>@(item.Request.SendDate)</td>
+                        <td>
+                            @(item.Request.AircraftType)
+                        </td>
+                        <td>
+                            @(item.Request.Quantity)
+                        </td>
+                        <td>
+                            <a href="@(Url.Action("Details","Requests",new {id = item.Id }))" class="fas fa-arrow-right fa-2x"><i class=""></i></a>
+                        </td>
+                    </tr>}}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+            </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Currently Proccessing</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Request Date</th>
+                                    <th>Aircraft Type</th>
+                                    <th>Quantity</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.CurrentlyProccessingRequests != null)
+                                {
+                    @foreach (var item in (List<RequestOffers>)ViewBag.CurrentlyProccessingRequests)
+                    {
+                    <tr>
+                        <td>@(item.Request.Customer.FirstName + item.Request.Customer.LastName)</td>
+                        <td>@(item.Request.SendDate)</td>
+                        <td>
+                            @(item.Request.AircraftType)
+                        </td>
+                        <td>
+                            @(item.Request.Quantity)
+                        </td>
+                        <td>
+                            <span class="badge badge-btn badge-primary">@item.RStatus</span>
+                        </td>
+                        <td>
+                            <a href="@(Url.Action("Details", "Requests", new { id = item.Id }))" class="fas fa-arrow-right fa-2x"><i class=""></i></a>
+                        </td>
+                    </tr>
+                    }}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /.card -->
+
+            </div>
+
+            <!-- /.col -->
+        </div>
+    </div>

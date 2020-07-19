@@ -1,0 +1,175 @@
+﻿@model IEnumerable<DBContext.Models.FuelSupplier>
+@using Site.Helpers;
+
+@{
+    ViewData["Title"] = "Suppliers";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- DataTables -->
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+<input id="row_id" type="hidden" />
+
+
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <h3>Suppliers </h3>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImageUrl)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.IsMiddler)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Country)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User.Email)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Created)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.User.IsActive)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            <img class="img-responsive img-bordered img-md" src="@item.ImageUrl" alt="@item.Name">
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IsMiddler)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Country.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User.Email)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.User.IsActive)
+                                        </td>
+
+                                        <td>
+                                            <a class='btn btn-info' asp-area="Admin" asp-action="Details" asp-route-id="@item.Id"><i class='fa fa-info'></i></a>
+                                            <button title="@(item.User.IsActive ? "DeActivate" : "Activate")"
+                                                    onclick="showDeactivate(@(item.Id) , '@(item.User.IsActive)')" class='btn btn-danger' 
+                                                    id='btn_@item.Id'>
+                                            <i class='fa @(item.User.IsActive ? "fa-toggle-on" : "fa-toggle-off")'></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+
+
+<div id="modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to  this user?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button onclick="confirmDeactivate()" type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- DataTables -->
+    <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script type="text/javascript">
+
+        $("table").DataTable();
+        function showDeactivate(id, IsActive) {
+            debugger
+            if (IsActive == "False") {
+                $('.modal-body').html('<p>Are you sure you want to Activate  this user?</p>');
+            }
+            else {
+                $('.modal-body').html('<p>Are you sure you want to DeActivate this user?</p>');
+            }
+            $('#row_id').val(id);
+            $('#modal').modal('show');
+        }
+
+        function confirmDeactivate() {
+            var mid = $('#row_id').val();
+            $('#row_id').val('');
+
+            $.post("@Url.Action("ToggleActivate", "FuelSuppliers")",
+                {
+                    id: mid,
+                },
+                function (data, status) {
+
+                    if (data.Code == @(Constants.SUCCESS_CODE)) {
+                        toastr.success(data.Message, '', { positionClass: 'toast-right' });
+                        location.reload(true);
+
+                    } else {
+                        toastr.error(data.Message, '', { positionClass: 'toast-right' });
+
+                    }
+                });
+        }
+    </script>
+
+}
+
+
+

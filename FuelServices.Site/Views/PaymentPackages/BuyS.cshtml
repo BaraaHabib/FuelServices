@@ -1,0 +1,421 @@
+﻿@model FuelServices.DBContext.Models.SupplierPackagesLog
+@using DBContext.Models
+@using Microsoft.Extensions.Options
+@inject IOptions<FuelServices.Site.Helpers.Stripe.StripeSettings> Stripe
+
+@{
+    PaymentPackage PaymentPackage = (PaymentPackage)ViewData["PaymentPackage"];
+
+}
+
+@{
+    ViewData["Title"] = "Buy Package";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .text-danger > span {
+        color: #f0151f !important;
+    }
+
+    .StripeElement {
+        box-sizing: border-box;
+        height: 40px;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+</style>
+<!-- Contact 2 start -->
+<div class="contact-2 content-area-5">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>Billing</h1>
+        </div>
+        <!-- Contact info -->
+        <form id="BuyForm" asp-action="BuyS" asp-route-PaymentPackageId="@ViewBag.PaymentPackageId">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input id="supplier-name" type="text" asp-for="FuelSupplier.Name" class="form-control" placeholder="Supplier Name" required>
+                                <span asp-validation-for="FuelSupplier.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                                <div class="form-group email">
+                                    <input id="last-name" type="text" asp-for="Customer.LastName" class="form-control" placeholder="Last Name" required>
+                                    <span asp-validation-for="Customer.LastName" class="text-danger"></span>
+                                </div>
+                            </div>*@
+                        <div class="col-md-12">
+                            <div class="form-group subject">
+                                <input type="text" asp-for="Company" class="form-control" placeholder="Company">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group number">
+                                <select asp-for="CountryId" class="js-countries-ajax form-control" required></select>
+                                <span asp-validation-for="CountryId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group message">
+                                <select asp-for="CityId" class="js-cities-ajax form-control" required></select>
+                                <span asp-validation-for="CityId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="text" asp-for="Address1" class="form-control" placeholder="First Address" required>
+                                <span asp-validation-for="Address1" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="text" asp-for="Address2" class="form-control" placeholder="Second Address">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="tel" asp-for="Phone1" class="form-control" placeholder="First Phone" required>
+                                <span asp-validation-for="Phone1" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="tel" asp-for="Phone2" class="form-control" placeholder="Second Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="text" asp-for="PostalCode" class="form-control" placeholder="Postal Code" required>
+                                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="tel" asp-for="Fax" class="form-control" placeholder="Fax">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="">
+                                <label for="card-element">
+                                    Credit or debit card
+                                </label>
+                                <div id="card-element">
+                                    <!-- A Stripe Element will be inserted here. -->
+                                </div>
+
+                                <!-- Used to display form errors. -->
+                                <div id="card-errors" role="alert"></div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-12">
+                            <div id="submit-button" class="send-btn text-center  mt-3">
+                                <button type="submit" class="btn btn-md button-theme">Continue</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    @*<div class="contact-info">
+                            <div class="col-xl-12 col-lg-12 col-md-12">
+                                <div class="pricing">
+                                    <div class="title">@Model?.PaymentPackage?.DisplayName</div>
+                                    <div class="p">@Model?.PaymentPackage?.Description</div>
+                                    <div class="content">
+                                        <ul>
+                                            @if (Model?.PaymentPackage?.PaymentPackageFeature != null && Model?.PaymentPackage?.PaymentPackageFeature?.Count() > 0)
+                                            {
+                                                foreach (var feature in Model?.PaymentPackage?.PaymentPackageFeature)
+                                                {
+                                                    <li>@feature.Value @feature.Unit</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </div>
+                                    <div class="price-for-user">
+                                        <div class="price">
+                                            @if (PaymentPackage.DiscountType != DBContext.Models.DiscountType.None)
+                                            {
+                                                var unit = PaymentPackage.PriceUnit;
+
+                                                @if (PaymentPackage.PriceUnit == "usd")
+                                                {
+                                                    unit = "$";
+                                                }
+                                                //else if (item.PriceUnit == "usd")
+                                                //{
+                                                //    unit
+                                                //        }
+                                                <sup>
+                                                    @unit
+                                                </sup>
+                                                <strike style="color:#f0151f;">
+                                                    <span class="dolar">@PaymentPackage.Price</span>
+                                                </strike>
+                                                @if (PaymentPackage.DiscountType == DBContext.Models.DiscountType.Fixed)
+                                                {
+                                                    <span class="dolar">@(PaymentPackage.Price + PaymentPackage.Discount)</span>
+                                                }
+                                                else if (PaymentPackage.DiscountType == DBContext.Models.DiscountType.Percentage)
+                                                {
+                                                    <span class="dolar">@(PaymentPackage.Price - PaymentPackage.Price * PaymentPackage.Discount / 100)</span>
+                                                }
+
+                                                <sup style="color:#f0151f;">@PaymentPackage.Discount @PaymentPackage.DiscountUnit</sup>
+                                            }
+                                            else
+                                            {
+                                                <sup>@PaymentPackage.PriceUnit</sup><span class="dolar">@PaymentPackage.Price</span>
+                                            }
+                                            <br />
+                                            @switch (PaymentPackage.Period)
+                                            {
+                                                case 1:
+                                                    <small class="month">Per day</small>
+                                                    break;
+                                                case 7:
+                                                    <small class="month">Per week</small>
+                                                    break;
+                                                case 30:
+                                                    <small class="month">Per month</small>
+                                                    break;
+                                                case 365:
+                                                    <small class="month">Per year</small>
+                                                    break;
+                                                default:
+                                                    <small class="month">Per month</small>
+                                                    break;
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Contact 2 end -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script src="~/template/js/jquery.loading.min.js"></script>
+
+    <script type="text/javascript" language="JavaScript">
+
+    function buy_package() {
+        event.preventDefault();
+        $("#BuyForm").validate({
+            submitHandler: function (form) {
+                form.submit();
+            }
+        });
+    }
+
+    var searchCountriesURL = "@Url.Content("~/Offers/SearchCountries")";
+    var searchCitiesURL = "@Url.Content("~/Offers/SearchCities")";
+
+    $country = $('.js-countries-ajax').val();
+    $city = $('.js-cities-ajax').val();
+
+    $(window).load(function () {
+        $(".js-countries-ajax").select2({
+            ajax: {
+                url: searchCountriesURL,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page || 1
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.results,
+                        pagination: {
+                            more: data.paginate.more
+                        }
+                    };
+                }
+                ,
+                cache: true
+            },
+            placeholder: 'Country',
+            allowClear: true
+        });
+
+        $(".js-cities-ajax").select2({
+            ajax: {
+                url: searchCitiesURL,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page || 1,
+                        countryId: $('.js-countries-ajax').val()
+                    };
+                },
+                processResults: function (data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.results,
+                        pagination: {
+                            more: data.paginate.more
+                        }
+                    };
+                }
+                ,
+                cache: true
+            },
+            placeholder: 'City',
+            allowClear: true
+        });
+    });
+
+    </script>
+
+    <script>
+    $('body').loading(
+        {
+            stoppable: false,
+            start: false
+        });
+
+        // Create a Stripe client.
+    var stripe = Stripe('@Stripe.Value.PublishableKey');
+
+        // Create an instance of Elements.
+    var elements = stripe.elements();
+
+        // Custom styling can be passed to options when creating an Element.
+        // (Note that this demo uses a wider set of styles than the guide below.)
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+        // Create an instance of the card Element.
+    var card = elements.create('card', { style: style });
+
+        // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function (event) {
+        var displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.textContent = event.error.message;
+        } else {
+            displayError.textContent = '';
+        }
+    });
+
+        // Handle form submission.
+    var form = document.getElementById('BuyForm');
+    form.addEventListener('submit', function (ev) {
+        ev.preventDefault();
+
+        $country = $('.js-countries-ajax').val();
+        $city = $('.js-cities-ajax').val();
+        if ($country == null || $city == null) {
+            return;
+        }
+
+        $('body').loading('start');
+        stripe.confirmCardPayment('@ViewBag.ClientSecret', {
+            payment_method: {
+                card: card,
+                billing_details: {
+                    //packageType : 'Customer',
+                    name: $('#supplier-name').val()
+                }
+            }
+        }).then(function (result) {
+            if (result.error) {
+                // Show error to your customer (e.g., insufficient funds)
+                $('body').loading('stop');
+                console.log(result.error.message);
+                var displayError = document.getElementById('card-errors');
+                displayError.textContent = result.error.message;
+
+            } else {
+                // The payment has been processed!
+                if (result.paymentIntent.status === 'succeeded') {
+                    // Show a success message to your customer
+                    // There's a risk of the customer closing the window before callback
+                    // execution. Set up a webhook or plugin to listen for the
+                    // payment_intent.succeeded event that handles any business critical
+                    // post-payment actions.
+                    $('body').loading('stop');
+                    console.log(result);
+                    form.submit();
+
+                    //stripeTokenHandler(result.token);
+
+                }
+            }
+        });
+    });
+
+        // Submit the form with the token ID.
+    function stripeTokenHandler(token) {
+        // Insert the token ID into the form so it gets submitted to the server
+        var form = document.getElementById('BuyForm');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+
+        // Submit the form
+        form.submit();
+    }
+    </script>
+
+}

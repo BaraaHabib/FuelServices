@@ -1,0 +1,110 @@
+﻿@model IEnumerable<DBContext.Models.FuelSupplier>
+@using DBContext.Models;
+
+@{
+    Layout = null;
+}
+
+<!-- Listing section start -->
+<div class="listing-section content-area">
+    <div class="container">
+        <div class="main-title text-center">
+            <h1>FEATURED SUPPLIERS</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-xs-12">
+                <!-- Option bar start -->
+                <div class="row">
+                    @foreach (var item in (List<FuelSupplier>)ViewBag.Suppliers)
+                    {
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="listing-item-box" style="height: 400px;min-height: 400px;max-height: 400px;">
+                                <div class="listing-thumbnail">
+                                    <div class="listing-photo">
+                                        @if ((bool)item.IsMiddler)
+                                        {
+                                            <div class="now-open open-color">Handler</div>
+                                        }
+                                        <img class="d-block w-100" src="@item.ImageUrl" alt="listing-photo" style="background-size:cover;background-image:url(@item.ImageUrl);opacity:0.8;width:100%;height:200px;">
+                                    </div>
+                                </div>
+                                <div class="detail">
+                                    <h5 class="title">
+                                        <a asp-area="" asp-controller="FuelSuppliers" asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                                    </h5>
+                                    <ul>
+                                        <li><i class="flaticon-pin"></i>@item.Country.Name</li>
+                                        @if (item.SupplierContact.Where(sc => sc.Contact.Name == "tel").FirstOrDefault() != null)
+                                        {
+                                            <li>
+                                                <i class="flaticon-phone"></i><a href="tel:@item.SupplierContact.Where(sc => sc.Contact.Name == "tel").FirstOrDefault().Value">
+                                                    @item.SupplierContact.Where(sc => sc.Contact.Name == "tel").FirstOrDefault().Value
+                                                </a>
+                                            </li>
+                                        }
+                                        @if (item.SupplierContact.Where(sc => sc.Contact.Name == "mail").FirstOrDefault() != null)
+                                        {
+                                            <li>
+                                                <i class="flaticon-mail"></i><a href="mailto:@item.SupplierContact.Where(sc => sc.Contact.Name == "mail").FirstOrDefault().Value">
+                                                    @item.SupplierContact.Where(sc => sc.Contact.Name == "mail").FirstOrDefault().Value
+                                                </a>
+                                            </li>
+                                        }
+                                        @if (item.SupplierContact.Where(sc => sc.Contact.Name == "web").FirstOrDefault() != null)
+                                        {
+                                            <li>
+                                                <i class="flaticon-global"></i><a href="@item.SupplierContact.Where(sc => sc.Contact.Name == "web").FirstOrDefault().Value">
+                                                    @item.SupplierContact.Where(sc => sc.Contact.Name == "web").FirstOrDefault().Value
+                                                </a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="footer">
+                                    <div class="ratings">
+                                        <div class="star-rating">
+                                            @{
+                                                string[] values = { "", "", "", "", "", "" };
+                                                int rating = 0;
+                                                if (item.SupplierReview != null && item.SupplierReview.Count() > 0)
+                                                {
+                                                    for (int i = 0; i < item.SupplierReview.Count(); i++)
+                                                    {
+                                                        rating += (int)item.SupplierReview.ElementAt(i).Rate;
+                                                    }
+                                                    rating = rating / item.SupplierReview.Count();
+                                                }
+                                                int j = (rating >= 0 && rating <= 5) ? rating : 0;
+                                                values[j] = "checked";
+                                            }
+                                            <input disabled type="radio" id="5-stars-@item.Id" name="rating_@item.Id" value="5" @values[5] />
+                                            <label for="5-stars-@item.Id" class="star">&#9733;</label>
+                                            <input disabled type="radio" id="4-stars-@item.Id" name="rating_@item.Id" value="4" @values[4] />
+                                            <label for="4-stars-@item.Id" class="star">&#9733;</label>
+                                            <input disabled type="radio" id="3-stars-@item.Id" name="rating_@item.Id" value="3" @values[3] />
+                                            <label for="3-stars=@item.Id" class="star">&#9733;</label>
+                                            <input disabled type="radio" id="2-stars-@item.Id" name="rating_@item.Id" value="2" @values[2] />
+                                            <label for="2-stars-@item.Id" class="star">&#9733;</label>
+                                            <input disabled type="radio" id="1-star-@item.Id" name="rating_@item.Id" value="1" @values[1] />
+                                            <label for="1-star-@item.Id" class="star">&#9733;</label>
+                                        </div>
+                                        @if (item.SupplierReview != null && item.SupplierReview.Count() > 0)
+                                        {
+                                            <span>(@item.SupplierReview.Count().ToString() Reviews)</span>
+                                        }
+                                        else
+                                        {
+                                            <span>(@item.SupplierReview.Count().ToString() Reviews)</span>
+
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Listing section end -->

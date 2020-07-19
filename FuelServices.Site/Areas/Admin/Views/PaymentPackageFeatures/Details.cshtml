@@ -1,0 +1,67 @@
+﻿@model DBContext.Models.PaymentPackageFeature
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>PaymentPackageFeature</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Value)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Value)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Feature)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Feature.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentPackage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentPackage.DisplayName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Modified)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsDeleted)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ItemOrder)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ItemOrder)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DBContext.Models.Advertisement>
+<!-- Categories strat -->
+<div class="categories content-area-15">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>SPONSORS</h1>
+        </div>
+        <!-- Slick slider area start -->
+        <div class="slick-slider-area">
+            <div class="row slick-carousel" data-slick='{"slidesToShow": 3, "responsive":[{"breakpoint": 1024,"settings":{"slidesToShow": 2}}, {"breakpoint": 768,"settings":{"slidesToShow": 1}}]}'>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        string image = item.ImageUrl;
+
+                        <div class="slick-slide-item">
+                            <div class="category">
+                                <div class="category_bg_box" style="background-image:url(@image)">
+                                    <div class="category-overlay">
+                                        <div class="category-content">
+                                            <h3 class="category-title">
+                                                <a href="@item.AnchorUrl"
+                                                   onclick="ads_clicks('', @item.Id, '@item.AnchorUrl')" target="_blank"
+                                                   style="cursor:pointer;"> @item.Title</a>
+                                            </h3>
+                                            <h4 class="category-subtitle">@item.Caption</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="slick-btn">
+                <div class="slick-prev slick-arrow-buton-2"></div>
+                <div class="slick-next slick-arrow-buton-2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories end -->

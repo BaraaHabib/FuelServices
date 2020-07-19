@@ -1,0 +1,355 @@
+﻿@model FuelServices.Site.Models.RequestViewModel
+@using DBContext.Models
+@using Site.DTOs
+@{
+    ViewData["Title"] = "Book Fuel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .select2-selection__arrow {
+        display: none;
+    }
+
+    .fixed-tab-page {
+        position: fixed;
+        z-index: 900;
+        width: 24px;
+        top: 50%;
+        right: 0;
+        line-height: normal;
+        -moz-transform: translateX(1px) translateY(50px);
+        -ms-transform: translateX(1px) translateY(50px);
+        -webkit-transform: translateX(1px) translateY(50px);
+        transform: translateX(1px) translateY(50px);
+    }
+
+        .fixed-tab-page > div {
+            -moz-transform-origin: 0 50%;
+            -ms-transform-origin: 0 50%;
+            -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+            -moz-transition: -moz-transform 0.3s;
+            -o-transition: -o-transform 0.3s;
+            -webkit-transition: -webkit-transform 0.3s;
+            transition: transform 0.3s;
+        }
+
+        .fixed-tab-page > div {
+            position: relative;
+        }
+
+    .fixed-tab-page {
+        line-height: normal;
+    }
+
+        .fixed-tab-page > div > a, .fixed-tab-page > div > a:link, .fixed-tab-page > div > a:visited, .fixed-tab-page > div > span, .fixed-tab-page > div > span:link, .fixed-tab-page > div > span:visited {
+            color: #FFF;
+        }
+
+        .fixed-tab-page > div > a, .fixed-tab-page > div > span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: inline-block;
+            background-color: #f0151f;
+            padding: 15px;
+            margin: 0;
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-size: 12px;
+            border-radius: 10px 10px 0 0;
+            -moz-transform-origin: 0 50%;
+            -ms-transform-origin: 0 50%;
+            -webkit-transform-origin: 0 50%;
+            transform-origin: 0 50%;
+            -moz-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
+            -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+            text-decoration: none;
+        }
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/lib/datatables/css/jquery.dataTables_themeroller.css" rel="stylesheet" />
+@*<link href="~/lib/datetimepicker/jquery.datetimepicker.min.css" type="text/css" />*@
+@if ((!User.Identity.IsAuthenticated) || (User.Identity.IsAuthenticated && !User.IsInRole("Supplier")))
+{
+    <div class="fixed-tab-page">
+        <div>
+            <a asp-area="Identity" asp-page="/Account/SupplierRegister">Add Your Company</a>
+        </div>
+    </div>
+}
+
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1></h1>
+            <ul class="breadcrumbs">
+                <li><a href="index.html"></a></li>
+                <li class=""></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" name="Req.CustomerId" value="@ViewBag.CustomerId" />
+        <div class="row">
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="">
+                            <span class="control-label">Airport To Supply</span>
+                            <select style="width:100%;" required name="Req.AirportId" class="select2-airports form-control">
+                                @if (Model?.Req?.AirportId != null)
+                                {
+                                    <option selected value="@Model?.Req?.AirportId">@Model.Req.Airport.Name</option>
+                                }
+                            </select>
+                            @Html.ValidationMessage("Req.AirportId", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <span class="">Available Suppliers</span>
+                        </div>
+                        <div class="card-text">
+                            <table class="table table-responsive-md table-bordered table-active table-suppliers">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>FuelSupplier</th>
+                                        <th>Price</th>
+                                        <th>End Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model?.Req?.Airport?.AirportOffer != null && Model?.Req?.Airport?.AirportOffer.Count > 0)
+                                    {
+                                        foreach (var item in Model?.Req?.Airport?.AirportOffer)
+                                        {
+                                            <tr>
+                                                <td>@item.Id</td>
+                                                <td>@item.Offer.FuelSupplier.Name</td>
+                                                <td>@item.Price @item.PriceUnit</td>
+                                                <td>@item.Offer.EndDate.ToShortDateString()</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="control-label label label-default">Select suppliers from the above table</span>
+                <select name="SelectedOffers" style="width:100%;" multiple class="select2-suppliers form-control select2">
+                    @foreach (var item in (List<Select2ResultDTO>)(ViewBag.Offers))
+                    {
+                        if (Model.SelectedOffers.Contains(int.Parse(item.id)))
+                        {
+                            <option selected value="@item.id">@item.text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.id">@item.text</option>
+
+                        }
+                    }
+                </select>
+                @Html.ValidationMessage("SelectedOffers", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.RegistrationNumber" class="control-label label label-default"></label>
+                    <input asp-for="Req.RegistrationNumber" class="form-control" />
+                    <span asp-validation-for="Req.RegistrationNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.AircraftType" class="control-label label label-default"></label>
+                    <input asp-for="Req.AircraftType" class="form-control" />
+                    <span asp-validation-for="Req.AircraftType" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.DepartureDate" class="control-label label label-default "></label>
+                    <input type="datetime" name="Req.DepartureDate" value="@Model?.Req?.DepartureDate.ToString()" class="form-control full-date" />
+                    <span asp-validation-for="Req.DepartureDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.ArrivalDate" class="control-label label label-default"></label>
+                    <input type="datetime" name="Req.ArrivalDate" value="@Model?.Req?.ArrivalDate.ToString()" class="form-control full-date" />
+                    <span asp-validation-for="Req.ArrivalDate" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.Quantity" class="control-label label label-default"></label>
+                    <input asp-for="Req.Quantity" class="form-control" />
+                    <span asp-validation-for="Req.Quantity" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.CallSign" class="control-label label label-default"></label>
+                    <input asp-for="Req.CallSign" class="form-control" />
+                    <span asp-validation-for="Req.CallSign" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="Req.Notes" class="control-label label label-default"></label>
+                    <input type="text" asp-for="Req.Notes" class="form-control" />
+                    <span asp-validation-for="Req.Notes" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript" src="~/lib/datepicker/moment.min.js"></script>
+    <script src="~/lib/datepicker/flatpickr.js"></script>
+    
+    <script src="~/lib/datatables/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/lib/datatables/js/dataTables.scroller.min.js"></script>
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $('.select2-suppliers').select2();
+
+        $(".select2-airports").select2({
+            theme:"classic",
+        ajax: { 
+            url: "@Url.Action("GetAirport", "Airports")",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data, params) {
+
+                params.page = params.page || 1;
+
+                return {
+                    results: data.results,
+                    pagination: {
+                        more: (params.page * 30) < data.total_count
+                    }
+                };
+            },
+            //theme: "classic",
+            cache: true
+        },
+        placeholder: 'Airport name, ICAO or IATA ',
+        minimumInputLength: 0,
+    });
+
+        var table = $(".table-suppliers").DataTable({
+            "processing": true,
+            "searching": false,
+            "lengthMenu": [[5,10, 25, 50, -1], [5,10, 25, 50, "All"]],
+            "ordering": false,
+            "info": false,
+            "serverSide": true,
+            "deferLoading" : 0,
+            "filter": true,
+            "orderMulti": false,
+            "fnDrawCallback":function (datalLoaded) {
+                if (datalLoaded.json != undefined) {
+                    $(".select2-suppliers").select2('destroy').select2();
+                    var list = datalLoaded.json.data;
+                    $.each(list, function (index, value) {
+                        var newOption = new Option(value.Supplier, value.Id, false, false);
+                        $('.select2-suppliers').append(newOption);
+                    });
+
+                    $('.select2-suppliers').trigger('change');
+                }
+            },
+            "ajax": {
+                "url": "@Url.Action("GetSuppliers","Suppliers")" ,
+                "type": "POST",
+                "datatype": "json",
+                "data": function (d) {
+                    d.airportId = $(".select2-airports").val();
+                }
+            },
+            "columnDefs":
+                [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                { "data": "Id", "name": "Id", "autoWidth": true },
+                { "data": "Supplier", "name": "Supplier", "autoWidth": true },
+                { "data": "Price", "name": "Price", "autoWidth": true },
+                { "data": "EndDate", "name": "EndDate", "autoWidth": true, type: "date" },
+
+            ]
+        });
+
+
+        $(".select2-airports").on('select2:select', function (e) {
+           // console.log($(".select2-airports").val());
+            table.ajax.url("@Url.Action("GetSuppliers","Suppliers")");
+            table.ajax.reload();
+        });
+        //$('.full-date').datetimepicker();
+        $('.full-date').flatpickr({
+            enableTime: true,
+            //dateFormat: "D/M/Y h:i",
+            time_24hr: true,
+            minDate: "today"
+        });
+
+        @*@if (Model.Req.AirportId.HasValue)
+        {
+            <Text>
+        $(".select2-airports").change();
+            </Text>
+        }*@
+
+    </script>
+
+    <script>
+                                                    //$('.datetimepicker').datetimepicker();
+    </script>
+}

@@ -1,0 +1,94 @@
+﻿@model FuelServices.DBContext.Models.SupplierPackagesLog
+
+@{
+    ViewData["Title"] = "Package Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Package Details</h2>
+
+<div>
+    <h4>SupplierPackagesLog</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Company)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Company)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PostalCode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PostalCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Phone2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fax)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fax)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.City.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FuelSupplier)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FuelSupplier.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentPackage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PaymentPackage.DisplayName)
+        </dd>
+    </dl>
+</div>
+

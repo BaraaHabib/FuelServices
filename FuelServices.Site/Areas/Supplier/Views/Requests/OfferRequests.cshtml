@@ -1,0 +1,131 @@
+﻿@model IEnumerable<DBContext.Models.RequestOffers>
+
+@{
+    ViewData["Title"] = "Requests";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<!-- DataTables -->
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <h3>Offer Requests</h3>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <table class="dataTable">
+                <thead>
+                    <tr>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.SendDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.ArrivalDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.DepartureDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.RegistrationNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.AircraftType)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.CallSign)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.Quantity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.Customer)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.Airport)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.NameOfOperator)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Request.CaptainFmName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.SendDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.ArrivalDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.DepartureDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.RegistrationNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.AircraftType)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.CallSign)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.Quantity)
+                            </td>
+                            <td>
+                                @(item.Request.Customer.FirstName + item.Request.Customer.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.Airport.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.NameOfOperator)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Request.CaptainFmName)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+
+
+<div>
+    <a class="btn btn-default" asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+
+    <!-- DataTables -->
+    <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+
+    <script>
+        $('.dataTable').DataTable({
+            "responsive": true,
+            "autoWidth": false,
+        });
+    </script>
+}

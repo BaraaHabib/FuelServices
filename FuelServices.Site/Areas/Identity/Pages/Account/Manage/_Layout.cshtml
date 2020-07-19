@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+<!-- Dashbord start -->
+<div class="dashboard">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="dashboard-nav">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="dashboard-content" style="height:660px;">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashbord end -->
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

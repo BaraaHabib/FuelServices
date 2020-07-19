@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DBContext.Models.Advertisement>
+<!-- Central Modal Warning Demo-->
+<div>
+    @foreach (var item in Model)
+    {
+        string modal_name = "modal_" + item.AdvertisementType.Name + "_" + item.Id;
+        string modal_color = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "color").Select(ap => ap.Value).FirstOrDefault();
+        string modal_position = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "position").Select(ap => ap.Value).FirstOrDefault();
+        string modal_anchor = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "anchor_caption").Select(ap => ap.Value).FirstOrDefault();
+        string modal_close_caption = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "close_caption").Select(ap => ap.Value).FirstOrDefault();
+
+        
+        if (item.AdvertisementType.Name == "popup_frame")
+        {
+            <div class="modal fade @modal_position" id="@modal_name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true" data-backdrop="true" style="z-index:99999999999999999;padding-right:0;">
+                <div class="modal-dialog modal-frame modal-@modal_position modal-notify modal-@modal_color" role="document" style="width: 100%;max-width: 100%;min-width: 100%;margin: 0 0 0 0;left: 0;right: 0;top: 0;">
+                    <!--Content-->
+                    <div class="modal-content" style="border-radius:0;">
+                        <!--Body-->
+                        <div class="modal-body" style="padding:0;">
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <p class="pt-3 pr-2">@item.Description</p>
+                                <a target="_blank" href="@item.AnchorUrl" onclick="ads_clicks('@modal_name', @item.Id, '@item.AnchorUrl')" class="btn btn-@modal_color">@modal_anchor</a>
+                                <a class="btn btn-outline-@modal_color waves-effect" data-dismiss="modal">@modal_close_caption</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
+        }
+    }
+</div>

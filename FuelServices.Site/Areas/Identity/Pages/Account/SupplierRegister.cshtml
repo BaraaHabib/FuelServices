@@ -1,0 +1,167 @@
+﻿@page
+@model SupplierRegisterModel
+@{
+    ViewData["Title"] = "Create Supplier Account";
+}
+
+<style>
+    .text-danger > span {
+        color: #f0151f !important;
+    }
+</style>
+
+<!-- Contact 2 start -->
+<div class="contact-2 content-area-5">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>@ViewData["Title"]</h1>
+        </div>
+        <!-- Contact info -->
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="edit-profile-photo" id="img-preview-block1" style="background-size:cover;background-image:url(/uploads/avatar.png);opacity:0.8;width:50%;">
+                        <img id="img-preview-block2" src="~/uploads/avatar.png" style="background-size:cover;background-image:url(/uploads/avatar.png)" onclick="upload_photo()" alt="profile-photo" class="img-fluid">
+                        <div class="change-photo-btn">
+                            <div class="photoUpload">
+                                <span><i class="fa fa-upload"></i></span>
+                                <input asp-for="Input.file" type="file" class="upload" id="file" form="profile-form" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group email">
+                                <input asp-for="Input.Email" class="form-control" required placeholder="Email*" type="email" />
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="text" asp-for="Input.Name" class="form-control" required placeholder="Name*" />
+                                <span asp-validation-for="Input.Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group password">
+
+                                <input asp-for="Input.Password" class="form-control" required placeholder="Password*" type="password" />
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group password">
+
+                                <input asp-for="Input.ConfirmPassword" class="form-control" required placeholder="Confirm Password*" type="password" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+
+                                <input asp-for="Input.CompanyName" class="form-control" required placeholder="Company Name*" />
+                                <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+
+                                <input asp-for="Input.CompanyWebSite" class="form-control" placeholder="Company WebSite" />
+                                <span asp-validation-for="Input.CompanyWebSite" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group subject">
+
+                                <select class="form-control" id="js-countries-ajax" asp-for="Input.CountryId"></select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group name">
+
+                                <input asp-for="Input.Position" class="form-control" placeholder="Position" />
+                                <span asp-validation-for="Input.Position" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group mb-0 message">
+
+                                <textarea class="form-control" asp-for="Input.CompanyDescription" required placeholder="Company description/enquiry*"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group mb-0 message">
+                                <div asp-validation-summary="All" class="text-danger"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <button type="submit" class="btn btn-md button-theme">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+            
+<!-- Dashbord end -->
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" language="JavaScript">
+        $(window).load(function () {
+            $("#js-countries-ajax").select2({
+                ajax: {
+                    url: "/Identity/Account/SupplierRegister?handler=List",
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function (data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data.results,
+                            pagination: {
+                                more: data.paginate.more
+                            }
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: 'Country Name',
+                allowClear: true
+            });
+        });
+
+        $(function () {
+            $("#file").on("change", function () {
+                var files = !!this.files ? this.files : [];
+                if (!files.length || !window.FileReader) return;
+
+                if (/^image/.test(files[0].type)) {
+                    var reader = new FileReader();
+                    reader.readAsDataURL(files[0]);
+
+                    reader.onload = function (e) {
+                        $("#img-preview-block1").css({ 'background-image': 'url(' + e.target.result + ')', "background-size": "cover" });
+                        $("#img-preview-block2").css({ 'background-image': 'url(' + e.target.result + ')', "background-size": "cover" });
+                    }
+                }
+            });
+        });
+
+        function upload_photo() {
+            $('#file').click();
+        }
+
+    </script>
+}

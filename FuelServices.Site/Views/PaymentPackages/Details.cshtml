@@ -1,0 +1,81 @@
+﻿@model DBContext.Models.CustomerPackagesLog
+
+@{
+    ViewData["Title"] = "Package Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <hr />
+    <ul class="list-group mt-lg-5">
+        <li class="list-group-item">
+            <h4>Package Details</h4>
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.StartDate)
+            :
+            @Html.DisplayFor(model => model.StartDate)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.EndDate)
+            :
+            @Html.DisplayFor(model => model.EndDate)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Company)
+            :
+            @Html.DisplayFor(model => model.Company)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.PostalCode)
+            :
+            @Html.DisplayFor(model => model.PostalCode)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Address1)
+            :
+            @Html.DisplayFor(model => model.Address1)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Address2)
+            :
+            @Html.DisplayFor(model => model.Address2)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Phone1)
+            :
+            @Html.DisplayFor(model => model.Phone1)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Phone2)
+            :
+            @Html.DisplayFor(model => model.Phone2)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Fax)
+            :
+            @Html.DisplayFor(model => model.Fax)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.City)
+            :
+            @Html.DisplayFor(model => model.City.Name)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.Country)
+            :
+            @Html.DisplayFor(model => model.Country.Name)
+        </li>
+        <li class="list-group-item">
+            @Html.DisplayNameFor(model => model.PaymentPackage)
+            :
+            @Html.DisplayFor(model => model.PaymentPackage.DisplayName)
+        </li>
+        <li class="list-group-item-action">
+            @Html.DisplayNameFor(model => model.PaymentPackage)
+            :
+            @Html.DisplayFor(model => model.PaymentPackage.DisplayName)
+        </li>
+    </ul>
+</div>

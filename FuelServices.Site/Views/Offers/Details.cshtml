@@ -1,0 +1,167 @@
+﻿@model DBContext.Models.Offer
+@using DBContext.Models
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1></h1>
+            <ul class="breadcrumbs">
+                <li><a href="index.html"></a></li>
+                <li class=""></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+
+    <hr />
+    <div class="row">
+        <dl class="col-md-10 dl-horizontal">
+            <dt>
+                Date
+            </dt>
+            <dd>
+                @($"From {Model.StartDate.ToShortDateString()} To {Model.EndDate.ToShortDateString()}")
+            </dd>
+
+
+
+            <dt>
+                Fuel Types
+            </dt>
+            <dd>
+                @foreach (var item in (List<FuelType>)ViewBag.FuelTypes)
+                {
+                    @item.Name <br />
+                }
+            </dd>
+        </dl>
+
+        @if (User.IsInRole("Customer"))
+        {
+            <div class="col-md-2">
+                <a asp-action="MakeRequest" asp-controller="Requests" asp-route-id="@Model.Id" class="btn btn-success btn-block">
+                    Send Request
+                </a>
+            </div>
+
+        }
+
+
+    </div>
+    <hr />
+    <div class="row">
+
+        @if (Model.AirportOffers?.Count() != 0)
+        {
+            <div class="col-md-6">
+                <table id="table-airports" class="display table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Supplied Airport</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.AirportOffers)
+                        {
+                            @if (item.Airport != null)
+                            {
+                                <tr>
+                                    <td>@item.Airport.Name</td>
+                                    <td>@item.Price @item.PriceUnit</td>
+                                </tr>
+                            }
+                        }
+                </table>
+            </div>
+        }
+    </div>
+    <hr />
+
+    <div class="row">
+        <h2>Contacts</h2>
+        @if (User != null && User.Identity.IsAuthenticated)
+        {
+            <table class="display dataTable">
+                <thead>
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Value
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.FuelSupplier.SupplierContact != null)
+                    {
+                        @foreach (var item in Model.FuelSupplier.SupplierContact)
+                        {
+                            <tr id="row_@item.Id">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Contact.DisplayName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <text>
+                <a asp-action="Login" asp-controller="Account">Login</a> To View Contacts
+            </text>
+        }
+    </div>
+
+
+</div>
+
+@section Scripts
+                {
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    @*<script src="~/lib/datatables/dataTables.bootstrap.js"></script>*@
+    <script>
+        $('#table-airports').DataTable(
+            {
+                bLengthChange : false,
+            });
+        $('#table-continents').DataTable(
+            {
+                bLengthChange: false,
+                searching: false,
+            });
+        $('#table-countries').DataTable(
+            {
+                bLengthChange: false,
+                searching: false,
+            });
+        $('#table-cities').DataTable(
+            {
+                bLengthChange: false,
+
+            });
+    </script>
+}

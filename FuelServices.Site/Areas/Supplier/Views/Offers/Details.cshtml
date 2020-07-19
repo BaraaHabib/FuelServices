@@ -1,0 +1,138 @@
+﻿@model DBContext.Models.Offer
+
+
+@{
+    ViewData["Title"] = "Offer Details";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/lib/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<section class="">
+    <div class="">
+        <hr />
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Offer Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div>
+                            <div class="col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.StartDate)</span>
+                                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.StartDate)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.EndDate)</span>
+                                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.EndDate)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Fuel Types</span>
+                                        <span class="info-box-number text-center text-muted mb-0">
+                                            @foreach (var item in Model.OfferFuelType)
+                                            {
+                                                @item.FuelType.Name <br />
+                                            }
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="card-title">Supplied Airports</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="table-airports" class="table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Price</th>
+                                            <th>Variation</th>
+                                            <th>Elevation</th>
+                                            <th>City</th>
+                                            <th>Type</th>
+                                            <th>IsoCountry</th>
+                                            <th>IsoRegion</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach (var item in Model.AirportOffers)
+                                    {
+                                        @if (item.Airport != null)
+                                        {
+                                            <tr>
+                                                <td>@item?.Airport?.Name</td>
+                                                <td>@item?.Price @item?.PriceUnit </td>
+                                                <td>@item?.Airport?.Variation</td>
+                                                <td>@item?.Airport?.Elevation</td>
+                                                <td>@item?.City?.Name</td>
+                                                <td>@item?.Airport?.Type</td>
+                                                <td>@item?.Airport?.IsoCountry</td>
+                                                <td>@item?.Airport?.IsoRegion</td>
+                                            </tr>
+                                        }
+
+                                    }
+                                    <tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+  
+</section>
+<div>
+    <a class="btn btn-default" asp-action="Index">Back</a>
+    @if (Model.EndDate < System.DateTime.Now)
+    {
+        <a class="btn btn-danger" href="#">Expired</a>
+    }
+    @*
+        else
+        {
+            @if (Model.IsActive)
+            {
+                <a class="btn btn-danger" asp-route-type="0" asp-route-id="@Model.Id" asp-action="HandleOffer">Deactivate</a>
+            }
+            else
+            {
+                <a class="btn btn-success" asp-route-type="1" asp-route-id="@Model.Id" asp-action="HandleOffer">Activate</a>
+            }
+        }*@
+</div>
+@section Scripts {
+    <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables/dataTables.bootstrap.js"></script>
+    <script>
+        $('#table-airports,#table-cities,#table-countries,#table-continents').DataTable({
+            'paging': true,
+            'lengthChange': false,
+            'searching': false,
+            'ordering': true,
+            'info': true,
+            'autoWidth': false
+        })
+    </script>
+}

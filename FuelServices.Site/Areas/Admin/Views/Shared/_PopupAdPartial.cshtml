@@ -1,0 +1,60 @@
+﻿@model IEnumerable<DBContext.Models.Advertisement>
+<!-- Central Modal Warning Demo-->
+<div>
+    <style>
+        .close {
+            float: right;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .2;
+            filter: alpha(opacity=20);
+        }
+    </style>
+    @foreach (var item in Model)
+    {
+        string modal_name = "modal_" + item.AdvertisementType.Name + "_" + item.Id;
+        string modal_color = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "color").Select(ap => ap.Value).FirstOrDefault();
+        string modal_position = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "position").Select(ap => ap.Value).FirstOrDefault();
+        string modal_corner = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "corner").Select(ap => ap.Value).FirstOrDefault();
+        string modal_anchor = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "anchor_caption").Select(ap => ap.Value).FirstOrDefault();
+        string modal_height = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "height").Select(ap => ap.Value).FirstOrDefault()
+        + item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "height").Select(ap => ap.Unit).FirstOrDefault();
+        string modal_width = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "width").Select(ap => ap.Value).FirstOrDefault()
+        + item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "width").Select(ap => ap.Unit).FirstOrDefault();
+
+        if (item.AdvertisementType.Name != "popup_video" && item.AdvertisementType.Name != "popup_frame")
+        {
+            <div class="modal fade @modal_position"
+                 id="@modal_name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:99999999999999999;">
+                <div class="modal-dialog modal-notify modal-@modal_corner modal-side modal-@modal_color" role="document">
+                    <!--Content-->
+                    <div class="modal-content" style="height:@modal_height ;width:@modal_width ;background-image:url(@item.ImageUrl);  background-repeat: no-repeat;background-size: 100% 100%;">
+                        <!--Body-->
+                        <div class="modal-header" style="height:3%;">
+                            <button type="button" class="close" data-dismiss="modal" style="margin-top: -5px;color:white;">X</button>
+                        </div>
+                        <div class="modal-body" style="height:72%;">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h3 style="color:white;text-align:center;">
+                                        @item.Description
+                                    </h3>
+                                    <h1 class="card-text" style="color:white;text-align:center;">
+                                        <strong>@item.Caption</strong>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-center" style="height:25%;">
+                            <a href="@item.AnchorUrl" onclick="ads_clicks('@modal_name', @item.Id, '@item.AnchorUrl')" target="_blank" class="btn btn-@modal_color">@modal_anchor</a>
+                        </div>
+                    </div>
+                    <!--/.Content-->
+                </div>
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,165 @@
+﻿@model IEnumerable<DBContext.Models.ContentManagement>
+
+@{ ViewData["SubTitle"] = "General";
+    ViewData["SubTitle"] = "Index";
+    ViewData["ControllerName"] = "ContentManagements";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml"; }
+@using Site.Helpers;
+@using FuelServices.Site.Helpers.Extensions;
+@using FuelServices.Site.Helpers.Toast
+
+
+
+
+<!-- DataTables -->
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+<input id="row_id" type="hidden" />
+
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <h3>Content Management </h3>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                <div class="box box-warning">
+                    <div class="box-header">
+                        <h3 class="box-title">
+                            <a class='btn btn-success' asp-action="Create">
+                                Create new record
+                            </a>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <table class="table table-bordered table-hover" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Name)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.DisplayName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.IsVisible)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ItemOrder)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.Title)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.ImageUrl)
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.DisplayName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.IsVisible)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.ItemOrder)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Title)
+                                        </td>
+                                        <td>
+                                            <img class="img-responsive img-bordered img-md" src="@item.ImageUrl" alt="Attachment Image">
+                                        </td>
+                                        <td>
+                                            <a class='btn btn-primary' asp-area="Admin" asp-action="Edit" asp-route-id="@item.Id"><i class='fa fa-edit'></i></a>
+                                            <a class='btn btn-info' asp-area="Admin" asp-action="Details" asp-route-id="@item.Id"><i class='fa fa-info'></i></a>
+                                            <button onclick="showDelete(@(item.Id))" class='btn btn-danger' id='btn_@item.Id'><i class='fa fa-remove'></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+
+<div id="modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete item?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button onclick="confirmDelete()" type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- DataTables -->
+    <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script type="text/javascript">
+
+        $("table").DataTable();
+        function showDelete(id) {
+            debugger
+            $('#row_id').val(id);
+            $('#modal').modal('show');
+        }
+
+        function confirmDelete() {
+            var mid = $('#row_id').val();
+            $('#row_id').val('');
+            $.post("@Url.Action("DeleteConfirmed", "ContentManagements")",
+                {
+                    id: mid,
+                },
+                function (data, status) {
+
+                    if (data.Code == @(Constants.SUCCESS_CODE)) {
+                        toastr.success('Item deleted successfully.', '', { positionClass: 'toast-right' });
+                        location.reload(true);
+
+                    } else {
+                        toastr.error(data.Message, '', { positionClass: 'toast-right' });
+                    }
+                });
+        }
+    </script>
+
+}
+
+
+
+

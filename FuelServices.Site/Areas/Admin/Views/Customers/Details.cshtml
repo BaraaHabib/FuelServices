@@ -1,0 +1,85 @@
+﻿@model DBContext.Models.Customer
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Main content -->
+<section class="">
+    <div class="">
+        <hr />
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Customer Details</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">Name</span>
+                                        <span class="info-box-number text-center text-muted mb-0"> @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Country)</span>
+                                        <span class="info-box-number text-center text-muted mb-0"> @Html.DisplayFor(model => model.Country)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.User.Email)</span>
+                                        <span class="info-box-number text-center text-muted mb-0"> @Html.DisplayFor(model => model.User.UserName)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Created)</span>
+                                        <span class="info-box-number text-center text-muted mb-0"> @Html.DisplayFor(model => model.Created)</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Modified)</span>
+                                        <span class="info-box-number text-center text-muted mb-0"> @Html.DisplayFor(model => model.Modified)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="info-box bg-light">
+                                    <div class="info-box-content">
+                                        <span class="info-box-more text-center text-muted">@Html.DisplayNameFor(model => model.ImageUrl)</span>
+                                        <img style="display:inline;" class=" img-responsive img-bordered img-lg" src="@Model.ImageUrl" alt="Attachment Image">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="box-footer clearfix">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-info pull-left">Edit</a>
+                    <a asp-action="Index" class="btn btn-sm btn-default pull-right">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

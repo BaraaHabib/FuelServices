@@ -1,0 +1,62 @@
+﻿@model DBContext.Models.PaymentPackage
+
+    <div class="modal fade" id="ModalDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true" style="z-index:9999999;">
+        <div class="modal-dialog modal-lg" role="document" style="border:none;">
+            <!--Content-->
+            <div class="modal-content" style="width:350px;border:none; background:transparent;background-color:transparent;margin-left:25%;">
+                <!--Body-->
+                <div class="modal-body mb-0 p-0" style="border:none;">
+                    <div class="col-12" style="border:none;">
+                        <div class="card card-pricing">
+                            <div class="card-content content-primary" style="background:@Model.MainColor;">
+                                <div class="icon">
+                                    <i class="material-icons" style="font-size:30px;">@Model.Name</i>
+                                </div>
+                                @if (Model.Price > 0)
+                                {
+                                    <h3 class="card-title">
+                                        $ @Model.Price
+
+                                        @switch (Model.Period)
+                                        {
+                                            case 1:
+                                                <span>/ day</span>
+                                                break;
+                                            case 7:
+                                                <span>/ week</span>
+                                                break;
+                                            case 30:
+                                                <span>/ month</span>
+                                                break;
+                                            case 365:
+                                                <span>/ year</span>
+                                                break;
+                                            default:
+                                                <span>/ mon</span>
+                                                break;
+                                        }
+                                    </h3>
+                                }
+                                else
+                                {
+                                    <h3 class="card-title">free</h3>
+                                }
+                                <p class="card-description">
+                                    @Model.Description
+                                </p>
+                                <ul>
+                                    @foreach (var feature in Model.PaymentPackageFeature.OrderBy(ppf => ppf.Feature.ItemOrder).ToList())
+                                    {
+                                        <li>@feature.Feature.Name @feature.Value</li>
+                                    }
+                                </ul>
+                                <a class="btn btn-white btn-round" asp-area="" asp-controller="PaymentPackages" asp-action="Buy" asp-route-id="@Model.Id">buy now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>

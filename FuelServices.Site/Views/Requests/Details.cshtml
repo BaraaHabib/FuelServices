@@ -1,0 +1,271 @@
+﻿@model DBContext.Models.Request
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using DBContext.Models
+<link href="~/template/css/three-dots.min.css" rel="stylesheet" />
+
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1></h1>
+            <ul class="breadcrumbs">
+                <li><a href="index.html"></a></li>
+                <li class=""></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <h2>Request Details</h2>
+    <hr />
+    <h4>
+        Suppliers
+    </h4>
+    <table class="table table-bordered table-active table-suppliers">
+        <thead>
+            <tr>
+                @*<th>Id</th>*@
+                <th>Supplier</th>
+                <th>Price</th>
+                <th>End Date</th>
+                <th class="">Status</th>
+                <th class=""></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model?.RequestOffers != null && Model?.RequestOffers?.Count > 0)
+            {
+                foreach (var item in Model?.RequestOffers)
+                {
+                    if (item.RStatus == ReplyStatus.WaitingForPayment)
+                    {
+                        <input type="hidden" name="currentRequest" value="@item.Id" />
+                    }
+                    <tr>
+                        @*<td>@item.Id</td>*@
+                        <td>@item.Offer.FuelSupplier.Name</td>
+                        <td>@item.AirportOffer?.Price @item.AirportOffer?.PriceUnit</td>
+                        <td>@item.Offer.EndDate.ToLongDateString()</td>
+                        @{
+                            var label = "label-warning";
+                            var text = "Pending";
+                            if (item.RStatus == ReplyStatus.Pending)
+                            {
+                                label = "label-warning";
+                                text = "Pending";
+                            }
+                            else if (item.RStatus == ReplyStatus.ApprovedBySupplier)
+                            {
+                                label = "label-primary";
+                                text = "Approved By Supplier";
+                            }
+                            else if (item.RStatus == ReplyStatus.Success)
+                            {
+                                label = "label-success";
+                                text = "Success";
+                            }
+                            else if (item.RStatus == ReplyStatus.Rejected)
+                            {
+                                label = "label-danger";
+                                text = "Rejected";
+                            }
+                            else if (item.RStatus == ReplyStatus.Expired)
+                            {
+                                label = "label-warning";
+                                text = "Expired";
+                            }
+                            else if (item.RStatus == ReplyStatus.AgreedWithASupplier)
+                            {
+                                label = "";
+                                text = "-";
+                            }
+                            else if (item.RStatus == ReplyStatus.ConfirmedByCustomer)
+                            {
+                                label = "label-primary";
+                                text = "Confirmed";
+                            }
+                            else if (item.RStatus == ReplyStatus.WaitingForPayment)
+                            {
+                                label = "label-default";
+                                text = "Waiting For Payment";
+                            }
+                        }
+                        <td><span class="label @label">@text</span></td>
+                        @if (item.RStatus == ReplyStatus.ApprovedBySupplier)
+                        {
+
+                            <td>
+                                <input id="requestOfferId" type="hidden" value="@item.Id" />
+                                <input id="price" type="hidden" value="@item.AirportOffer?.Price" />
+                                <input id="priceUnit" type="hidden" value="@item.AirportOffer?.PriceUnit" />
+                                <button data-toggle="modal" data-target="#sideModalTLInfo" class="btn btn-primary btn-block">Confirm</button>
+                            </td>
+
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-10 col-sm-12">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.SendDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.SendDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.ArrivalDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.ArrivalDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DepartureDate)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.DepartureDate)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.RegistrationNumber)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.RegistrationNumber)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.AircraftType)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.AircraftType)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CallSign)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CallSign)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Quantity)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Notes)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Notes)
+                </dd>
+                @*<dt>
+                        @Html.DisplayNameFor(model => model.OfferFuelType)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.OfferFuelType.Id)
+                    </dd>*@
+                <dt>
+                    @Html.DisplayNameFor(model => model.Airport)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Airport.Name)
+                </dd>
+            </dl>
+
+        </div>
+        <div class="col-md-2 col-sm-12">
+
+        </div>
+    </div>
+</div>
+@if (Model.RequestOffers.Where(x => x.RStatus == ReplyStatus.ApprovedBySupplier).ToList().DefaultIfEmpty() != null)
+{
+    <!-- Central Modal Medium Info -->
+    <div data-backdrop="false" class="modal fade left" id="sideModalTLInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-info " role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <div class="div_page_loader" style="display:none"></div>
+                <!--Header-->
+                <div class="modal-header">
+                    <p class="heading lead">Book Fuel Confirmation</p>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                </div>
+
+                <!--Body-->
+                <div id="payment-model-body" class="modal-body">
+                    <img src="~/uploads/logo_cover.png" class="img-fluid" />
+                    <div class="text-center white-text">
+                        <br />
+                        <br />
+                        <p>You can either pay now or you can pay for supplier latter?</p>
+                    </div>
+                </div>
+
+                <!--Footer-->
+                <div id="payment-model-footer" class="modal-footer justify-content-center">
+
+                    <a id="pay-now" class="btn btn-info">Pay now <i class="fa fa-money ml-1 white-text"></i></a>
+                    <a href="@(Url.Action("Contacts","Suppliers",new {RequestOfferId = ViewBag.RequestOfferId,  supplierId = ViewBag.SupplierId}))" class="btn btn-outline-info waves-effect">Pay For Supplier</a>
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+
+}
+
+
+@section Scripts{
+
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <script>
+        $("#sideModalTLInfo").on('shown.bs.modal', function () {
+
+        });
+    </script>
+    <script>
+        $("#pay-now").on("click", function (e) {
+
+            e.preventDefault();
+            $(".div_page_loader").show();
+            var requestOfferId = $('#requestOfferId').val();
+            var price = $('#price').val();
+            var priceUnit = $('#priceUnit').val();
+
+            var ajaxGetUrl = '@Url.Action("Pay","Requests")' + '?requestOfferId=' + requestOfferId;
+            ajaxGetUrl += '&price=' + price;
+            ajaxGetUrl += '&priceUnit=' + priceUnit;
+
+            $.get(
+                ajaxGetUrl,
+                function (response, status) {
+
+                    if (response) {
+                        $('#payment-model-body').html(response);
+                        $(".div_page_loader").hide();
+                        $('#payment-model-footer').hide();
+                    }
+                    else {
+                        toastr.error(response, 'error');
+
+                        $("#payment-model-body").html(
+                            '<div class="alert alert-warning"><h4>Uh oh!</h4></div>'
+                        );
+                    }
+                },
+                "html"
+            );
+        });
+    </script>
+}
+

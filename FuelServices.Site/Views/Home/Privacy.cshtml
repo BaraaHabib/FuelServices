@@ -1,0 +1,46 @@
+﻿
+@model List<DBContext.Models.ContentManagement>
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+
+<!-- Sub banner start -->
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1>Privacy Policy</h1>
+            <ul class="breadcrumbs">
+                <li><a href="index.html">Home</a></li>
+                <li class="active">Privacy Policy</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- Sub Banner end -->
+<!-- About listing start -->
+<div class="about-listing content-area-5">
+    <div class="container">
+        @foreach (var item in Model)
+        {
+
+            <div class="row">
+                <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="about-slider-box simple-slider">
+                        @*<img class="d-block w-100" src="img/about.jpg" alt="Third slide">*@
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                    <div class="about-text">
+                        <h3>@item.Title</h3>
+                        <p>
+                            @item.Description
+                        </p>
+                        @*<a href="#" class="btn border-thn">Read More</a>*@
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+<!-- About listing end -->

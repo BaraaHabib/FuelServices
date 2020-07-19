@@ -1,0 +1,96 @@
+﻿@model DBContext.Models.ContactUs
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .text-danger > span {
+        color: #f0151f !important;
+    }
+</style>
+<!-- Contact 2 start -->
+<div class="contact-2 content-area-5">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>Contact Us</h1>
+        </div>
+        <!-- Contact info -->
+        <form id="ContactForm" asp-action="Contact">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group name">
+                                <input type="text" asp-for="FirstName" class="form-control" placeholder="First Name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group email">
+                                <input type="text" asp-for="LastName" class="form-control" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group email">
+                                <input type="email" asp-for="Email" class="form-control" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group number">
+                                <input type="tel" asp-for="Tel" class="form-control" placeholder="Phone">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group subject">
+                                <input type="text" class="form-control" asp-for="Subject" placeholder="Subject"></input>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group message">
+                                <textarea class="form-control" asp-for="Message" placeholder="Write message"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="send-btn text-center">
+                                <button type="submit" class="btn btn-md button-theme">Send Message</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="contact-info">
+                        <h3>Contact Info</h3>
+                        <div class="media">
+                            <i class="flaticon-phone"></i>
+                            <div class="media-body">
+                                <h5>Phone Number</h5>
+                                <p>Mobile<a href="tel:+97142883550">+97142883550</a> </p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <i class="flaticon-mail"></i>
+                            <div class="media-body">
+                                <h5>Email Address</h5>
+                                <p><a href="mailto:commercial@v1av.com">commercial@v1av.com</a></p>
+                            </div>
+                        </div>
+                        <div class="media mb-0">
+                            <i class="flaticon-internet"></i>
+                            <div class="media-body">
+                                <h5>Web</h5>
+                                <p><a href="https://go-dg.com/">go-dg.com</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Contact 2 end -->

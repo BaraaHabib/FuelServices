@@ -1,0 +1,240 @@
+﻿<!DOCTYPE html>
+<html>
+@using Microsoft.AspNetCore.Identity
+@using FuelServices.Site.Helpers.Extensions
+@using FuelServices.Site.Helpers.Toast
+@inject SignInManager<DBContext.Models.ApplicationUser> SignInManager
+@inject UserManager<DBContext.Models.ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<head>
+    <meta charset="utf-8" />
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewData["Title"] - Supplier Panel</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link href="~/adminlte/css/font-awesome.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link href="~/adminlte/css/ionicons.min.css" rel="stylesheet" />
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="~/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/adminlte/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminlte/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/adminlte/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/adminlte/plugins/summernote/summernote-bs4.css">
+    <!-- Google Font: Source Sans Pro -->
+    @*<link href="~/adminlte/css/fonts.css" rel="stylesheet" />
+    <link href="~/adminlte/css/all.css" rel="stylesheet" />*@
+
+    <link href="~/adminlte/plugins/toastr/toastr.css" rel="stylesheet" />
+    <style>
+
+        .form-control {
+            width: 80% !important;
+        }
+
+        .modalDialog {
+            position: fixed !important;
+            margin: 0px !important;
+        }
+    </style>
+</head>
+<body class="hold-transition layout-fixed sidebar-mini text-sm">
+    <div class="wrapper">
+        <partial name="_HeaderPartial" />
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <partial name="_Sidebar" /> } @*<partial name="_CookieConsentPartial" />*@
+    <div class="content-wrapper">
+        @*@if (TempData.Get<Toast>("Message") != null)
+                    {
+        <p class='alert alert-@(TempData.Get<Toast>("Message").Type)' id="successMessage">
+            @(TempData.Get<Toast>("Message").Message)
+        </p>
+        }*@
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">
+                            @HttpContextAccessor.HttpContext.Session.GetString("ControllerName") Dashboard
+                        </h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">@HttpContextAccessor.HttpContext.Session.GetString("ControllerName")</a></li>
+                            <li class="breadcrumb-item active">@HttpContextAccessor.HttpContext.Session.GetString("ActionName")</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <section class="content">
+            <div class="container-fluid">
+                @RenderBody()
+            </div>
+
+        </section>
+    </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <p>&copy; All Rights Reserved to V1 Aviation Services 2017</p>
+        </footer>
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="~/adminlte/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/adminlte/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/adminlte/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/adminlte/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/adminlte/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/adminlte/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/adminlte/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/adminlte/plugins/moment/moment.min.js"></script>
+    <script src="~/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/adminlte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/adminlte/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/adminlte/js/adminlte.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    @*<script src="~/adminlte/js/pages/dashboard.js"></script>*@
+    <!-- AdminLTE for demo purposes -->
+    @*<script src="~/adminlte/js/demo.js"></script>*@
+
+    @*<script src="~/adminlte/js/pages/dashboard.js"></script>*@
+
+    <script src="~/adminlte/plugins/toastr/toastr.min.js"></script>
+    <script src="~/adminlte/js/icheck.js"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "positionClass": "toast-bottom-right",
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "4000",
+            "extendedTimeOut": "5000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut",
+            "progressBar": true
+        }
+    </script>
+    @if (TempData.Get<Toast>("Message") != null)
+    {
+        var response = TempData.Get<Toast>("Message");
+
+        @if (response.Type == ToasterType.success.ToString())
+        {
+            <script>
+            toastr.success('@response.Message', '', {positionClass : 'toast-@response.Position'});
+            </script>
+
+        }
+        else if (response.Type == ToasterType.warning.ToString())
+        {
+            <script>
+            toastr.warning('@response.Message', '', {positionClass : 'toast-@response.Position'});
+            </script>
+
+        }
+        else if (response.Type == ToasterType.error.ToString())
+        {
+            <script>
+            toastr.error('@response.Message', '', {positionClass : 'toast-@response.Position'});
+            </script>
+
+        }
+    }
+    <script>
+
+        //iCheck for checkbox and radio inputs
+        $(function () {
+            $('input[type="checkbox"], input[type="radio"]').iCheck({
+                checkboxClass: 'icheckbox_square-yellow',
+                radioClass: 'iradio_square-yellow',
+                increaseArea: '20%' /* optional */
+            });
+        })
+
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+            {
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Tomorrow': [moment().add(1, 'days'), moment().add(1, 'days')],
+                    'Next 7 Days': [moment(), moment().add(6, 'days')],
+                    'Next 30 Days': [moment(), moment().add(29, 'days')],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Next Month': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function (start, end) {
+                $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#offer_StartDate').val(start.format("MM/DD/YYYY HH:mm"));
+                $('#offer_EndDate').val(end.format("MM/DD/YYYY HH:mm"));
+            }
+        );
+
+        //$('.datepicker').datepicker({ defaultDate: new Date() });
+
+        $(function () {
+            $('.textarea').summernote()
+        });
+
+        $(document).ready(function () {
+            toastr.options = {
+                "closeButton": true,
+                "positionClass": "toast-bottom-right",
+                "showDuration": "10000",
+                "hideDuration": "10000",
+                "timeOut": "10000",
+                "extendedTimeOut": "10000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "slideDown",
+                "hideMethod": "slideUp"
+            }
+        });
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,173 @@
+﻿@model DBContext.Models.RequestOffers
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+<div class="card" >
+    <div class="card-header">
+        <div class="card-title">
+            <h4>Request Details</h4>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.Airport)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.Airport.Name)</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.CallSign)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.CallSign)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.AircraftType)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.AircraftType)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.RegistrationNumber)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.RegistrationNumber)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.SendDate)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.SendDate)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.ArrivalDate)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.ArrivalDate)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.DepartureDate)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.DepartureDate)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.Quantity)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.Quantity)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.Customer)</span>
+                        <span class="info-box-number text-center text-muted mb-0">
+                            @Html.DisplayFor(model => model.Request.Customer.FirstName) @Html.DisplayFor(model => model.Request.Customer.LastName)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.NameOfOperator)</span>
+                        <span class="info-box-number text-center text-muted mb-0">
+                            @Html.DisplayFor(model => model.Request.NameOfOperator)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.CaptainFmName)</span>
+                        <span class="info-box-number text-center text-muted mb-0">
+                            @Html.DisplayFor(model => model.Request.CaptainFmName)
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.Notes)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.Notes)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="info-box bg-light">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">@Html.DisplayNameFor(model => model.Request.Notes)</span>
+                        <span class="info-box-number text-center text-muted mb-0">@Html.DisplayFor(model => model.Request.Notes)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                @{
+                    var label = Model.RStatus == ReplyStatus.Pending ? "warning" : "success";
+                }
+                <div class="info-box bg-@label">
+                    <div class="info-box-content">
+                        <span class="info-box-text text-center text-muted">Status</span>
+                        <span class="info-box-number text-center text-muted mb-0">
+
+                            <span class="badge badge-btn badge-@label">@Model.RStatus.ToString()</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.RStatus == ReplyStatus.Pending)
+{
+<div class="">
+    <div class="row">
+
+        <div class="col-md-1 col-xs-3">
+            <form asp-antiforgery="true" asp-action="RejectRequest" asp-controller="Requests" asp-route-id="@Model.Id">
+
+                <input value="Reject" type="submit" class="btn btn-block btn-danger" />
+            </form>
+
+        </div>
+        <div class="col-md-1 col-xs-3">
+            <form asp-antiforgery="true" asp-action="ApproveRequest" asp-controller="Requests" asp-route-id="@Model.Id">
+
+                <input value="Approve" type="submit" class="btn btn-block btn-primary" />
+            </form>
+        </div>
+        <div class="col-md-2 col-xs-6">
+            <a class="btn btn-block btn-default" asp-action="OfferRequests" asp-controller="Requests" asp-route-id="@Model.OfferId">Back to Requests</a>
+
+        </div>
+
+
+    </div>
+    <br />
+</div>
+}

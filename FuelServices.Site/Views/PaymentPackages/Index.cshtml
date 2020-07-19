@@ -1,0 +1,216 @@
+﻿@model IEnumerable<DBContext.Models.PaymentPackage>
+
+
+@{
+    ViewData["Title"] = "Packages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            <h1></h1>
+            <ul class="breadcrumbs">
+                <li><a href="index.html"></a></li>
+                <li class=""></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Pricing tables start -->
+<div class="pricing-tables content-area">
+    <div class="container">
+        <!-- Main title -->
+        <div class="main-title text-center">
+            <h1>Pricing Packages</h1>
+            <p>Suscribe with us</p>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-header text-center text-bold text-uppercase">Customer Packages</h4>
+                <div class="row card-body">
+                    @foreach (var item in Model.Where(x => x.Type == DBContext.Models.PackageType.CustomerPackage))
+                    {
+                        <div class="border col-xl-4 col-lg-4 col-md-12">
+                            <div class="pricing">
+                                <div class="title">@item.DisplayName</div>
+                                <div class="p">@item.Description</div>
+                                <div class="content">
+                                    <ul>
+                                        @if (item.PaymentPackageFeature != null && item.PaymentPackageFeature.Count() > 0)
+                                        {
+                                            foreach (var feature in item.PaymentPackageFeature)
+                                            {
+                                                <li>@feature.Value @feature.Unit</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="price-for-user">
+                                    <div class="price">
+                                        @if (item.DiscountType != DBContext.Models.DiscountType.None)
+                                        {
+                                            var unit = item.PriceUnit;
+
+                                            @*@if (item.PriceUnit == "usd")
+                                                {
+                                                    unit = "$";
+                                                }*@
+                                            //else if (item.PriceUnit == "usd")
+                                            //{
+                                            //    unit
+                                            //        }
+                                            <sup>
+                                                @unit
+                                            </sup>
+                                            @*<strike style="color:#f0151f;">
+                                                    <span class="dolar">@item.Price</span>
+                                                </strike>*@
+                                            @if (item.DiscountType == DBContext.Models.DiscountType.Fixed)
+                                            {
+                                                <span class="dolar">@(item.Price + item.Discount) <strike class="a-color">@item.Price</strike> </span>
+                                            }
+                                            else if (item.DiscountType == DBContext.Models.DiscountType.Percentage)
+                                            {
+                                                <span class="dolar">
+                                                    @(item.Price - item.Price * item.Discount / 100) <strike class="a-color">@item.Price</strike>
+                                                </span>
+                                            }
+
+                                            @*<sup style="color:#f0151f;">@item.Discount @item.DiscountUnit</sup>*@
+                                        }
+                                        else
+                                        {
+                                            <sup>@item.PriceUnit</sup><span class="dolar">@item.Price</span>
+                                        }
+                                        <br />
+                                        @switch (item.Period)
+                                        {
+                                            case 1:
+                                                <small class="month">Per day</small>
+                                                break;
+                                            case 7:
+                                                <small class="month">Per week</small>
+                                                break;
+                                            case 30:
+                                                <small class="month">Per month</small>
+                                                break;
+                                            case 365:
+                                                <small class="month">Per year</small>
+                                                break;
+                                            default:
+                                                <small class="month">Per month</small>
+                                                break;
+                                        }
+                                    </div>
+                                </div>
+                                <div class="button">
+
+                                    <a asp-action="Buy" asp-route-id="@item.Id" class="btn btn-outline pricing-btn">Buy</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-xl-1 col-lg-1"></div>*@
+                    }
+                </div>
+            </div>
+        </div>
+
+        <br />
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-header text-center text-bold text-uppercase">Supplier Packages</h4>
+                <div class="row card-body">
+                    @foreach (var item in Model.Where(x => x.Type == DBContext.Models.PackageType.SupplierPackage))
+                    {
+                        <div class="border col-xl-4 col-lg-4 col-md-12">
+                            <div class="pricing">
+                                <div class="title">@item.DisplayName</div>
+                                <div class="p">@item.Description</div>
+                                <div class="content">
+                                    <ul>
+                                        @if (item.PaymentPackageFeature != null && item.PaymentPackageFeature.Count() > 0)
+                                        {
+                                            foreach (var feature in item.PaymentPackageFeature)
+                                            {
+                                                <li>@feature.Value @feature.Unit</li>
+                                            }
+                                        }
+                                    </ul>
+                                </div>
+                                <div class="price-for-user">
+                                    <div class="price">
+                                        @if (item.DiscountType != DBContext.Models.DiscountType.None)
+                                        {
+                                            var unit = item.PriceUnit;
+
+                                            @*@if (item.PriceUnit == "usd")
+                                                {
+                                                    unit = "$";
+                                                }*@
+                                            //else if (item.PriceUnit == "usd")
+                                            //{
+                                            //    unit
+                                            //        }
+                                            <sup>
+                                                @unit
+                                            </sup>
+                                            @*<strike style="color:#f0151f;">
+                                                    <span class="dolar">@item.Price</span>
+                                                </strike>*@
+                                            @if (item.DiscountType == DBContext.Models.DiscountType.Fixed)
+                                            {
+                                                <span class="dolar">@(item.Price + item.Discount) <strike class="a-color">@item.Price</strike> </span>
+                                            }
+                                            else if (item.DiscountType == DBContext.Models.DiscountType.Percentage)
+                                            {
+                                                <span class="dolar">
+                                                    @(item.Price - item.Price * item.Discount / 100) <strike class="a-color">@item.Price</strike>
+                                                </span>
+                                            }
+
+                                            @*<sup style="color:#f0151f;">@item.Discount @item.DiscountUnit</sup>*@
+                                        }
+                                        else
+                                        {
+                                            <sup>@item.PriceUnit</sup><span class="dolar">@item.Price</span>
+                                        }
+                                        <br />
+                                        @switch (item.Period)
+                                        {
+                                            case 1:
+                                                <small class="month">Per day</small>
+                                                break;
+                                            case 7:
+                                                <small class="month">Per week</small>
+                                                break;
+                                            case 30:
+                                                <small class="month">Per month</small>
+                                                break;
+                                            case 365:
+                                                <small class="month">Per year</small>
+                                                break;
+                                            default:
+                                                <small class="month">Per month</small>
+                                                break;
+                                        }
+                                    </div>
+                                </div>
+                                <div class="button">
+
+                                    <a asp-action="Buy" asp-route-id="@item.Id" class="btn btn-outline pricing-btn">Buy</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-xl-1 col-lg-1"></div>*@
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Pricing tables end -->
