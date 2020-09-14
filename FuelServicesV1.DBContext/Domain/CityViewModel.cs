@@ -1,5 +1,4 @@
-﻿
-namespace FuelServices.DBContext.Domain
+﻿namespace FuelServices.DBContext.Domain
 {
     public partial class CityViewModel : BaseDomain
     {

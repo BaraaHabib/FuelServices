@@ -142,7 +142,6 @@
         </div>
 
         <partial name="_GridAdsPartial" model="ViewBag.home_page_grid" />
-
     </div>
 </div>
 
@@ -156,8 +155,7 @@
         function search() {
 
             $('#offersListContainer').empty();
-            
-            
+
             $name = $('#js-offers-name-ajax').val();
             $.ajax({
                 type: "GET",

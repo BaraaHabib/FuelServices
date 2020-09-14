@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,28 +15,42 @@
     <Compile Remove="Migrations\20200713122902_AddActiveToUser.Designer.cs" />
     <Compile Remove="Migrations\20200713123117_AddActiveToUser.cs" />
     <Compile Remove="Migrations\20200713123117_AddActiveToUser.Designer.cs" />
+    <Compile Remove="Migrations\20200723121121_addDescriptionToSupplierContact1.cs" />
+    <Compile Remove="Migrations\20200723121121_addDescriptionToSupplierContact1.Designer.cs" />
+    <Compile Remove="Migrations\20200909093707_adds.cs" />
+    <Compile Remove="Migrations\20200909093707_adds.Designer.cs" />
+    <Compile Remove="Migrations\20200909095251_adds.cs" />
+    <Compile Remove="Migrations\20200909095251_adds.Designer.cs" />
+    <Compile Remove="Migrations\20200910063838_adds1.cs" />
+    <Compile Remove="Migrations\20200910063838_adds1.Designer.cs" />
+    <Compile Remove="Migrations\20200910064619_adds1.cs" />
+    <Compile Remove="Migrations\20200910064619_adds1.Designer.cs" />
+    <Compile Remove="Migrations\20200910065258_adds1.cs" />
+    <Compile Remove="Migrations\20200910065258_adds1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
-    <PackageReference Include="Elect.Core" Version="2.7.5" />
-    <PackageReference Include="Elect.Web.DataTable" Version="2.7.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="2.2.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Elect.Core" Version="3.1.2.3" />
+    <PackageReference Include="Elect.Web.DataTable" Version="3.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.1.2" />
-    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.6.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="5.5.0" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
   </ItemGroup>
 

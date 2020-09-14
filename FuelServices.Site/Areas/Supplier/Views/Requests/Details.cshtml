@@ -4,7 +4,7 @@
     ViewData["Title"] = "Details";
     Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
 }
-<div class="card" >
+<div class="card">
     <div class="card-header">
         <div class="card-title">
             <h4>Request Details</h4>
@@ -20,7 +20,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="col-md-3">
                 <div class="info-box bg-light">
@@ -153,7 +152,6 @@
 
                 <input value="Reject" type="submit" class="btn btn-block btn-danger" />
             </form>
-
         </div>
         <div class="col-md-1 col-xs-3">
             <form asp-antiforgery="true" asp-action="ApproveRequest" asp-controller="Requests" asp-route-id="@Model.Id">
@@ -163,10 +161,7 @@
         </div>
         <div class="col-md-2 col-xs-6">
             <a class="btn btn-block btn-default" asp-action="OfferRequests" asp-controller="Requests" asp-route-id="@Model.OfferId">Back to Requests</a>
-
         </div>
-
-
     </div>
     <br />
 </div>

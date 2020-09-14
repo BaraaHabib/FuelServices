@@ -1,9 +1,9 @@
-﻿using Site.Helpers;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Site.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -74,7 +74,6 @@ namespace Site.Areas.Identity.Pages.Account
             var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
             if (result.Succeeded)
             {
-
                 var simpleResponse = new SimpleResponse(Constants.SUCCESS_CODE, "Your password has been reset. Please click here to log in. ");
                 TempData.Set("Toast", simpleResponse);
                 return RedirectToPage("./Login");

@@ -1,7 +1,4 @@
-﻿using Site.DTOs;
-using Site.Helpers;
-using Site.Services;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Site.DTOs;
+using Site.Helpers;
+using Site.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,7 +33,7 @@ namespace Site.Areas.Identity.Pages.Account
         private readonly AirportCoreContext _context;
         private readonly IServiceProvider _serviceProvider;
         private readonly IFileProvider _fileProvider;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public SupplierRegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -43,7 +43,7 @@ namespace Site.Areas.Identity.Pages.Account
             AirportCoreContext context,
             IServiceProvider serviceProvider,
             IFileProvider fileProvider,
-            IHostingEnvironment env)
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -117,7 +117,8 @@ namespace Site.Areas.Identity.Pages.Account
             ReturnUrl = Url.Content("~/");
             if (ModelState.IsValid)
             {
-                if(User.Identity.IsAuthenticated){
+                if (User.Identity.IsAuthenticated)
+                {
                     await _signInManager.SignOutAsync();
                     _logger.LogInformation("User logged out.");
                 }
@@ -185,7 +186,7 @@ namespace Site.Areas.Identity.Pages.Account
 
                     fuelSupplier.SupplierContactPerson = new List<SupplierContactPerson>();
                     fuelSupplier.SupplierContactPerson.Add(supplierContactPerson);
-                    
+
                     _context.FuelSupplier.Add(fuelSupplier);
                     _context.SaveChanges();
 

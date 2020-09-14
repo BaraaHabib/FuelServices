@@ -1,0 +1,256 @@
+﻿@model DBContext.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .card-blog {
+        margin-top: 30px;
+    }
+
+    .card-plain {
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .card {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        margin-bottom: 30px;
+        border-radius: 6px;
+        color: rgba(0, 0, 0, 0.87);
+        background: #fff;
+    }
+
+    a {
+        color: #296294;
+    }
+
+    .card-plain .card-image {
+        margin: 0;
+        border-radius: 6px;
+    }
+
+    .card .card-image {
+        height: 60%;
+        position: relative;
+        z-index: 1;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: -30px;
+        border-radius: 6px;
+    }
+
+    .card-plain .card-image img {
+        border-radius: 6px;
+    }
+
+    .card .card-image img {
+        width: 100%;
+        border-radius: 6px;
+        pointer-events: none;
+        box-shadow: 0 5px 15px -8px rgba(0, 0, 0, 0.24), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+    }
+
+    .card img {
+        width: 100%;
+        height: auto;
+    }
+
+    .card .card-image .card-title {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+        color: #fff;
+        font-size: 1.3em;
+        text-shadow: 0 2px 5px rgba(33, 33, 33, 0.5);
+    }
+
+    .card-blog .card-title {
+        margin-top: 5px;
+    }
+
+    .title, .title a, .card-title, .card-title a, .info-title, .info-title a, .footer-brand, .footer-brand a, .footer-big h5, .footer-big h5 a, .footer-big h4, .footer-big h4 a, .media .media-heading, .media .media-heading a {
+        color: #3C4858;
+        text-decoration: none;
+    }
+
+    .title, .card-title, .info-title, .footer-brand, .footer-big h5, .footer-big h4, .media .media-heading {
+        font-weight: 700;
+        font-family: Courier New, Courier, monospace;
+    }
+</style>
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-danger">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        Are you sure you want to delete this?
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-xs-7">
+                        <dl class="dl-horizontal">
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Title)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Title)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Description)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Description)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AnchorUrl)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AnchorUrl)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Caption)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Caption)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.CaptionClicks)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.CaptionClicks)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ImageUrl)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ImageUrl)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.PublishDate)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.PublishDate)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.EndDate)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.EndDate)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.TotalPrice)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.TotalPrice)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AdvertisementCategory)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AdvertisementCategory.Name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AdvertisementOwner)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AdvertisementOwner.Email)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AdvertisementType)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AdvertisementType.DisplayName)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AdvertisementImageType)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.AdvertisementImageType.Name)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Created)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Created)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Modified)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.Modified)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.IsDeleted)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.IsDeleted)
+                            </dd>
+                            <dt>
+                                @Html.DisplayNameFor(model => model.ItemOrder)
+                            </dt>
+                            <dd>
+                                @Html.DisplayFor(model => model.ItemOrder)
+                            </dd>
+                        </dl>
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-actions no-color">
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                                <a class="btn btn-default" href="@Url.Action("Index")">
+                                    <i class="fas fa-chevron-circle-left"></i>Back to List
+                                </a>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-md-10 margin">
+                                @foreach (var modelState in ViewData.ModelState.Values)
+                                {
+                                    foreach (var error in modelState.Errors)
+                                    {
+                                        <div class="box-danger">
+                                            <div class="box-body">
+                                                <div class="alert alert-danger alert-dismissible">
+                                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                                    <h4><i class="icon fa fa-ban"></i> @error.ErrorMessage</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-xs-5">
+                        <div class="card card-blog card-plain">
+                            <a href="@Model.AnchorUrl" target="_blank" style="cursor:pointer;">
+                                <div class="card-image">
+                                    @if (Model.ImageUrl == null)
+                                    {
+                                        <img src="/images/icon.png" width="100" height="100" />
+
+                                    }
+                                    else
+                                    {
+                                        <img src="@Model.ImageUrl" width="100" height="100" />
+                                    }
+                                    <div class="card-title">
+                                        @Model.Caption
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        $('#advertisements_counters').hide();
+    });
+</script>

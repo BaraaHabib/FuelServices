@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using DBContext.Models;
-using FuelServices.Site.Helpers.Toast;
-using System.Linq.Dynamic.Core;
-using AutoMapper;
 using FuelServices.DBContext.Domain;
+using FuelServices.Site.Helpers.Toast;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ContactUsController : BaseController
     {
-        
-        public ContactUsController(AirportCoreContext context,IServiceProvider provider) : base(context, provider)
+        public ContactUsController(AirportCoreContext context, IServiceProvider provider) : base(context, provider)
         {
         }
 
@@ -119,7 +116,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                     draw = draw,
                     recordsFiltered = recordsTotal,
                     recordsTotal = recordsTotal,
-                    data = AutoMapper.Mapper.Map<ContactUsViewModel>(data)
+                    data = GetService<IMapper>().Map<ContactUsViewModel>(data)
                 });
                 return res;
             }

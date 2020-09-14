@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System;
-using System.Diagnostics;
 using System.IO;
 
 namespace Site
@@ -11,7 +10,7 @@ namespace Site
     public class Program
     {
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())            
+            .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
             .Build();
@@ -22,7 +21,6 @@ namespace Site
             .ReadFrom.Configuration(Configuration)
             .CreateLogger();
 
-           
             try
             {
                 BuildWebHost(args).Run();

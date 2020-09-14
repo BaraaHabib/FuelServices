@@ -10,12 +10,14 @@ namespace DBContext.Mapping
             IPagedList<Tv> destination,
             ResolutionContext context)
         {
-            var models = (StaticPagedList<Te>)source;
-            var viewModels = models.Select(Mapper.Map<Te, Tv>);
+            //var models = (StaticPagedList<Te>)source;
+
+            //var viewModels = models.Select(x => Mapper.Map<Te, Tv>);
 
             return new StaticPagedList<Tv>(
-                viewModels,
-                models);
+                null,//viewModels,
+                null//models
+                );
         }
     }
 }

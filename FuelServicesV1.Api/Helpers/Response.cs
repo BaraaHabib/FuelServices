@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FuelServices.Api.Helpers
 {
-    public class Response<T>
+    public class Response<T> 
     {
         private int iNVALID_LOGIN_CODE;
         private List<IdentityError> list;
@@ -20,27 +22,24 @@ namespace FuelServices.Api.Helpers
             Code = code;
             Content = content;
         }
-        
 
-        public Response(int code, T content,string message)
+        public Response(int code, T content, string message)
         {
-
             Code = code;
             Content = content;
             Message = message;
         }
-
 
         public int Code { get; set; }
 
         public T Content { get; set; }
 
         public string Message { get; set; }
+
     }
 
     public class ErrorResponse
     {
-
     }
 
     public class SimpleResponse
@@ -65,6 +64,7 @@ namespace FuelServices.Api.Helpers
         {
             tempData[key] = JsonConvert.SerializeObject(value);
         }
+
         public static SimpleResponse Get(this ITempDataDictionary tempData, string key)
         {
             return JsonConvert.DeserializeObject<SimpleResponse>((string)tempData[key]);

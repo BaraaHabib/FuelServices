@@ -8,7 +8,6 @@
 
         public string Value { get; set; }
 
-
         public string Unit { get; set; }
 
         public virtual PropertyViewModel Property { get; set; }

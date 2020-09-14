@@ -1,13 +1,10 @@
 ﻿using DBContext.Models;
 using FuelServices.Site.Helpers.Configurations;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Site.Helpers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,13 +48,11 @@ namespace FuelServices.Site.Helpers.Background_Service
                 //var reqs = db.Request.Where(x => x.st)
                 using (var scope = ServiceScopeFactory.CreateScope())
                 {
-
                     var db =
                         scope.ServiceProvider
                             .GetRequiredService<AirportCoreContext>();
                     var allRequests = db.RequestOffers.Where(x => x.RStatus == ReplyStatus.ApprovedBySupplier).ToList();
                     int TimeLimet = int.Parse(configuration.Value.CustomerConfirmationTimeOutInHours);
-
 
                     foreach (var req in allRequests)
                     {
@@ -76,7 +71,7 @@ namespace FuelServices.Site.Helpers.Background_Service
             }
             catch (Exception e)
             {
-                Serilog.Log.Information(e,"Exception in background Service",$"Message {e.Message}");
+                Serilog.Log.Information(e, "Exception in background Service", $"Message {e.Message}");
             }
         }
 

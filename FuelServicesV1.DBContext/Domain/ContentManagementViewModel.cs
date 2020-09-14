@@ -2,7 +2,6 @@
 {
     public partial class ContentManagementViewModel : BaseDomain
     {
-
         public string Name { get; set; }
 
         public string DisplayName { get; set; }

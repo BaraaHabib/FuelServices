@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections;
+using System.Linq;
 
 namespace FuelServices.Site.Areas.Supplier.Controllers
 {
-    public class CitiesController :   BaseController
+    public class CitiesController : BaseController
     {
         public CitiesController(AirportCoreContext context, IServiceProvider serviceProvider) : base(context, serviceProvider)
         {

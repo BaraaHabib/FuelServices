@@ -1,10 +1,10 @@
-﻿using Site.Helpers;
-using Site.Services;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Site.Helpers;
+using Site.Services;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.Encodings.Web;
@@ -25,7 +25,6 @@ namespace Site.Areas.Identity.Pages.Account
             _userManager = userManager;
             _emailSender = emailSender;
             _context = context;
-
         }
 
         [BindProperty]

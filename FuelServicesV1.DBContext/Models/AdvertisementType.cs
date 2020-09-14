@@ -9,16 +9,17 @@ namespace DBContext.Models
         public AdvertisementType()
         {
             Advertisement = new HashSet<Advertisement>();
+            AdvertisementTypeProperty = new HashSet<AdvertisementTypeProperty>();
         }
 
-
         [Required]
-        [DataTable(DisplayName = "Name", Order = 2)]
         public string Name { get; set; }
 
-        [DataTable(DisplayName = "Valid", Order = 3)]
-        public bool? IsValid { get; set; }
+        [Required]
+        [Display(Name = "Name *")]
+        public string DisplayName { get; set; }
 
         public virtual ICollection<Advertisement> Advertisement { get; set; }
+        public virtual ICollection<AdvertisementTypeProperty> AdvertisementTypeProperty { get; set; }
     }
 }

@@ -1,27 +1,25 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using Stripe;
-using Microsoft.Extensions.Options;
+﻿using DBContext.Models;
+using FuelServices.DBContext.Models;
 using FuelServices.Site.Helpers.Stripe;
 using FuelServices.Site.Helpers.Toast;
-using FuelServices.DBContext.Models;
-using System.Dynamic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Stripe;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Site.Controllers
 {
     public class PaymentPackagesController : BaseController
     {
-        protected readonly IOptions<StripeSettings> StripeOptions; 
-        public PaymentPackagesController(AirportCoreContext context,IServiceProvider provider, IOptions<StripeSettings>options) :base(context,provider)
+        protected readonly IOptions<StripeSettings> StripeOptions;
+
+        public PaymentPackagesController(AirportCoreContext context, IServiceProvider provider, IOptions<StripeSettings> options) : base(context, provider)
         {
             this.StripeOptions = options;
         }
@@ -34,7 +32,7 @@ namespace Site.Controllers
 
             if (User.IsInRole("Supplier"))
             {
-                return View(await db.PaymentPackage.Where(pp => pp.IsValid).Where(p=>p.Type == PackageType.SupplierPackage)
+                return View(await db.PaymentPackage.Where(pp => pp.IsValid).Where(p => p.Type == PackageType.SupplierPackage)
                     .OrderBy(pp => pp.ItemOrder).ToListAsync());
             }
             else if (User.IsInRole("Customer"))
@@ -86,7 +84,7 @@ namespace Site.Controllers
             return View(package);
         }
 
-        [Authorize(Roles ="Supplier,Customer")]
+        [Authorize(Roles = "Supplier,Customer")]
         public async Task<IActionResult> Buy(int? id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -117,10 +115,11 @@ namespace Site.Controllers
             try
             {
                 #region Stripe
+
                 // Set your secret key. Remember to switch to your live secret key in production!
                 // See your keys here: https://dashboard.stripe.com/account/apikeys
                 StripeConfiguration.ApiKey = StripeOptions?.Value?.SecretKey;
-                
+
                 var options = new PaymentIntentCreateOptions
                 {
                     Amount = (int)(paymentPackage.Price * 100),
@@ -139,15 +138,14 @@ namespace Site.Controllers
                 var paymentIntent = service.Create(options);
                 ViewBag.ClientSecret = paymentIntent.ClientSecret;
 
-                #endregion
+                #endregion Stripe
             }
             catch (Exception e)
             {
                 Serilog.Log.Error(e, Helpers.Constants.PAYMENT_ERROR, $"User : {User.Identity.Name}");
-                Message = Toast.ErrorToastFront(GetExceptionMessage(e,"Payment Error. Contact site administrator."));
+                Message = Toast.ErrorToastFront(GetExceptionMessage(e, "Payment Error. Contact site administrator."));
                 //return Content(e.ToString());
             }
-
 
             if (User.IsInRole("Supplier"))
             {
@@ -183,16 +181,16 @@ namespace Site.Controllers
 
             try
             {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            int OfferId = 0;
-            if (TempData["OfferId"] != null)
-            {
-                OfferId = Convert.ToInt32(TempData["OfferId"]);
-            }
+                int OfferId = 0;
+                if (TempData["OfferId"] != null)
+                {
+                    OfferId = Convert.ToInt32(TempData["OfferId"]);
+                }
 
-            DBContext.Models.Customer customer = db.Customer.Where(c => c.UserId == userId).FirstOrDefault();
-            
+                DBContext.Models.Customer customer = db.Customer.Where(c => c.UserId == userId).FirstOrDefault();
+
                 if (ModelState.IsValid)
                 {
                     var user = await userManager.FindByIdAsync(userId);
@@ -234,7 +232,6 @@ namespace Site.Controllers
             ViewData["PaymentPackage"] = paymentPackage;
             return View(customerPackagesLog);
         }
-        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -256,15 +253,15 @@ namespace Site.Controllers
 
             try
             {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            int OfferId = 0;
-            if (TempData["OfferId"] != null)
-            {
-                OfferId = Convert.ToInt32(TempData["OfferId"]);
-            }
+                int OfferId = 0;
+                if (TempData["OfferId"] != null)
+                {
+                    OfferId = Convert.ToInt32(TempData["OfferId"]);
+                }
 
-            DBContext.Models.FuelSupplier supplier = db.FuelSupplier.Where(c => c.UserId == userId).FirstOrDefault();
+                DBContext.Models.FuelSupplier supplier = db.FuelSupplier.Where(c => c.UserId == userId).FirstOrDefault();
 
                 if (ModelState.IsValid)
                 {
@@ -284,7 +281,7 @@ namespace Site.Controllers
                     }
                     await userManager.AddClaimAsync(user, new Claim("PackageExpiryDate", expiryDate.ToString()));
                     await userManager.AddClaimAsync(user, new Claim("PaymentPackageId", PaymentPackageId.ToString()));
-                    
+
                     await userManager.AddClaimAsync(user, new Claim("PaymentPackageLevel", paymentPackage.ItemLevel.ToString()));
 
                     supplierPackagesLog.StartDate = DateTime.UtcNow;

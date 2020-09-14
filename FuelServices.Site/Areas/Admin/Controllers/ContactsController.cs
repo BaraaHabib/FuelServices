@@ -1,39 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DBContext.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class ContactsController : BaseController
     {
-        private readonly AirportCoreContext _context;
 
-        public ContactsController(AirportCoreContext context,IServiceProvider provider) : base(context,provider) 
+        public ContactsController(AirportCoreContext context, IServiceProvider provider) : base(context, provider)
         {
         }
 
         // GET: Admin/Contacts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Contact.ToListAsync());
+            return View(await db.Contact.ToListAsync());
         }
 
         // GET: Admin/Contacts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            var contact = await _context.Contact
+            var contact = await db.Contact
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contact == null)
             {
@@ -49,7 +45,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/Contacts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -57,8 +53,8 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(contact);
-                await _context.SaveChangesAsync();
+                db.Add(contact);
+                await db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(contact);
@@ -72,7 +68,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var contact = await _context.Contact.FindAsync(id);
+            var contact = await db.Contact.FindAsync(id);
             if (contact == null)
             {
                 return NotFound();
@@ -81,7 +77,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/Contacts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -96,8 +92,8 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(contact);
-                    await _context.SaveChangesAsync();
+                    db.Update(contact);
+                    await db.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -123,7 +119,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var contact = await _context.Contact
+            var contact = await db.Contact
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (contact == null)
             {
@@ -138,15 +134,15 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var contact = await _context.Contact.FindAsync(id);
-            _context.Contact.Remove(contact);
-            await _context.SaveChangesAsync();
+            var contact = await db.Contact.FindAsync(id);
+            db.Contact.Remove(contact);
+            await db.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ContactExists(int id)
         {
-            return _context.Contact.Any(e => e.Id == id);
+            return db.Contact.Any(e => e.Id == id);
         }
     }
 }

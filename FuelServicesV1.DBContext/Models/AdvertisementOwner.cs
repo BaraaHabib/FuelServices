@@ -1,7 +1,9 @@
 ﻿using Elect.Web.DataTable.Attributes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DBContext.Models
 {
@@ -12,35 +14,45 @@ namespace DBContext.Models
             Advertisement = new HashSet<Advertisement>();
         }
 
-
         [Required]
-        [DataTable(IsVisible = false, Order = 2)]
+        [Display(Name = "User *")]
         public string UserId { get; set; }
 
+        [Display(Name = "First name *")]
         [Required]
-        [DataTable(DisplayName = "First Name", Order = 3)]
         public string FirstName { get; set; }
 
+        [Display(Name = "Last name *")]
         [Required]
-        [DataTable(DisplayName = "Last Name", Order = 4)]
         public string LastName { get; set; }
 
+        [Display(Name = "Phone *")]
         [Required]
-        [DataTable(DisplayName = "Phone", Order = 5)]
         public string Phone { get; set; }
 
+        [Display(Name = "Email *")]
+        [EmailAddress]
         [Required]
-        [DataTable(DisplayName = "Email", Order = 6)]
         public string Email { get; set; }
 
-        [DataTable(DisplayName = "Fax", Order = 7)]
         public string Fax { get; set; }
 
-        [DataTable(IsVisible = false, Order = 8)]
+        [Display(Name = "Country *")]
+        [Required]
         public int? CountryId { get; set; }
 
-        [DataTable(DisplayName = "Image Url", Order = 9)]
+        [Display(Name = "Image path")]
         public string ImageUrl { get; set; }
+
+        [Required]
+        [Display(Name = "User Specialization *")]
+        public int? UserSpecializationId { get; set; }
+
+        [Display(Name = "Company *")]
+        public int? CompanyId { get; set; }
+
+        [NotMapped]
+        public IFormFile file { get; set; }
 
         public virtual Country Country { get; set; }
         public virtual ApplicationUser User { get; set; }

@@ -1,0 +1,103 @@
+﻿@model IEnumerable<DBContext.Models.Advertisement>
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Archived Ads";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ItemOrder)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ImageUrl)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Title)
+                                </th>                                
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var controllerName = '@HttpContextAccessor.HttpContext.Session.GetString("ControllerName")';
+    $(function () {
+        $('#advertisements_counters').hide();
+        $('table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "/admin/" + controllerName + "/GetArchivedData",
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columnDefs":
+                [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                { "data": "itemOrder", "name": "ItemOrder", "autoWidth": true },
+                { "data": "id", "name": "Id", "autoWidth": true },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (row.imageUrl == null) {
+                            return '<img class="img-responsive img-bordered img-md" src="/images/icon.png" />';
+                        }
+                        else {
+                            return '<img class="img-responsive img-bordered img-md" src="' + row.imageUrl + '" />';
+                        }
+                    }
+                },
+                { "data": "title", "name": "Title", "autoWidth": true },
+                {
+                    data: null, render: function (data, type, row) {
+                        if (row.status == "Rejected") {
+                            return '<strong class="label pull-center bg-navy-active">' + row.status + '</strong>';
+                        }
+                        else {
+                            return '<strong class="label pull-center bg-yellow-gradient">' + row.status + '</strong>';
+                        }
+                    }
+                },
+                {
+                    data: null, render: function (data, type, row)
+                    {
+                        return '<a href="/admin/' + controllerName + '/AcceptAd/' + row.id + '"><i class="fas fa-check-square"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/RejectAd/' + row.id + '"><i class="fas fa-ban"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/Edit/' + row.id + '"><i class="far fa-edit"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/Details/' + row.id + '"><i class="fas fa-info-circle"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/Delete/' + row.id + '"><i class="far fa-trash-alt"></i></a>' +
+                            '<a href="/admin/AdvertisementProperties/Index/' + row.id + '"><i class="fas fa-list"></i></a>';
+                        }
+                }
+            ]
+        })
+    })
+</script>

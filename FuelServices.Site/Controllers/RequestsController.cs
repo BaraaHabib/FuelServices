@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DBContext.Models;
+using Elect.Web.IUrlHelperUtils;
+using FuelServices.Site.Helpers.Stripe;
+using FuelServices.Site.Helpers.Toast;
+using FuelServices.Site.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using Site.Controllers;
-using Microsoft.AspNetCore.Authorization;
-using Site.DTOs;
-using FuelServices.Site.Models;
-using FuelServices.Site.Helpers.Toast;
-using Site.Services;
-using System.Text.Encodings.Web;
-using Elect.Web.IUrlHelperUtils;
-using Stripe;
-using FuelServices.Site.Helpers.Stripe;
 using Microsoft.Extensions.Options;
+using Site.Controllers;
+using Site.DTOs;
 using Site.Helpers;
+using Site.Services;
+using Stripe;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Encodings.Web;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Controllers
 {
@@ -25,10 +25,9 @@ namespace FuelServices.Site.Controllers
     {
         protected readonly IOptions<StripeSettings> StripeOptions;
 
-        public RequestsController(AirportCoreContext context,IServiceProvider provider, IOptions<StripeSettings> options) : base(context,provider)
+        public RequestsController(AirportCoreContext context, IServiceProvider provider, IOptions<StripeSettings> options) : base(context, provider)
         {
             this.StripeOptions = options;
-
         }
 
         // GET: Requests
@@ -52,7 +51,7 @@ namespace FuelServices.Site.Controllers
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Details(int? id)
         {
-            // TODO: chech authurization 
+            // TODO: chech authurization
             if (id == null)
             {
                 return NotFound();
@@ -71,7 +70,7 @@ namespace FuelServices.Site.Controllers
             request?.RequestOffers.ToList().ForEach(
                 x =>
                 {
-                    if(x.RStatus == ReplyStatus.ApprovedBySupplier)
+                    if (x.RStatus == ReplyStatus.ApprovedBySupplier)
                     {
                         ViewBag.RequestOfferId = x.Id;
                     }
@@ -80,22 +79,22 @@ namespace FuelServices.Site.Controllers
             return View(request);
         }
 
-        [Authorize(Roles ="Customer")]
+        [Authorize(Roles = "Customer")]
         // GET: Requests/Create
         public async Task<IActionResult> Create()
         {
             var user = (await GetCurrentUserAsync());
             ViewBag.CustomerId = db.Customer.Where(c => c.UserId == user.Id).FirstOrDefault().Id;
-            ViewBag.OfferFuelTypes =  new SelectList(db.FuelType.ToList(),"Id","Name");
+            ViewBag.OfferFuelTypes = new SelectList(db.FuelType.ToList(), "Id", "Name");
             ViewBag.Offers = new List<Select2ResultDTO>();
             //RequestViewModel Request = new RequestViewModel();
             return View();
         }
 
         // POST: Requests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles ="Customer")]
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(RequestViewModel model)
@@ -103,17 +102,15 @@ namespace FuelServices.Site.Controllers
             var user = (await GetCurrentUserAsync());
             try
             {
+                model.Req.SendDate = DateTime.UtcNow;
 
-            model.Req.SendDate = DateTime.UtcNow;
-
-            if (user.Customer.Id != model.Req.CustomerId)
-            {
-                return BadRequest();
-            }
+                if (user.Customer.Id != model.Req.CustomerId)
+                {
+                    return BadRequest();
+                }
 
                 if (ModelState.IsValid)
                 {
-
                     // set up email notification
                     var contentAppName = db.ContentManagement.Where(cm => cm.Name == "app_name")
                              .FirstOrDefault();
@@ -124,36 +121,36 @@ namespace FuelServices.Site.Controllers
                     //
 
                     db.Request.Add(model.Req);
-                    model.SelectedOffers.ForEach( offerId =>
-                    {
-                        var selectedOffer = db.Offer.Find(offerId);
-                        var selectedOfferParty = selectedOffer.AirportOffers.Where(x => x.AirportId == model.Req.AirportId).FirstOrDefault();
+                    await db.SaveChangesAsync();
+                    model.SelectedOffers.ForEach(offerId =>
+                   {
+                       var selectedOffer = db.Offer.Find(offerId);
+                       var selectedOfferParty = selectedOffer.AirportOffers.Where(x => x.AirportId == model.Req.AirportId).FirstOrDefault();
 
-                        RequestOffers requestOffers = new RequestOffers()
-                        {
-                            OfferId = offerId,
-                            RequestId = model.Req.Id,
-                            AirportOfferId = selectedOfferParty.Id,
-                            RStatus = ReplyStatus.Pending,
-                        };
-                        db.Add(requestOffers);
-                        db.SaveChanges();
+                       RequestOffers requestOffers = new RequestOffers()
+                       {
+                           OfferId = offerId,
+                           RequestId = model.Req.Id,
+                           AirportOfferId = selectedOfferParty.Id,
+                           RStatus = ReplyStatus.Pending,
+                       };
+                       db.Add(requestOffers);
+                       db.SaveChanges();
 
                         #region send email
+
                         //get supllier
 
                         var supplierEmail = selectedOffer.FuelSupplier.User.Email;
-                        var callbackUrl = Url.AbsoluteAction("Details", "Requests", new { Area = "Supplier", id = model.Req.Id });
-                        body = body.Replace("{callbackurl}", HtmlEncoder.Default.Encode(callbackUrl));
-                        var simpleResponse = EmailSender.SendEmailNotification(supplierEmail, AppName, body);
-                        #endregion
+                       var callbackUrl = Url.AbsoluteAction("Details", "Requests", new { Area = "Supplier", id = model.Req.Id });
+                       body = body.Replace("{callbackurl}", HtmlEncoder.Default.Encode(callbackUrl));
+                       var simpleResponse = EmailSender.SendEmailNotification(supplierEmail, AppName, body);
 
-
+                        #endregion send email
                     });
                     //model.Req.
 
-
-                    return RedirectToAction(nameof(Details),new {id = model.Req.Id });
+                    return RedirectToAction(nameof(Details), new { id = model.Req.Id });
                 }
             }
             catch (Exception e)
@@ -162,7 +159,6 @@ namespace FuelServices.Site.Controllers
                 ModelState.AddModelError("", GetExceptionMessage(e));
                 //throw;
             }
-            
 
             model.Req.Airport = db.Airport.Find(model.Req.AirportId);
             model.Req.Airport.AirportOffer = db.AirportOffers.Where(x => !x.IsDeleted).Where(x => x.AirportId == model.Req.AirportId).ToList();
@@ -177,16 +173,11 @@ namespace FuelServices.Site.Controllers
             ViewBag.Offers = offers;
 
             return View(model);
-
-            
         }
-
-
-
 
         [Authorize(Roles = "Customer")]
         // GET: Requests/Create
-        public async Task<IActionResult> Pay(int? requestOfferId,long price, string priceUnit)
+        public async Task<IActionResult> Pay(int? requestOfferId, long price, string priceUnit)
         {
             var user = (await GetCurrentUserAsync());
             var requestOffer = await db.RequestOffers
@@ -203,6 +194,7 @@ namespace FuelServices.Site.Controllers
                 db.SaveChanges();
 
                 #region Stripe
+
                 // Set your secret key. Remember to switch to your live secret key in production!
                 // See your keys here: https://dashboard.stripe.com/account/apikeys
                 StripeConfiguration.ApiKey = StripeOptions?.Value?.SecretKey;
@@ -223,25 +215,24 @@ namespace FuelServices.Site.Controllers
                 var service = new PaymentIntentService();
                 var paymentIntent = service.Create(options);
                 ViewBag.ClientSecret = paymentIntent.ClientSecret;
-                
-                #endregion
+
+                #endregion Stripe
+
                 ViewBag.RequestOfferId = requestOfferId;
                 //ViewBag.ClientSecret = StripeOptions?.Value?.SecretKey;
-                return PartialView("_Pay",new SimpleResponse(Constants.SUCCESS_CODE, Constants.SUCCESS));
-
+                return PartialView("_Pay", new SimpleResponse(Constants.SUCCESS_CODE, Constants.SUCCESS));
             }
             catch (Exception e)
             {
-                Serilog.Log.Error(e,Constants.PAYMENT_ERROR,$"Exeption:  {e}",   $"User : {User.Identity.Name}");
+                Serilog.Log.Error(e, Constants.PAYMENT_ERROR, $"Exeption:  {e}", $"User : {User.Identity.Name}");
                 Message = Toast.ErrorToastFront(GetExceptionMessage(e, "Payment Error. Contact site administrator."));
                 //return Content(e.ToString());
             }
 
             ViewBag.RequestOfferId = requestOfferId;
-            return PartialView("_Pay",new SimpleResponse(Constants.ERROR_CODE,Constants.ERROR));
+            return PartialView("_Pay", new SimpleResponse(Constants.ERROR_CODE, Constants.ERROR));
             //RequestViewModel Request = new RequestViewModel();
         }
-
 
         [Authorize(Roles = "Customer")]
         [HttpPost]
@@ -262,30 +253,26 @@ namespace FuelServices.Site.Controllers
                 RequestOffer.RStatus = ReplyStatus.Success;
                 await db.SaveChangesAsync();
                 Message = Toast.SucsessToastFront();
-                return RedirectToAction("Details","Requests",new { id = requestOffer.RequestId});
+                return RedirectToAction("Details", "Requests", new { id = requestOffer.RequestId });
             }
             catch (Exception e)
             {
                 Message = Toast.ErrorToastFront(GetExceptionMessage(e));
                 return await Pay(RequestOfferId);
             }
-
         }
 
         // POST: Requests/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[Authorize(Roles = "Customer")]
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task Pay(RequestViewModel model)    
+        //public async Task Pay(RequestViewModel model)
         //{
         //    var user = (await GetCurrentUserAsync());
 
-           
-
         //}
-
 
         private bool RequestExists(int id)
         {

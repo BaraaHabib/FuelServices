@@ -13,7 +13,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <style>
     .text-danger > span {
         color: #f0151f !important;
@@ -144,7 +143,6 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                   
                 </div>
             </div>
         </form>
@@ -156,7 +154,7 @@
     <script src="https://js.stripe.com/v3/"></script>
 
     <script src="~/template/js/jquery.loading.min.js"></script>
-    
+
 <script type="text/javascript" language="JavaScript">
 
     function buy_package() {
@@ -232,7 +230,6 @@
             allowClear: true
         });
     });
-
     </script>
 
 <script>
@@ -298,11 +295,11 @@
             payment_method: {
                 card: card,
                 billing_details: {
-                    //packageType : 'Customer', 
+                    //packageType : 'Customer',
                     name: $('#first-name').val() + ' ' + $('#last-name').val()
                 }
             }
-        }).then(function (result) { 
+        }).then(function (result) {
             if (result.error) {
                 // Show error to your customer (e.g., insufficient funds)
                 $('body').loading('stop');

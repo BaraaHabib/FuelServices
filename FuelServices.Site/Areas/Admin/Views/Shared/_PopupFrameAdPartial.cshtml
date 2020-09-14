@@ -9,7 +9,6 @@
         string modal_anchor = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "anchor_caption").Select(ap => ap.Value).FirstOrDefault();
         string modal_close_caption = item.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "close_caption").Select(ap => ap.Value).FirstOrDefault();
 
-        
         if (item.AdvertisementType.Name == "popup_frame")
         {
             <div class="modal fade @modal_position" id="@modal_name" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"

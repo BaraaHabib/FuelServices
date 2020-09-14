@@ -46,7 +46,7 @@
     <link href="~/template/css/skins/default.css" rel="stylesheet" />
 
     <!-- Favicon icon -->
-    <link rel="shortcut icon" href="~/uploads/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/template/img/logo-01.png" type="image/x-icon">
 
     <!-- Google fonts -->
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
@@ -85,17 +85,17 @@
     <div class="page_loader"></div>
 
     <!-- Main header start -->
-    <header class="main-header header-transparent sticky-header">
+    <header class="main-header header-transparent sticky-header header-">
         <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light">
+            <nav class="navbar navbar-expand-lg navbar-light" style="box-shadow: none;">
                 <a class="navbar-brand logo" href="~/">
-                    <img src="~/uploads/logo_cover.png" alt="logo" />
+                    <img src="/template/img/logo-01.png" alt="logo" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="fa fa-bars"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ml-auto">
+                    <ul style="border-bottom: 5px solid #f8f9fa;" class="navbar-nav ml-auto">
                         <li class="nav-item @(session.ContainsKey("Home.Index") ? session["Home.Index"] :"")">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
                                 Home
@@ -154,33 +154,6 @@
                                 Book Fuel
                             </a>
                         </li>
-                        @*<li class="nav-item dropdown @(session.ContainsKey("Offers") ? session["Offers"] :"")">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink6"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Offers
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li>
-                                    <a class="dropdown-item" asp-area="" asp-controller="Requests" asp-action="Create">
-                                        Book Fuel
-                                    </a>
-                                </li>
-                                @if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
-                                {
-                                    <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="Requests" asp-action="Index">
-                                            Booking Requests
-                                        </a>
-                                    </li>
-
-                                }
-                                <li>
-                                <a class="dropdown-item" asp-area="" asp-controller="Offers" asp-action="Index">
-                                    Search
-                                </a>
-                                    </li>
-                            </ul>
-                        </li>*@
                         <li class="nav-item @(session.ContainsKey("Home.Contact") ? session["Home.Contact"] :"")">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact Us</a>
                         </li>
@@ -203,7 +176,8 @@
     @RenderBody()
 
     <!-- Sub footer start -->
-    <div class="sub-footer">
+    <div class="footer">
+        <img class="w-100 h-100" src="~/template/footer.png" alt="banner">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6">
@@ -213,8 +187,8 @@
         </div>
     </div>
 
-        <script src="/template/js/jquery-2.2.0.min.js"></script>
-        <script src="/template/js/jquery.unobtrusive-ajax.js"></script>
+    <script src="/template/js/jquery-2.2.0.min.js"></script>
+    <script src="/template/js/jquery.unobtrusive-ajax.js"></script>
     <script src="~/template/js/popper.min.js"></script>
     <script src="~/template/js/bootstrap.min.js"></script>
     <script src="~/template/js/mdb.min.js"></script>

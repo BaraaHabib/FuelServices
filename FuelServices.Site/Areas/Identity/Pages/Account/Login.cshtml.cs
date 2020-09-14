@@ -1,5 +1,4 @@
 ﻿using DBContext.Models;
-using FuelServices.Site.Helpers.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Site.Areas.Identity.Pages.Account
@@ -24,7 +22,7 @@ namespace Site.Areas.Identity.Pages.Account
 
         public LoginModel(ApplicationSignInManager signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<LoginModel> logger,AirportCoreContext db)
+            ILogger<LoginModel> logger, AirportCoreContext db)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -89,7 +87,6 @@ namespace Site.Areas.Identity.Pages.Account
                     //var userSubscribed = false;
                     //if (User.Identity.IsAuthenticated)
                     //{
-
                     //    if (User.IsInRole("Supplier"))
                     //    {
                     //        var user = await _userManager.FindByEmailAsync(Input.Email);

@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Toast;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Site.Helpers;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using Microsoft.AspNetCore.Identity;
-using FuelServices.Site.Helpers.Toast;
-using Site.Helpers;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class FuelSuppliersController : BaseController
     {
-
-        public FuelSuppliersController(AirportCoreContext context,IServiceProvider serviceProvider):base(context,serviceProvider)
+        public FuelSuppliersController(AirportCoreContext context, IServiceProvider serviceProvider) : base(context, serviceProvider)
         {
         }
 
         // GET: Admin/FuelSuppliers
         public async Task<IActionResult> Index()
         {
-
             var airportCoreContext = db.FuelSupplier.Include(f => f.Country).Include(f => f.User);
             return View(await airportCoreContext.ToListAsync());
         }
@@ -65,7 +60,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 return NotFound();
             }
 
-
             return View(fuelSupplier);
         }
 
@@ -84,13 +78,11 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 var user = await UserManager.FindByIdAsync(fuelSupplier.UserId);
                 await UserManager.SetLockoutEnabledAsync(user, true);
                 Message = Toast.SucsessToast();
-
             }
             catch (Exception e)
             {
-                Message = new Toast(GetExceptionMessage(e),ToasterType.error);
+                Message = new Toast(GetExceptionMessage(e), ToasterType.error);
                 return View(fuelSupplier);
-
             }
 
             return RedirectToAction(nameof(Index));
@@ -102,7 +94,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         {
             try
             {
-
                 var model = db.FuelSupplier.Find(id);
 
                 if (model == null)
@@ -110,7 +101,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
 
                 var user = model.User;
 
-                if(user.Id == (await GetCurrentUserIdAsync()))
+                if (user.Id == (await GetCurrentUserIdAsync()))
                 {
                     return new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, Constants.SOMETHING_WRONG);
                 }
@@ -124,12 +115,11 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             }
             catch (Exception exc)
             {
-                Serilog.Log.Error(exc,$"controller: FuelSuppliers",$"action : ToggleActivate");
+                Serilog.Log.Error(exc, $"controller: FuelSuppliers", $"action : ToggleActivate");
                 Message = Toast.ErrorToast();
                 return new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, GetExceptionMessage(exc));
             }
         }
-
 
         private bool FuelSupplierExists(int id)
         {

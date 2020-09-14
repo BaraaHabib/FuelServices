@@ -1,7 +1,4 @@
-﻿
-using System.Collections.Generic;
-
-namespace FuelServices.DBContext.Domain
+﻿namespace FuelServices.DBContext.Domain
 {
     public partial class SupplierTypeViewModel : BaseDomain
     {
@@ -10,6 +7,5 @@ namespace FuelServices.DBContext.Domain
         }
 
         public string Name { get; set; }
-
     }
 }

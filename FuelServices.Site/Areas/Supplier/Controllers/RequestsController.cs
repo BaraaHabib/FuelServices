@@ -1,21 +1,18 @@
-﻿using System;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Toast;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using Microsoft.AspNetCore.Identity.UI.V3.Pages.Account.Internal;
-using FuelServices.Site.Helpers.Toast;
 
 namespace FuelServices.Site.Areas.Supplier.Controllers
 {
     [Area("Supplier")]
     public class RequestsController : BaseController
     {
-        
-        public RequestsController(AirportCoreContext context,IServiceProvider provider) : base(context,provider)
+        public RequestsController(AirportCoreContext context, IServiceProvider provider) : base(context, provider)
         {
         }
 
@@ -76,9 +73,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 Serilog.Log.Error(e, "Requests.OfferRequests");
                 return View(new List<RequestOffers>());
             }
-
         }
-
 
         [HttpPost, ActionName("RejectRequest")]
         [ValidateAntiForgeryToken]
@@ -96,7 +91,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             db.RequestOffers.Update(requestOffer);
             await db.SaveChangesAsync();
             Message = Toast.SucsessToast();
-            return RedirectToAction("Details", new { id});
+            return RedirectToAction("Details", new { id });
         }
 
         [HttpPost, ActionName("ApproveRequest")]
@@ -121,15 +116,12 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             foreach (var item in otherRequests)
             {
                 item.RStatus = ReplyStatus.AgreedWithASupplier;
-
             }
             db.UpdateRange(otherRequests);
             await db.SaveChangesAsync();
             Message = Toast.SucsessToast("Request approved, waiting for customer confirmation in 24 houres.");
-            return RedirectToAction("Details", new { id});
+            return RedirectToAction("Details", new { id });
         }
-
-
 
         private bool RequestExists(int id)
         {

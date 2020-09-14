@@ -1,8 +1,5 @@
-﻿using FuelServices.DBContext.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FuelServices.Api.Models
 {
@@ -11,7 +8,6 @@ namespace FuelServices.Api.Models
         public int Id { get; set; }
 
         public DateTime StartDate { get; set; }
-
 
         public DateTime EndDate { get; set; }
 
@@ -27,11 +23,5 @@ namespace FuelServices.Api.Models
 
         public string DuesTaxesLevies { get; set; }
         public string ImageUrl { get; set; }
-        
-    
-        
-
-        
-
     }
 }

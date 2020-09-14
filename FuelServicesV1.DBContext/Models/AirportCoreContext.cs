@@ -55,6 +55,8 @@ namespace DBContext.Models
         public virtual DbSet<SupplierReview> SupplierReview { get; set; }
         public virtual DbSet<SupplierType> SupplierType { get; set; }
         public virtual DbSet<ResetPasswordToken> ResetPasswordTokens { get; set; }
+        public virtual DbSet<AirportAds> AirportAds { get; set; }
+        public virtual DbSet<AdvertisementImageType> AdvertisementImageTypes { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

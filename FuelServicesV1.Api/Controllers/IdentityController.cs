@@ -1,26 +1,24 @@
-﻿using System;
+﻿using DBContext.Models;
+using FuelServices.Api.Helpers;
+using FuelServices.Api.Models;
+using FuelServices.Api.Services;
+using FuelServices.DBContext.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using DBContext.Models;
-using FuelServices.Api.Helpers;
-using FuelServices.Api.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Serilog.Debugging;
-using Microsoft.AspNetCore.Authorization;
-using FuelServices.Api.Services;
 using System.Text.Encodings.Web;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.WebUtilities;
-using FuelServices.DBContext.Models;
-using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace FuelServices.Api.Controllers
 {
@@ -28,17 +26,16 @@ namespace FuelServices.Api.Controllers
     [ApiController]
     public class IdentityController : BaseController
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<LoginModel> _logger;
 
-        public IdentityController(IServiceProvider provider, IHostingEnvironment env, IEmailSender emailSender, ILogger<LoginModel> logger) : base(provider)
+        public IdentityController(IServiceProvider provider, IWebHostEnvironment env, IEmailSender emailSender, ILogger<LoginModel> logger) : base(provider)
         {
             _hostingEnvironment = env;
             _emailSender = emailSender;
             _logger = logger;
         }
-
 
         //[ClaimRequirement(ClaimTypes.Role, "Customer")]
         [Authorize(Roles = "Supplier")]
@@ -48,6 +45,7 @@ namespace FuelServices.Api.Controllers
             var user = await GetCurrentUserAsync();
             return new JsonResult(User);
         }
+
         // POST: api/Identity
         [HttpPost]
         public async Task<JsonResult> Login([FromBody] LoginModel Model)
@@ -61,13 +59,16 @@ namespace FuelServices.Api.Controllers
                     var result = await SignInManager.PasswordSignInAsync(Model.Email, Model.Password, Model.RememberMe, lockoutOnFailure: true);
                     if (result.Succeeded)
                     {
-                        var user =await UserManager.FindByNameAsync(Model.Email);
-                        
+                        var user = await UserManager.FindByNameAsync(Model.Email);
+
+                        if(!(await UserManager.IsInRoleAsync(user, "Customer")))
+                            return new JsonResult(new Response<string>(Constants.INVALID_LOGIN_CODE, Constants.INVALID_LOGIN));
+
+
                         var handler = new JwtSecurityTokenHandler();
                         // authentication successful so generate jwt token
                         var tokenHandler = new JwtSecurityTokenHandler();
                         var key = Encoding.ASCII.GetBytes(config.Value.Secret);
-
 
                         var claims = new ClaimsIdentity();
                         // add user id
@@ -75,7 +76,6 @@ namespace FuelServices.Api.Controllers
                         // add roles to token
                         var roles = await UserManager.GetRolesAsync(user);
                         claims.AddClaims(roles.Select(x => new Claim(ClaimTypes.Role, x)));
-                        
 
                         var tokenDescriptor = new SecurityTokenDescriptor
                         {
@@ -92,41 +92,38 @@ namespace FuelServices.Api.Controllers
                     if (result.RequiresTwoFactor)
                     {
                         Serilog.Log.Information("Login with two factors is needed", "LoginWith2fa", Model.Email);
-                        return new JsonResult(new Response<string>(Constants.TWO_FACTORS_AUTH_CODE,  Constants.TWO_FACTORS_AUTH));
+                        return new JsonResult(new Response<string>(Constants.TWO_FACTORS_AUTH_CODE, Constants.TWO_FACTORS_AUTH));
                     }
                     if (result.IsLockedOut)
                     {
                         Serilog.Log.Error("User account locked out.", "Lockout", Model.Email);
-                        return new JsonResult(new Response<string>(Constants.LOCKOUT_CODE,  Constants.LOCKOUT));
+                        return new JsonResult(new Response<string>(Constants.LOCKOUT_CODE, Constants.LOCKOUT));
                     }
                     if (result.IsNotAllowed)
                     {
                         Serilog.Log.Error("User account not verified", "NotAllowed", Model.Email);
-                        return new JsonResult(new Response<string>(Constants.NOT_VERIFIED_CODE,  Constants.NOT_VERIFIED));
+                        return new JsonResult(new Response<string>(Constants.NOT_VERIFIED_CODE, Constants.NOT_VERIFIED));
                     }
                     else
                     {
                         Serilog.Log.Error("Invalid login attempt.", "Invalid login attempt.", Model.Email);
-                        return new JsonResult(new Response<string>(Constants.INVALID_LOGIN_CODE,  Constants.INVALID_LOGIN));
+                        return new JsonResult(new Response<string>(Constants.INVALID_LOGIN_CODE, Constants.INVALID_LOGIN));
                     }
                 }
                 // If we got this far, something failed, redisplay form
                 Serilog.Log.Error("something failed", " something failed", Model.Email);
-                return new JsonResult(new Response<string>(Constants.SOMETHING_WRONG_CODE,  Constants.SOMETHING_WRONG));
+                return new JsonResult(new Response<string>(Constants.SOMETHING_WRONG_CODE, Constants.SOMETHING_WRONG));
             }
             catch (Exception e)
             {
                 Serilog.Log.Error("something failed", " something failed", Model.Email);
-                return new JsonResult(new Response<string>(Constants.SOMETHING_WRONG_CODE,  e.Message ?? e.InnerException.Message ?? Constants.SOMETHING_WRONG));
+                return new JsonResult(new Response<string>(Constants.SOMETHING_WRONG_CODE, e.Message ?? e.InnerException.Message ?? Constants.SOMETHING_WRONG));
             }
         }
-
 
         [HttpPost]
         public async Task<JsonResult> Register([FromBody] CustomerResgisterModel model)
         {
-
-          
             try
             {//"jiyim76325@sweatmail.com"
                 //var ree = EmailSender.SendEmail(model.Email, "sub", "mess");
@@ -153,49 +150,44 @@ namespace FuelServices.Api.Controllers
                         byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(token);
                         var code = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
 
-
-                        // generate callback url 
+                        // generate callback url
                         string sc = this.Request.Scheme;
                         string host = this.Request.Host.ToString();
                         string controller = "Identity";
                         string action = "ConfirmEmail";
-
 
                         var callbackUrl = $"{sc}://{host}/{controller}/{action}?userId={user.Id}&code={code}";
                         //
 
                         EmailBodyDefaultParams emailBodyDefaultParams = db.EmailBodyDefaultParams
                             .Where(e => e.EmailTypeName == "confirm_mail").FirstOrDefault();
-                        string body = EmailSender.CreateEmailBody(emailBodyDefaultParams);
+                        string body = GetService<IEmailSender>().CreateEmailBody(emailBodyDefaultParams);
                         body = body.Replace("{callbackurl}", HtmlEncoder.Default.Encode(callbackUrl));
-                        var simpleResponse = EmailSender.SendEmail(model.Email, AppName, body);
+                        var simpleResponse = GetService<IEmailSender>().SendEmail(model.Email, AppName, body);
                         return new JsonResult(new Response<bool>(Constants.SUCCESS_CODE, true, "Please Confirm Your Email."));
                     }
                     else
                     {
-                        string message = result.Errors.Select(x => x.Description).ToList().Aggregate((x, y) => 
+                        string message = result.Errors.Select(x => x.Description).ToList().Aggregate((x, y) =>
                         {
-                            return x +","+ y;
+                            return x + "," + y;
                         });
-                        return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE, false,message ));
-
+                        return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, message));
                     }
                 }
                 else
                 {
                     Serilog.Log.Error("Register Customer", model.Email);
-                    return new JsonResult(new Response<bool>(Constants.INVALID_INPUT_CODE,false, Constants.INVALID_INPUT));
-
+                    return new JsonResult(new Response<bool>(Constants.INVALID_INPUT_CODE, false, Constants.INVALID_INPUT));
                 }
             }
             catch (Exception e)
             {
                 Serilog.Log.Error(e, Constants.LogTemplates.LOGIN_ERROR_EX, model.Email);
-                return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE,false,GetExceptionMessage(e)));
+                return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, GetExceptionMessage(e)));
             }
         }
 
-        
         [HttpPost]
         public async Task<JsonResult> SupplierRegister([FromBody] SupplierRegisterModel model)
         {
@@ -213,7 +205,6 @@ namespace FuelServices.Api.Controllers
                     if (result.Succeeded)
                     {
                         Serilog.Log.Information("User created a new account with password.");
-
 
                         var roleResult = await RoleManager.FindByNameAsync("Supplier");
                         if (roleResult == null)
@@ -291,12 +282,11 @@ namespace FuelServices.Api.Controllers
 
                         EmailBodyDefaultParams emailBodyDefaultParams = db.EmailBodyDefaultParams
                             .Where(e => e.EmailTypeName == "confirm_mail").FirstOrDefault();
-                        string body = EmailSender.CreateEmailBody(emailBodyDefaultParams);
+                        string body = GetService<IEmailSender>().CreateEmailBody(emailBodyDefaultParams);
                         body = body.Replace("{callbackurl}", HtmlEncoder.Default.Encode(callbackUrl));
-                        var simpleResponse = EmailSender.SendEmail(model.Email, AppName, body);
+                        var simpleResponse = GetService<IEmailSender>().SendEmail(model.Email, AppName, body);
                         //var token = GetTokenForUser(user);
                         return new JsonResult(new Response<bool>(Constants.SUCCESS_CODE, true, simpleResponse.Message));
-
                     }
                     else
                     {
@@ -305,25 +295,22 @@ namespace FuelServices.Api.Controllers
                         {
                             errors += error;
                         }
-                        Serilog.Log.Error("Register Supplier",model.Email, errors);
+                        Serilog.Log.Error("Register Supplier", model.Email, errors);
                     }
                 }
-
                 else
                 {
-                    return new JsonResult(new Response<bool>(Constants.INVALID_INPUT_CODE, false,Constants.INVALID_INPUT));
-
+                    return new JsonResult(new Response<bool>(Constants.INVALID_INPUT_CODE, false, Constants.INVALID_INPUT));
                 }
             }
             catch (Exception e)
             {
                 Serilog.Log.Error(e, Constants.LogTemplates.LOGIN_ERROR_EX, model.Email);
-                return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE,false,GetExceptionMessage(e)));
+                return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, GetExceptionMessage(e)));
             }
 
-            return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE,false, Constants.SOMETHING_WRONG));
+            return new JsonResult(new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, Constants.SOMETHING_WRONG));
         }
-
 
         [HttpPost]
         public async Task<JsonResult> Logout([FromBody] LoginModel Model)
@@ -332,7 +319,6 @@ namespace FuelServices.Api.Controllers
             await SignInManager.SignOutAsync();
             return new JsonResult(new Response<string>(Constants.SUCCESS_CODE,
                 Constants.SUCCESS));
-
         }
 
         public async Task<object> ConfirmEmail(string userId, string code)
@@ -347,7 +333,6 @@ namespace FuelServices.Api.Controllers
 
             try
             {
-
                 if (userId == null || code == null)
                 {
                     return Redirect(redirecturl);
@@ -381,7 +366,7 @@ namespace FuelServices.Api.Controllers
         {
             try
             {
-                if(Email == null)
+                if (Email == null)
                     return new Response<bool>(Constants.NOT_FOUND_CODE, false, Constants.NOT_FOUND);
 
                 var user = await UserManager.FindByEmailAsync(Email);
@@ -395,7 +380,7 @@ namespace FuelServices.Api.Controllers
 
                 EmailBodyDefaultParams emailBodyDefaultParams = db.EmailBodyDefaultParams
                                .Where(e => e.EmailTypeName == "reset_password_api").FirstOrDefault();
-                string body = EmailSender.CreateEmailBody(emailBodyDefaultParams);
+                string body = GetService<IEmailSender>().CreateEmailBody(emailBodyDefaultParams);
                 body = body.Replace("{callbackurl}", "#");
                 body = body.Replace("{callbackdisplaytext}", code);
 
@@ -403,7 +388,7 @@ namespace FuelServices.Api.Controllers
                                .FirstOrDefault();
                 string AppName = contentAppName == null ? "Fuel Services" : contentAppName.DisplayName;
 
-                var simpleResponse = EmailSender.SendEmail(Email, AppName, body);
+                var simpleResponse = GetService<IEmailSender>().SendEmail(Email, AppName, body);
 
                 ResetPasswordToken resetPasswordToken = new ResetPasswordToken()
                 {
@@ -413,7 +398,8 @@ namespace FuelServices.Api.Controllers
                 };
                 var prevAttempts = db.ResetPasswordTokens.Where(x => x.UserId == user.Id && x.Status == ResetPasswordTokenStatus.PendingValidation)
                     .ToList();
-                prevAttempts.ForEach((x) => {
+                prevAttempts.ForEach((x) =>
+                {
                     x.Status = ResetPasswordTokenStatus.Expired;
                 });
                 db.ResetPasswordTokens.UpdateRange(prevAttempts);
@@ -421,18 +407,16 @@ namespace FuelServices.Api.Controllers
                 await db.SaveChangesAsync();
 
                 return new Response<bool>(Constants.SUCCESS_CODE, true, Constants.SUCCESS);
-
             }
             catch (Exception e)
             {
                 Serilog.Log.Error(e, Constants.LogTemplates.RESET_PASSWORD_EX, Email);
                 return new Response<bool>(Constants.SOMETHING_WRONG_CODE, false, GetExceptionMessage(e));
             }
-
         }
 
         [HttpPost]
-        public async Task<object> ForgotPasswordConfirmation([FromBody]ForgotPasswordModel model)
+        public async Task<object> ForgotPasswordConfirmation([FromBody] ForgotPasswordModel model)
         {
             try
             {
@@ -448,7 +432,6 @@ namespace FuelServices.Api.Controllers
                     .ToList();
 
                 var resetpass = allAttempts.Where(x => x.ResetPasswordCode == model.Code).FirstOrDefault();
-
 
                 if (resetpass != null)
                 {
@@ -478,7 +461,7 @@ namespace FuelServices.Api.Controllers
 
                         // check old password
                         string hashedOldPassword = UserManager.PasswordHasher.HashPassword(user, model.OldPassword);
-                        var res= UserManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.OldPassword);
+                        var res = UserManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, model.OldPassword);
                         if (res == PasswordVerificationResult.Failed)
                         {
                             return new Response<bool>(Constants.RESET_PASSWORD_ERR_CODE, false, "Invalid Password");
@@ -492,37 +475,32 @@ namespace FuelServices.Api.Controllers
                         // set to validated
                         resetpass.Status = ResetPasswordTokenStatus.Validated;
                         UserManager.PasswordHasher.HashPassword(user, model.OldPassword);
-                            await db.SaveChangesAsync();
+                        await db.SaveChangesAsync();
                         return new Response<bool>(Constants.SUCCESS_CODE, true, Constants.SUCCESS);
-
                     }
                 }
                 else
                 {
                     return new Response<bool>(Constants.RESET_PASSWORD_ERR_CODE, false, "Invalid Code");
                 }
-
             }
             catch (Exception e)
             {
-
                 Serilog.Log.Error(e, Constants.LogTemplates.RESET_PASSWORD_EX, model.Email);
                 return new Response<bool>(Constants.RESET_PASSWORD_ERR_CODE, false, GetExceptionMessage(e));
-
             }
-
         }
 
         private class RandomGenerator
         {
-            // Generate a random number between two numbers    
+            // Generate a random number between two numbers
             public int RandomNumber(int min, int max)
             {
                 Random random = new Random();
                 return random.Next(min, max);
             }
 
-            // Generate a random string with a given size    
+            // Generate a random string with a given size
             public string RandomString(int size, bool lowerCase)
             {
                 StringBuilder builder = new StringBuilder();
@@ -538,7 +516,7 @@ namespace FuelServices.Api.Controllers
                 return builder.ToString();
             }
 
-            // Generate a random password    
+            // Generate a random password
             public string RandomToken()
             {
                 StringBuilder builder = new StringBuilder();

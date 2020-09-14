@@ -12,12 +12,10 @@
 
 <input id="row_id" type="hidden" />
 
-
 <!-- Default box -->
 <div class="card">
     <div class="card-header">
         <h3>Suppliers </h3>
-
     </div>
     <div class="card-body">
         <div class="row">
@@ -84,7 +82,7 @@
                                         <td>
                                             <a class='btn btn-info' asp-area="Admin" asp-action="Details" asp-route-id="@item.Id"><i class='fa fa-info'></i></a>
                                             <button title="@(item.User.IsActive ? "DeActivate" : "Activate")"
-                                                    onclick="showDeactivate(@(item.Id) , '@(item.User.IsActive)')" class='btn btn-danger' 
+                                                    onclick="showDeactivate(@(item.Id) , '@(item.User.IsActive)')" class='btn btn-danger'
                                                     id='btn_@item.Id'>
                                             <i class='fa @(item.User.IsActive ? "fa-toggle-on" : "fa-toggle-off")'></i></button>
                                         </td>
@@ -95,14 +93,11 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
     <!-- /.card-body -->
 </div>
 <!-- /.card -->
-
 
 <div id="modal" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -170,6 +165,3 @@
     </script>
 
 }
-
-
-

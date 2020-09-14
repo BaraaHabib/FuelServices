@@ -45,6 +45,7 @@ namespace Site.Helpers
         {
             tempData[key] = JsonConvert.SerializeObject(value);
         }
+
         public static SimpleResponse Get(this ITempDataDictionary tempData, string key)
         {
             return JsonConvert.DeserializeObject<SimpleResponse>((string)tempData[key]);

@@ -44,7 +44,6 @@
                     <div class="input-group">
                         <input asp-for="DuesTaxesLevies" value="@Model.DuesTaxesLevies" class="form-control" />
                         <span asp-validation-for="DuesTaxesLevies" class="text-danger"></span>
-
                     </div>
                 </div>
                 <div class="col-md-offset-1 col-md-5">
@@ -75,10 +74,8 @@
                             }
                         </select>
                         <span asp-validation-for="FuelTypes" class="text-danger"></span>
-
                     </div>
                 </div>
-
             </div>
             <br />
             <div class="row">
@@ -150,7 +147,6 @@
                                                                     }
                                                                 </select>
                                                                 @Html.ValidationMessage("AirportOffers[" + i + "].PriceUnit", new { @class = "text-danger" })
-
                                                             </div>
                                                         </div>
                                                         <i class="btn btn-warning fa fa-trash delete"></i>
@@ -159,7 +155,6 @@
                                             }
                                         }
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -177,7 +172,6 @@
 @section Scripts {
     <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
     <script type="text/javascript" src="~/lib/repeatable/jquery.repeatable.js"></script>
-
 
     <script>
         //Date range picker
@@ -222,7 +216,6 @@
                         }
                     </select>
                     @Html.ValidationMessage("AirportOffers[{?}].PriceUnit", new { @class = "text-danger" })
-
                 </div>
             </div>
             <div class="col-md-1">
@@ -231,10 +224,7 @@
                     <i class=" fa fa-trash delete"></i>
                 </button>
             </div>
-
-
         </div>
-
     </script>
     <script>
         $(".AirportOffers_template .repeatable").repeatable({
@@ -255,9 +245,7 @@
                     };
                 },
                 processResults: function (data, params) {
-
                     params.page = params.page || 1;
-
                     return {
                         results: data.results,
                         pagination: {
@@ -310,7 +298,6 @@
                 }
             });
         });//.trigger('change');
-
 
         $('.country-select').on('change', function () {
             var selectedCountry = $(this).children("option:selected").val();
@@ -370,9 +357,7 @@
         });
     </script>
 
-
     <script>
-
 
         $('#add-city').on('click', function () {
             var selectedValues = $('.selected-cities').val();
@@ -459,7 +444,6 @@
             $(this).find('.btn').toggleClass('btn-default');
 
         });
-
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

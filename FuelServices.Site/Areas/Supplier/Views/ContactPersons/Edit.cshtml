@@ -1,0 +1,184 @@
+﻿@model FuelServices.DBContext.Domain.SupplierContactPersonRecordModel
+
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Select2 -->
+<link rel="stylesheet" href="~/adminlte/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<div class="container">
+    <div class="">
+        <form class="" asp-action="Edit">
+            <h2 class="col-md-offset-1">Add Contact</h2>
+            <input type="hidden" name="id" value="@Model.Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="JobTitle" class="control-label"></label>
+                    <input asp-for="JobTitle" class="form-control" />
+                    <span asp-validation-for="JobTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="ItemOrder" class="control-label"></label>
+                    <input asp-for="ItemOrder" class="form-control" />
+                    <span asp-validation-for="ItemOrder" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    Person Contacts
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="form-group contact_template">
+                                    <i class="btn btn-default fa fa-plus add">
+                                    </i>
+                                    <div class="repeatable">
+                                        @{
+                                            var length = Model?.Values?.Count;
+                                            if (length != null)
+                                            {
+                                                var cons = Model.Values;
+                                                for (int i = 0; i < cons.Count; i++)
+                                                {
+                                                    <div class="moparties form-group row">
+                                                        <input type="hidden" name="Values.index" value="@i" />
+                                                        <div class="form-group col-md-4">
+                                                            <label class="control-label ">Contact Type</label>
+                                                            <div class="">
+                                                                <select required name="Values[@i].ContactId" class="contact-select form-control">
+                                                                    @foreach (var item in ((List<Contact>)ViewBag.Contacts))
+                                                                    {
+                                                                        @if (item.Id == cons?.ElementAtOrDefault(i)?.ContactId)
+                                                                        {
+                                                                            <option selected value="@item.Id">@item.DisplayName</option>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <option value="@item.Id">@item.DisplayName</option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                                @Html.ValidationMessage("Values[" + i + "].ContactId", new { @class = "text-danger" })
+                                                                @*<input class="form-control" type="text" name="OfferParties[{?}].AirportId" value="" required>*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label class="control-label">Value</label>
+                                                            <div class="">
+                                                                <input id="value-input" value="@Model.Values[i].Value" name="Values[@i].Value" type="text" class="form-control" placeholder="">
+                                                                @Html.ValidationMessage("Values[" + i + "].Value", new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            <label class="control-label">Description</label>
+                                                            <div class="">
+                                                                <input id="description-input" value="@Model.Values[i].Description" name="Values[@i].Description" type="text" class="form-control" placeholder="">
+                                                                @Html.ValidationMessage("Values[" + i + "].Description", new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
+                                                        <i class="btn btn-warning fa fa-trash delete"></i>
+                                                    </div>
+                                                }
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-md-offset-1">
+                <a class="btn btn-lg btn-default pull-left" asp-action="Index">Back to List</a>
+                <button class="btn btn-lg btn-primary pull-left" type="submit" value="Submit">Save Contact</button>
+                <br />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script type="text/javascript" src="~/lib/repeatable/jquery.repeatable.js"></script>
+
+    <script>
+        $('.select2').select2();
+    </script>
+
+    <script type="text/template" id="contact_template">
+        <div class="moparties form-group row callout callout-info">
+            <input type="hidden" name="Values.index" value="{?}" />
+            <div class="form-group col-md-4">
+                <label class="control-label ">Contact Type</label>
+                <div class="">
+
+                    <select required name="Values[{?}].ContactId" class="contact-select form-control"
+                            asp-for="Values[{?}].ContactId">
+                        @foreach (var item in ((List<Contact>)ViewBag.Contacts))
+                        {
+                            <option value="@item.Id">@item.DisplayName</option>
+                        }
+                    </select>
+                    @Html.ValidationMessage("Values[{?}].ContactId", new { @class = "text-danger" })
+                    @*<input class="form-control" type="text" name="OfferParties[{?}].AirportId" value="" required>*@
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label">Value</label>
+                <div class="">
+                    <input required id="value-input" value="" name="Values[{?}].Value" type="text" class="form-control" placeholder="">
+                    @Html.ValidationMessage("Values[{?}].Value", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label class="control-label ">Discription</label>
+                <div class="">
+                    <input id="description-input" value="" name="Values[{?}].Description" type="text" class="form-control" placeholder="">
+                    @Html.ValidationMessage("Values[{?}].Description", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-1">
+                <label>Delete</label>
+                <button class="btn btn-warning">
+                    <i class=" fa fa-trash delete"></i>
+                </button>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        $(".contact_template .repeatable").repeatable({
+            addTrigger: ".contact_template .add",
+            deleteTrigger: ".contact_template .delete",
+            template: "#contact_template",
+            startIndex: 0,
+            beforeDelete: function (element) {
+                debugger;
+            },
+            min: 1,
+            startIndex: @Model.Values?.Count,
+
+        });
+    </script>
+
+}

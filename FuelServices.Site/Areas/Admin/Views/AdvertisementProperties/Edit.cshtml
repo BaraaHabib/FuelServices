@@ -1,0 +1,71 @@
+﻿@model DBContext.Models.AdvertisementProperty
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-success">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        @ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <form asp-action="Edit">
+                        <div class="form-horizontal">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="AdvertisementTypePropertyId" class="control-label col-md-2"></label>
+                                <select asp-for="AdvertisementTypePropertyId" class="form-control" asp-items="ViewBag.AdvertisementTypePropertyId"></select>
+                                <span asp-validation-for="AdvertisementTypePropertyId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Value" class="control-label col-md-2"></label>
+                                <input asp-for="Value" class="form-control" />
+                                <span asp-validation-for="Value" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Unit" class="control-label col-md-2"></label>
+                                <input asp-for="Unit" class="form-control" />
+                                <span asp-validation-for="Unit" class="text-danger"></span>
+                            </div>
+                            <input type="hidden" asp-for="Id" />
+                            <input type="hidden" asp-for="AdvertisementId" />
+                            <input type="hidden" asp-for="Created" />
+                            <div class="form-group">
+                                <label asp-for="IsDeleted" class="control-label col-md-2"></label>
+                                <div class="col-md-10">
+                                    <div class="checkbox">
+                                        <input type="checkbox" asp-for="IsDeleted" />
+                                        <span asp-validation-for="IsDeleted" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ItemOrder" class="control-label col-md-2"></label>
+                                <input asp-for="ItemOrder" class="form-control" />
+                                <span asp-validation-for="ItemOrder" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-success" />
+                                    <a class="btn btn-default" href="@Url.Action("Index", new { id = Model.AdvertisementId})">
+                                        <i class="fas fa-chevron-circle-left"></i>Back to List
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

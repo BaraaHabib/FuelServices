@@ -1,7 +1,4 @@
-﻿using Site.DTOs;
-using Site.Helpers;
-using Site.Services;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using Site.DTOs;
+using Site.Helpers;
+using Site.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,7 +29,7 @@ namespace Site.Areas.Identity.Pages.Account.Manage
         private readonly AirportCoreContext _context;
 
         private readonly IFileProvider _fileProvider;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
@@ -37,7 +37,7 @@ namespace Site.Areas.Identity.Pages.Account.Manage
             IEmailSender emailSender,
             AirportCoreContext context,
             IFileProvider fileProvider,
-            IHostingEnvironment env)
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -45,7 +45,6 @@ namespace Site.Areas.Identity.Pages.Account.Manage
             _context = context;
             _fileProvider = fileProvider;
             _hostingEnvironment = env;
-
         }
 
         public string Username { get; set; }
@@ -209,9 +208,9 @@ namespace Site.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var contentAppName = _context.ContentManagement.Where(cm => cm.Name == "app_name")                          
+            var contentAppName = _context.ContentManagement.Where(cm => cm.Name == "app_name")
                 .FirstOrDefault();
-            string  AppName  = contentAppName == null ? "Fuel Services" : contentAppName.DisplayName;
+            string AppName = contentAppName == null ? "Fuel Services" : contentAppName.DisplayName;
 
             var userId = await _userManager.GetUserIdAsync(user);
             var email = await _userManager.GetEmailAsync(user);

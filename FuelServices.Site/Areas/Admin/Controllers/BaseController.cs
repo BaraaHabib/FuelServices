@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
+﻿using DBContext.Models;
 using FuelServices.Site.Helpers.Configurations;
 using FuelServices.Site.Helpers.Extensions;
 using FuelServices.Site.Helpers.Toast;
@@ -11,9 +7,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
@@ -25,16 +24,17 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         public UserManager<ApplicationUser> UserManager { get; private set; }
         public RoleManager<ApplicationRole> RoleManager { get; private set; }
         protected IHttpContextAccessor httpContextAccessor;
-        private  IOptions<MyConfiguration> config;
+        private IOptions<MyConfiguration> config;
 
-
-
-        public BaseController() { }
+        public BaseController()
+        {
+        }
 
         public BaseController(AirportCoreContext airportCoreContext)
         {
             db = airportCoreContext;
         }
+
         public BaseController(AirportCoreContext _db, IServiceProvider serviceProvider)
         {
             db = _db;
@@ -51,7 +51,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             string actionName = ControllerContext.RouteData.Values["action"].ToString();
             //if (sessionActive == null)
             //{
-                sessionActive = new Dictionary<string, string>
+            sessionActive = new Dictionary<string, string>
                 {
                     { "ContentManagements", "" },
                     { "ContentManagements.Index", "" },
@@ -60,26 +60,30 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                     { "FuelSuppliers", "" },
                     { "FuelSuppliers.Index", "" },
                     { "FuelSuppliers.Create", "" },
-                    
+
                     { "Customers", "" },
                     { "Customers.Index", "" },
                     { "Customers.Create", "" },
-                    
+
                     { "PaymentPackageFeatures", "" },
                     { "PaymentPackageFeatures.Index", "" },
                     { "PaymentPackageFeatures.Details", "" },
-                    
+
                     { "ContactUs", "" },
                     { "ContactUs.Index", "" },
                     { "ContactUs.Details", "" },
 
-                    //
+                    
                     { "AdvertisementCategories", "" },
                     { "AdvertisementOwners", "" },
                     { "Advertisements", "" },
                     { "Advertisements.Index", "" },
                     { "Advertisements.RequestedIndex", "" },
                     { "Advertisements.ArchivedIndex", "" },
+                    
+
+
+                    //
                     { "Airports", "" },
                     { "Cities", "" },
                     { "ColorPalettes", "" },
@@ -110,7 +114,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             if (db == null)
             {
                 db = context.HttpContext.RequestServices.GetService<AirportCoreContext>();
-
             }
             int TodayCustomerCount = db.Customer.Where(o => !o.IsDeleted && o.Created == DateTime.Today)?.ToList()?.Count() ?? 0;
             DateTime d = DateTime.Today.AddDays(-6);
@@ -122,7 +125,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
 
             if ((TodayCustomerCount + WeekCustomerCount) > 0)
             {
-                HttpContext.Session.SetInt32("NotificationCount", TodayCustomerCount + WeekCustomerCount );
+                HttpContext.Session.SetInt32("NotificationCount", TodayCustomerCount + WeekCustomerCount);
             }
 
             HttpContext.Session.SetComplexData("ContactUs", db.ContactUs.Where(c => !c.IsDeleted && c.Created.Date == DateTime.Today)
@@ -163,7 +166,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-
             base.OnActionExecuted(context);
         }
 
@@ -176,10 +178,9 @@ namespace FuelServices.Site.Areas.Admin.Controllers
 
         protected string GetExceptionMessage(Exception e)
         {
-            if(config == null)
+            if (config == null)
             {
                 config = HttpContext.RequestServices.GetService<IOptions<MyConfiguration>>();
-
             }
             var ExceptionMessageFormSettings = config.Value.ExceptionMessage;
             bool GetExceptionMessage = false;
@@ -195,9 +196,10 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             }
             return Toast.ErrorToast().Message;
         }
+
         protected Task<ApplicationUser> GetCurrentUserAsync() => UserManager.GetUserAsync(HttpContext.User);
 
-        protected async Task<string> GetCurrentUserIdAsync() =>(await UserManager.GetUserAsync(HttpContext.User)).Id;
+        protected async Task<string> GetCurrentUserIdAsync() => (await UserManager.GetUserAsync(HttpContext.User)).Id;
 
         protected void SetActive(Dictionary<string, string> sessionActive, string controllerName, string actionName)
         {
@@ -222,5 +224,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 }
             }
         }
+
+        protected T GetService<T>() where T : class => HttpContext.RequestServices.GetRequiredService<T>();
     }
 }

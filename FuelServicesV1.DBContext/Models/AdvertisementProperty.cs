@@ -6,19 +6,17 @@ namespace DBContext.Models
     public partial class AdvertisementProperty : BaseEntity
     {
 
-        [Required]
-        [DataTable(IsVisible = false, Order = 2)]
+        [Display(Name = "Advertisement *")]
         public int? AdvertisementId { get; set; }
 
-        [Required]
-        [DataTable(IsVisible = false, Order = 3)]
+        [Display(Name = "Property *")]
+        //[Required]
         public int? AdvertisementTypePropertyId { get; set; }
 
         [Required]
-        [DataTable(DisplayName = "Value", Order = 4)]
+        //[Display(Name = "Value *")]
         public string Value { get; set; }
 
-        [DataTable(DisplayName = "Unit", Order = 5)]
         public string Unit { get; set; }
 
         public virtual Advertisement Advertisement { get; set; }

@@ -1,10 +1,7 @@
-﻿using FuelServices.DBContext;
-
-namespace FuelServices.DBContext.Domain
+﻿namespace FuelServices.DBContext.Domain
 {
     public partial class AirportAdsViewModel : BaseDomain
     {
-
         public int? AdvertisementId { get; set; }
 
         public int? AirportId { get; set; }

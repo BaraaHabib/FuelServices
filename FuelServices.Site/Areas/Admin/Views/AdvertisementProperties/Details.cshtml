@@ -1,0 +1,76 @@
+﻿@model DBContext.Models.AdvertisementProperty
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        @ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Value)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Value)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Unit)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Unit)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Advertisement)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Advertisement.AnchorUrl)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.AdvertisementTypeProperty)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.AdvertisementTypeProperty.Id)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Created)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Modified)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Modified)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.IsDeleted)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.IsDeleted)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ItemOrder)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ItemOrder)
+                        </dd>
+                    </dl>
+                    <div class="col-md-10">
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-default" asp-action="Index" asp-route-id="@Model.AdvertisementId"><i class="fas fa-chevron-circle-left"></i>Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

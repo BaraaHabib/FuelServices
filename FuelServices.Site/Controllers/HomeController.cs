@@ -1,27 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
-using Microsoft.AspNetCore.Mvc;
-using AutoMapper;
-using System.Security.Claims;
-using Site.Services;
-using Site.Helpers;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
+﻿using DBContext.Models;
 using FuelServices.Site.Helpers.Toast;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.Net.Http.Headers;
-using System.Net.Http.Headers;
-using System.Text;
-using Microsoft.AspNetCore.Routing;
-using Elect.Web.IUrlHelperUtils;
-using Microsoft.EntityFrameworkCore.Internal;
-using System.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Site.Services;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Site.Controllers
 {
@@ -36,75 +23,11 @@ namespace Site.Controllers
         {
             _emailSender = emailSender;
         }
+
         public async Task<IActionResult> Index()
         {
-            ViewBag.what_we_offer = db.ContentManagement.Where(x => !x.IsDeleted).Where(a => a.Name == "what_we_offer").OrderBy(i => i.ItemOrder).ToList();
-
-            var cs = db.Users.ToList();
-
-            //cs.ForEach(async i =>
-            //{
-            //    if(i.User != null)
-            //    {
-
-            //        var us = i.User;
-            //            await userManager.AddToRoleAsync(userManager.Users.First(x => x.Id == us.Id), "Customer");
-            //    }
-            //});
-            //var sps = db.FuelSupplier.ToList();
-            //sps.ForEach(async i =>
-            //{
-            //    if(i.User != null)
-            //    {
-            //        var us = i.User;
-            //            await userManager.AddToRoleAsync(us, "Supplier");
-            //    }
-            //});
-            foreach (var user in cs)
-            {
-                if (user.Customer != null)
-                {
-
-                    var us = user.Customer;
-                    await userManager.AddToRoleAsync(user, "Customer");
-                }
-                else if (user.Customer == null && await userManager.IsInRoleAsync(user, "Customer"))
-                {
-                    var c = new Customer()
-                    {
-                        CountryId = 233,
-                        ImageUrl = "/uploads/P51_10508883.jpg",
-                        FirstName = "customer" + cs.IndexOf(user),
-                        LastName = "customer" + cs.IndexOf(user),
-                        UserId = user.Id
-                    };
-                    db.Add(c);
-                    db.SaveChanges();
-                }
-            }
-            foreach (var user in cs)
-            {
-                if (user.FuelSupplier != null)
-                {
-
-                    await userManager.AddToRoleAsync(user, "Supplier");
-                }
-                else if (user.FuelSupplier == null && await userManager.IsInRoleAsync(user, "Supplier"))
-                {
-                    var c = new FuelSupplier()
-                    {
-                        CountryId = 233,
-                        ImageUrl = "/uploads/suppliers/AERO-Specialties-logo.jpg",
-                        Name = "Supplier" + cs.IndexOf(user),
-                        UserId = user.Id,
-                        IsMiddler = false
-
-                    };
-                    db.Add(c);
-                    db.SaveChanges();
-                }
-            };
-            return View();
+            var news = await db.ContentManagement.Where(x => !x.IsDeleted).Where(a => a.Name == "news").OrderBy(i => i.ItemOrder).ToListAsync();
+            return View(news);
         }
 
         public async Task<IActionResult> OurServices()
@@ -112,7 +35,6 @@ namespace Site.Controllers
             var ourServices = await db.ContentManagement.Where(x => !x.IsDeleted).Where(a => a.Name == "our_services").OrderBy(i => i.ItemOrder).ToListAsync();
             return View(ourServices);
         }
-
 
         public IActionResult Contact()
         {
@@ -179,15 +101,12 @@ namespace Site.Controllers
                     TimeStamp = DateTimeOffset.UtcNow,
                     MessageTemplate = "Serilog Error",
                     Message = ""
-
                 };
                 db1.Log.Add(log);
-                db1.SaveChanges(); 
+                db1.SaveChanges();
                 Debug.Print(msg);
                 Debugger.Break();
             });
-
-
 
             //var user = await GetCurrentUserAsync();
 
@@ -201,8 +120,6 @@ namespace Site.Controllers
             //    db.Update(item);
             //    await db.SaveChangesAsync();
             //}
-
-
 
             // Email test
             /*
@@ -223,6 +140,7 @@ namespace Site.Controllers
 
             //return Content(,MediaTypeHeaderValue.);
         }
+
         public bool RemovePackageClaims()
         {
             var cuss = db.CustomerPackagesLog.ToList();
@@ -246,7 +164,6 @@ namespace Site.Controllers
                 }
             });
 
-
             Serilog.Log.Information("test");
             return true;
         }
@@ -262,6 +179,5 @@ namespace Site.Controllers
             var prs = await db.ContentManagement.Where(x => !x.IsDeleted && x.IsVisible).Where(x => x.Name == "Privacy").ToListAsync();
             return View(prs);
         }
-
     }
 }

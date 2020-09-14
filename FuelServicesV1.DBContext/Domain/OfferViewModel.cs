@@ -1,9 +1,8 @@
 ﻿using DBContext.Models;
+using FuelServices.DBContext.ValidationAttributes;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using FuelServices.DBContext.ValidationAttributes;
 
 namespace FuelServices.DBContext.Domain
 {
@@ -18,13 +17,10 @@ namespace FuelServices.DBContext.Domain
             AirportOffers = new List<AirportOfferViewModel>();
         }
 
-
         [DataType(DataType.Date)]
         [Required]
         [Display(Name = "From")]
-        //[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
-
 
         [DataType(DataType.Date)]
         [Required]
@@ -42,19 +38,12 @@ namespace FuelServices.DBContext.Domain
 
         public List<int> FuelTypes { get; set; }
 
-
         public List<Airport> SelectedAirports { get; set; }
-
-
 
         public List<AirportOfferViewModel> AirportOffers { get; set; }
 
         public bool IsActive { get; set; }
 
         public string DuesTaxesLevies { get; set; }
-
-
-
     }
-
 }

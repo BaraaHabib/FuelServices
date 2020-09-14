@@ -1,8 +1,4 @@
-﻿
-
-using DBContext.Models;
-
-namespace FuelServices.Site.Models
+﻿namespace FuelServices.Site.Models
 {
     public class ModelStatistics
     {
@@ -13,9 +9,8 @@ namespace FuelServices.Site.Models
         public string IncremntPercentageString { get; set; }
         public double Revenue { get; set; }
         public string RevenueString { get; set; }
+
         //public ColorPalette ColorPalette { get; set; }
         public string Type { get; set; }
-
-
     }
 }

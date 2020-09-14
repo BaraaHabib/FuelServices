@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
-using DBContext.Models;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Site.Helpers
 {
@@ -39,10 +37,12 @@ namespace Site.Helpers
 
         public static string NOT_VERIFIED = "User account not verified, please check your email for verification code";
         public static int NOT_VERIFIED_CODE = -6;
-        
+
         public static string PAYMENT_ERROR = "Payment error";
         public static int PAYMENT_ERROR_CODE = -7;
-        
+
+        #region Email Constants
+
         public static string EMAIL_FAILED_TO_DELIVER = "Failed to deliver email";
         public static int EMAIL_FAILED_TO_DELIVER_CODE = -8;
 
@@ -51,17 +51,22 @@ namespace Site.Helpers
         public static string DELETE_ACCOUNT_EMAIL_TYPE = "delete_account";
         public static string SUPPLLIER_REQUEST_NOTIFICATION = "supplier_request_notification";
 
+        #endregion
+
+
         public static List<string> ContentTypes = new List<string>()
         {
-            "what_we_offer",
+            "about_us",
             "news",
-            "Privacy"
+            "Privacy",
+            "our_services"
         };
 
         public static List<string> Units
         {
-            get => new List<string>() {  "USD" };
+            get => new List<string>() { "USD" };
         }
+
         public static List<string> Roles
         {
             get => new List<String>
@@ -72,6 +77,5 @@ namespace Site.Helpers
                 "Handler"
             };
         }
-
     }
 }

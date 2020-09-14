@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Toast;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
 using Site.Helpers;
-using FuelServices.Site.Helpers.Toast;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CustomersController : BaseController
     {
-
-        public CustomersController(AirportCoreContext context, IServiceProvider provider) : base(context,provider)
+        public CustomersController(AirportCoreContext context, IServiceProvider provider) : base(context, provider)
         {
         }
 
@@ -55,7 +53,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/Customers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -91,7 +89,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/Customers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -164,7 +162,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         {
             try
             {
-
                 var model = db.Customer.Find(id);
 
                 if (model == null)

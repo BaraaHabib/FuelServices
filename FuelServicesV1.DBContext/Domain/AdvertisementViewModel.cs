@@ -18,6 +18,5 @@ namespace FuelServices.DBContext.Domain
         public DateTime? PublishDate { get; set; }
         public DateTime? EndDate { get; set; }
         public double? TotalPrice { get; set; }
-
     }
 }

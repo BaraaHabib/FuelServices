@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace FuelServices.DBContext.Domain
 {
@@ -28,7 +27,7 @@ namespace FuelServices.DBContext.Domain
         public bool IsRead { get; set; }
 
         public DateTime? SubmitDate { get; set; }
-        
+
         public virtual CustomerViewModel Customer { get; set; }
     }
 }

@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Toast;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Site.Helpers;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using Site.Helpers;
-using Microsoft.AspNetCore.Http;
-using System.IO;
-using Microsoft.AspNetCore.Hosting;
-using FuelServices.Site.Helpers.Toast;
-using Microsoft.Extensions.FileProviders;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     public class ContentManagementsController : BaseController
     {
         private readonly AirportCoreContext _context;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        public ContentManagementsController(AirportCoreContext context, IHostingEnvironment hostingEnvironment)
+        public ContentManagementsController(AirportCoreContext context, IWebHostEnvironment hostingEnvironment)
         {
             ViewData["Title"] = "General";
             ViewData["ControllerName"] = "ContentManagements";
@@ -61,7 +58,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/ContentManagements/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -94,12 +91,9 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
-
                 Message = Toast.ErrorToast(GetExceptionMessage(e));
                 return View(contentManagement);
-
             }
-
         }
 
         // GET: Admin/ContentManagements/Edit/5
@@ -119,11 +113,11 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         }
 
         // POST: Admin/ContentManagements/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  ContentManagement contentManagement, IFormCollection formCollection)
+        public async Task<IActionResult> Edit(int id, ContentManagement contentManagement, IFormCollection formCollection)
         {
             if (id != contentManagement.Id)
             {
@@ -134,13 +128,13 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             {
                 try
                 {
-                    if (formCollection?.Files?.Count > 0 )
+                    if (formCollection?.Files?.Count > 0)
                     {
                         var webPath = _hostingEnvironment.WebRootPath;
                         var pathToDelete = webPath + contentManagement.ImageUrl;
                         // TO DO: remove file
                         /*
-                         * 
+                         *
                          */
 
                         // get File name
@@ -157,8 +151,9 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                             }
                             contentManagement.ImageUrl = pathToSave;
                         }
-                        
                     }
+                    var cm = await _context.ContentManagement.AsNoTracking().FirstOrDefaultAsync(x => x.Id == contentManagement.Id);
+                    contentManagement.ImageUrl = cm.ImageUrl;
                     _context.Update(contentManagement);
                     await _context.SaveChangesAsync();
                 }
@@ -191,7 +186,7 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 var pathToDelete = webPath + model.ImageUrl;
                 // TO DO: remove file
                 /*
-                 * 
+                 *
                  */
 
                 _context.ContentManagement.Remove(model);
@@ -209,6 +204,5 @@ namespace FuelServices.Site.Areas.Admin.Controllers
         {
             return _context.ContentManagement.Any(e => e.Id == id);
         }
-
     }
 }

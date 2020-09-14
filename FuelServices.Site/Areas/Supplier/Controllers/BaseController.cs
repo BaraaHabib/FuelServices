@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Configurations;
 using FuelServices.Site.Helpers.Extensions;
+using FuelServices.Site.Helpers.Toast;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
-using FuelServices.Site.Helpers.Toast;
-using FuelServices.Site.Helpers.Configurations;
+using Microsoft.Extensions.Options;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Supplier.Controllers
 {
@@ -25,7 +25,9 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
         protected IHttpContextAccessor httpContextAccessor;
         private readonly IOptions<MyConfiguration> config;
 
-        public BaseController() { }
+        public BaseController()
+        {
+        }
 
         public BaseController(AirportCoreContext _db, IServiceProvider serviceProvider)
         {
@@ -34,6 +36,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             httpContextAccessor = serviceProvider.GetService<HttpContextAccessor>();
             config = serviceProvider.GetService<IOptions<MyConfiguration>>();
         }
+
         public BaseController(AirportCoreContext airportCoreContext)
         {
             db = airportCoreContext;
@@ -46,12 +49,22 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             string actionName = ControllerContext.RouteData.Values["action"].ToString();
             //if (sessionActive == null)
             //{
-                sessionActive = new Dictionary<string, string>()
+            sessionActive = new Dictionary<string, string>()
                 {
                  { "Offers", "" },
                  { "Offers.Index", "" },
                  { "Offers.Create", "" },
                  { "Home", "" },
+
+                 { "Contacts", "" },
+                 { "Contacts.Index", "" },
+                 { "Contacts.Create", "" },
+                 { "Contacts.Edit", "" },
+
+                 { "ContactPersons", "" },
+                 { "ContactPersons.Index", "" },
+                 { "ContactPersons.Create", "" },
+                 { "ContactPersons.Edit", "" },
                 };
             //}
             SetActive(sessionActive, controllerName, actionName);
@@ -66,11 +79,11 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
         {
             base.OnActionExecuted(context);
         }
+
         protected Task<ApplicationUser> GetCurrentUserAsync() => UserManager.GetUserAsync(HttpContext.User);
 
         protected void SetActive(Dictionary<string, string> sessionActive, string controllerName, string actionName)
         {
-            
             if (sessionActive != null)
             {
                 sessionActive[controllerName] = "active";
@@ -108,5 +121,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             return Toast.ErrorToast().Message;
         }
 
+        protected T GetService<T>() where T : class
+        => HttpContext.RequestServices.GetRequiredService<T>();
     }
 }

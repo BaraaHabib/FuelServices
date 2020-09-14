@@ -23,49 +23,79 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdvertisementCategoryId");
+                    b.Property<int?>("AdvertisementCategoryId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<int?>("AdvertisementOwnerId");
+                    b.Property<int?>("AdvertisementImageTypeId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AdvertisementOwnerId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int?>("AdvertisementTypeId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("AnchorUrl");
+                    b.Property<string>("AnchorUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Caption");
+                    b.Property<string>("Caption")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CaptionClicks")
-                        .IsRequired();
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
+                        .IsRequired()
                         .HasColumnType("datetime");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<float?>("Price")
-                        .IsRequired();
-
-                    b.Property<DateTime>("PublishDate")
+                    b.Property<DateTime?>("PublishDate")
+                        .IsRequired()
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double?>("TotalPrice")
+                        .IsRequired()
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertisementCategoryId");
+
+                    b.HasIndex("AdvertisementImageTypeId");
 
                     b.HasIndex("AdvertisementOwnerId");
 
@@ -78,58 +108,113 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("AdvertisementCategory");
                 });
 
+            modelBuilder.Entity("DBContext.Models.AdvertisementImageType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdvertisementImageTypes");
+                });
+
             modelBuilder.Entity("DBContext.Models.AdvertisementOwner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("CompanyId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<int?>("CountryId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Fax");
+                    b.Property<string>("Fax")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Phone")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("UserSpecializationId")
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -146,26 +231,33 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AdvertisementId")
-                        .IsRequired();
+                        .HasColumnType("int");
 
                     b.Property<int?>("AdvertisementTypePropertyId")
-                        .IsRequired();
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -180,20 +272,28 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("IsValid");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -204,20 +304,47 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<int?>("AdvertisementTypeId")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<int?>("ExceptAdvertisementType1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ExceptAdvertisementType2Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Options")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdvertisementTypeId");
 
                     b.ToTable("AdvertisementTypeProperty");
                 });
@@ -226,49 +353,70 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CityId");
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Continent");
+                    b.Property<string>("Continent")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<float?>("Elevation");
+                    b.Property<float?>("Elevation")
+                        .HasColumnType("real");
 
                     b.Property<string>("Iata")
-                        .HasColumnName("IATA");
+                        .HasColumnName("IATA")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Icao")
-                        .HasColumnName("ICAO");
+                        .HasColumnName("ICAO")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("IsoCountry");
+                    b.Property<string>("IsoCountry")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsoRegion");
+                    b.Property<string>("IsoRegion")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<float?>("Lat");
+                    b.Property<float?>("Lat")
+                        .HasColumnType("real");
 
-                    b.Property<float?>("Long");
+                    b.Property<float?>("Long")
+                        .HasColumnType("real");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Municipality");
+                    b.Property<string>("Municipality")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("NearestCityId");
+                    b.Property<int?>("NearestCityId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<float?>("Variation");
+                    b.Property<float?>("Variation")
+                        .HasColumnType("real");
 
-                    b.Property<int?>("Views");
+                    b.Property<int?>("Views")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -281,33 +429,87 @@ namespace FuelServices.DBContext.Migrations
                     b.ToTable("Airport");
                 });
 
+            modelBuilder.Entity("DBContext.Models.AirportAds", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("AdvertisementId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AirportId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CaptionClicks")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Range")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertisementId");
+
+                    b.HasIndex("AirportId");
+
+                    b.ToTable("AirportAds");
+                });
+
             modelBuilder.Entity("DBContext.Models.AirportOffer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AirportId");
+                    b.Property<int?>("AirportId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CityId");
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<double>("Price");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("PriceUnit")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SupplierTypeId");
+                    b.Property<int?>("SupplierTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -326,26 +528,35 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AirportId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PropertyId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -359,15 +570,18 @@ namespace FuelServices.DBContext.Migrations
             modelBuilder.Entity("DBContext.Models.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -383,43 +597,58 @@ namespace FuelServices.DBContext.Migrations
             modelBuilder.Entity("DBContext.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -439,25 +668,34 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("CountryId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NameASCII");
+                    b.Property<string>("NameASCII")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State");
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -470,21 +708,28 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -495,42 +740,55 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRead")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Subject")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("SubmitDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Tel")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -543,33 +801,46 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AnchorText");
+                    b.Property<string>("AnchorText")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AnchorUrl");
+                    b.Property<string>("AnchorUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<bool>("IsVisible");
+                    b.Property<bool>("IsVisible")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -580,20 +851,27 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                    b.Property<string>("Code")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -604,24 +882,33 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ContinentId");
+                    b.Property<int?>("ContinentId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ISO2");
+                    b.Property<string>("ISO2")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ISO3");
+                    b.Property<string>("ISO3")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -634,25 +921,35 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -669,45 +966,61 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address1")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Address2");
+                    b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CityId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Company");
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CountryId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("CustomerId");
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Fax");
+                    b.Property<string>("Fax")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("PaymentPackageId");
+                    b.Property<int?>("PaymentPackageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone1")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone2");
+                    b.Property<string>("Phone2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
@@ -729,45 +1042,65 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BackgroundColor");
+                    b.Property<string>("BackgroundColor")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Banner");
+                    b.Property<string>("Banner")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CallbackDisplayText");
+                    b.Property<string>("CallbackDisplayText")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CallbackUrl");
+                    b.Property<string>("CallbackUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CardColor");
+                    b.Property<string>("CardColor")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ContactEmail");
+                    b.Property<string>("ContactEmail")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("EmailCaption");
+                    b.Property<string>("EmailCaption")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmailTypeName");
+                    b.Property<string>("EmailTypeName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FontColor");
+                    b.Property<string>("FontColor")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Logo");
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("SiteUrl");
+                    b.Property<string>("SiteUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TemplateUrl");
+                    b.Property<string>("TemplateUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title1");
+                    b.Property<string>("Title1")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title2");
+                    b.Property<string>("Title2")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title3");
+                    b.Property<string>("Title3")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -778,20 +1111,27 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UnitIn");
+                    b.Property<string>("UnitIn")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -802,26 +1142,36 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<bool?>("IsMiddler");
+                    b.Property<bool?>("IsMiddler")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -838,18 +1188,24 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -860,23 +1216,30 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Exception");
+                    b.Property<string>("Exception")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Level")
+                        .HasColumnType("nvarchar(128)")
                         .HasMaxLength(128);
 
-                    b.Property<string>("LogEvent");
+                    b.Property<string>("LogEvent")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Message");
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MessageTemplate");
+                    b.Property<string>("MessageTemplate")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Properties")
                         .HasColumnType("xml");
 
-                    b.Property<DateTimeOffset>("TimeStamp");
+                    b.Property<DateTimeOffset>("TimeStamp")
+                        .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
 
@@ -887,29 +1250,39 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DuesTaxesLevies")
                         .IsRequired()
-                        .HasColumnName("DuesTaxesLevies");
+                        .HasColumnName("DuesTaxesLevies")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FuelSupplierId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartDate");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -922,21 +1295,28 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FuelTypeId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -951,24 +1331,33 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AirportId");
+                    b.Property<int?>("AirportId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("AirportOfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CityId");
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
-                    b.Property<int?>("CountryId");
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -987,25 +1376,34 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int?>("PropertyId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1020,52 +1418,71 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Description");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Discount");
+                    b.Property<double?>("Discount")
+                        .HasColumnType("float");
 
-                    b.Property<int>("DiscountType");
+                    b.Property<int>("DiscountType")
+                        .HasColumnType("int");
 
                     b.Property<string>("DiscountUnit")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("DisplayName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<bool>("IsValid");
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ItemLevel")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("MainColor")
                         .IsRequired()
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Period")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<double>("Price");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<string>("PriceUnit")
                         .IsRequired()
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -1076,26 +1493,35 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FeatureId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PaymentPackageId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Value")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1110,24 +1536,32 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ContentType")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("United")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -1138,49 +1572,66 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AircraftType")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("AirportId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ArrivalDate")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
                         .HasDefaultValueSql("('0001-01-01T00:00:00.0000000')");
 
                     b.Property<string>("CallSign")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CaptainFmName");
+                    b.Property<string>("CaptainFmName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DepartureDate")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
                         .HasDefaultValueSql("('0001-01-01T00:00:00.0000000')");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NameOfOperator");
+                    b.Property<string>("NameOfOperator")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Notes");
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Quantity")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<string>("RegistrationNumber")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("SendDate");
+                    b.Property<DateTime>("SendDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1195,29 +1646,39 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("AirportOfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("OfferId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int>("RStatus")
-                        .HasColumnName("RStatus");
+                        .HasColumnName("RStatus")
+                        .HasColumnType("int");
 
                     b.Property<int?>("RequestId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime?>("SupplierConfirmDate");
+                    b.Property<DateTime?>("SupplierConfirmDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1234,24 +1695,35 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ContactId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("FuelSupplierId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1266,22 +1738,30 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("FuelSupplierId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<string>("JobTitle");
+                    b.Property<string>("JobTitle")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1294,24 +1774,35 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("ContactId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("SupplierContactPersonId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1326,25 +1817,34 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("PropertyId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int?>("SupplierId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Unit");
+                    b.Property<string>("Unit")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1359,29 +1859,38 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("CustomerId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<int?>("FuelSupplierId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("Rate")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReviewDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1396,18 +1905,24 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1418,25 +1933,34 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("ResetPasswordCode");
+                    b.Property<string>("ResetPasswordCode")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ResetPasswordCodeValidityEndDate");
+                    b.Property<DateTime>("ResetPasswordCodeValidityEndDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasDefaultValue(2);
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -1449,45 +1973,61 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address1")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Address2");
+                    b.Property<string>("Address2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CityId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Company");
+                    b.Property<string>("Company")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CountryId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Fax");
+                    b.Property<string>("Fax")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FuelSupplierId");
+                    b.Property<int?>("FuelSupplierId")
+                        .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
-                    b.Property<int>("ItemOrder");
+                    b.Property<int>("ItemOrder")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Modified");
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int?>("PaymentPackageId");
+                    b.Property<int?>("PaymentPackageId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Phone1")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone2");
+                    b.Property<string>("Phone2")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
@@ -1509,14 +2049,18 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -1529,14 +2073,18 @@ namespace FuelServices.DBContext.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -1547,14 +2095,18 @@ namespace FuelServices.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderKey");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ProviderDisplayName");
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -1565,9 +2117,11 @@ namespace FuelServices.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("RoleId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -1578,13 +2132,17 @@ namespace FuelServices.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -1597,18 +2155,27 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("Advertisement")
                         .HasForeignKey("AdvertisementCategoryId")
                         .HasConstraintName("FK_Advertisement_AdvertisementCategory")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("DBContext.Models.AdvertisementImageType", "AdvertisementImageType")
+                        .WithMany("Advertisement")
+                        .HasForeignKey("AdvertisementImageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.AdvertisementOwner", "AdvertisementOwner")
                         .WithMany("Advertisement")
                         .HasForeignKey("AdvertisementOwnerId")
                         .HasConstraintName("FK_Advertisment_AdvertismentOwner")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.AdvertisementType", "AdvertisementType")
                         .WithMany("Advertisement")
                         .HasForeignKey("AdvertisementTypeId")
-                        .HasConstraintName("FK_Advertisment_AdvertismentType");
+                        .HasConstraintName("FK_Advertisment_AdvertismentType")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.AdvertisementOwner", b =>
@@ -1617,13 +2184,15 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("AdvertisementOwner")
                         .HasForeignKey("CountryId")
                         .HasConstraintName("FK_AdvertisementOwner_Country")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.ApplicationUser", "User")
                         .WithOne("AdvertisementOwner")
                         .HasForeignKey("DBContext.Models.AdvertisementOwner", "UserId")
                         .HasConstraintName("FK_AdvertisementOwner_User")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.AdvertisementProperty", b =>
@@ -1637,6 +2206,13 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("AdvertisementProperty")
                         .HasForeignKey("AdvertisementTypePropertyId")
                         .HasConstraintName("FK_AdvertismentProperties_AdvertismentTypeProperty");
+                });
+
+            modelBuilder.Entity("DBContext.Models.AdvertisementTypeProperty", b =>
+                {
+                    b.HasOne("DBContext.Models.AdvertisementType", "AdvertisementType")
+                        .WithMany("AdvertisementTypeProperty")
+                        .HasForeignKey("AdvertisementTypeId");
                 });
 
             modelBuilder.Entity("DBContext.Models.Airport", b =>
@@ -1658,6 +2234,21 @@ namespace FuelServices.DBContext.Migrations
                         .HasConstraintName("FK_Airport_City1");
                 });
 
+            modelBuilder.Entity("DBContext.Models.AirportAds", b =>
+                {
+                    b.HasOne("DBContext.Models.Advertisement", "Advertisement")
+                        .WithMany("AirportAds")
+                        .HasForeignKey("AdvertisementId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DBContext.Models.Airport", "Airport")
+                        .WithMany()
+                        .HasForeignKey("AirportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DBContext.Models.AirportOffer", b =>
                 {
                     b.HasOne("DBContext.Models.Airport", "Airport")
@@ -1672,7 +2263,8 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Offer", "Offer")
                         .WithMany("AirportOffers")
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.SupplierType", "SupplierType")
                         .WithMany("AirportOffer")
@@ -1684,12 +2276,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Airport", "Airport")
                         .WithMany("AirportProperty")
                         .HasForeignKey("AirportId")
-                        .HasConstraintName("FK_AirportPorperties_Airports");
+                        .HasConstraintName("FK_AirportPorperties_Airports")
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Property", "Property")
                         .WithMany("AirportProperty")
                         .HasForeignKey("PropertyId")
-                        .HasConstraintName("FK_AirportPorperties_Property");
+                        .HasConstraintName("FK_AirportPorperties_Property")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.City", b =>
@@ -1698,7 +2292,8 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("City")
                         .HasForeignKey("CountryId")
                         .HasConstraintName("FK_City_Country")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.ContactUs", b =>
@@ -1739,12 +2334,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Customer", "Customer")
                         .WithMany("CustomerPackagesLog")
@@ -1779,7 +2376,8 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.FuelSupplier", "FuelSupplier")
                         .WithMany("Offer")
                         .HasForeignKey("FuelSupplierId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.OfferFuelType", b =>
@@ -1787,12 +2385,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.FuelType", "FuelType")
                         .WithMany("OfferFuelType")
                         .HasForeignKey("FuelTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Offer", "Offer")
                         .WithMany("OfferFuelType")
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.OfferPartyExcludes", b =>
@@ -1804,7 +2404,8 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.AirportOffer", "AirportOffer")
                         .WithMany("OfferPartyExcludes")
                         .HasForeignKey("AirportOfferId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.City", "City")
                         .WithMany("OfferPartyExcludes")
@@ -1821,13 +2422,15 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("OfferProperties")
                         .HasForeignKey("OfferId")
                         .HasConstraintName("FK_OfferProperties_Offer")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Property", "Property")
                         .WithMany("OfferProperties")
                         .HasForeignKey("PropertyId")
                         .HasConstraintName("FK_OfferProperties_Property")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.PaymentPackageFeature", b =>
@@ -1835,12 +2438,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Feature", "Feature")
                         .WithMany("PaymentPackageFeature")
                         .HasForeignKey("FeatureId")
-                        .HasConstraintName("FK_PaymentPackageFeature_PaymentPackage");
+                        .HasConstraintName("FK_PaymentPackageFeature_PaymentPackage")
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.PaymentPackage", "PaymentPackage")
                         .WithMany("PaymentPackageFeature")
                         .HasForeignKey("PaymentPackageId")
-                        .HasConstraintName("FK_PaymentPackageFeature_Feature");
+                        .HasConstraintName("FK_PaymentPackageFeature_Feature")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.Request", b =>
@@ -1848,12 +2453,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Airport", "Airport")
                         .WithMany("Request")
                         .HasForeignKey("AirportId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Customer", "Customer")
                         .WithMany("Request")
                         .HasForeignKey("CustomerId")
-                        .HasConstraintName("FK_Request_Customer");
+                        .HasConstraintName("FK_Request_Customer")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.RequestOffers", b =>
@@ -1861,17 +2468,20 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.AirportOffer", "AirportOffer")
                         .WithMany("RequestOffers")
                         .HasForeignKey("AirportOfferId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Offer", "Offer")
                         .WithMany("RequestOffers")
                         .HasForeignKey("OfferId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Request", "Request")
                         .WithMany("RequestOffers")
                         .HasForeignKey("RequestId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.SupplierContact", b =>
@@ -1879,12 +2489,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Contact", "Contact")
                         .WithMany("SupplierContact")
                         .HasForeignKey("ContactId")
-                        .HasConstraintName("FK_SupplierContact_Contact");
+                        .HasConstraintName("FK_SupplierContact_Contact")
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.FuelSupplier", "FuelSupplier")
                         .WithMany("SupplierContact")
                         .HasForeignKey("FuelSupplierId")
-                        .HasConstraintName("FK_SupplierContact_Supplier");
+                        .HasConstraintName("FK_SupplierContact_Supplier")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.SupplierContactPerson", b =>
@@ -1892,7 +2504,8 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.FuelSupplier", "FuelSupplier")
                         .WithMany("SupplierContactPerson")
                         .HasForeignKey("FuelSupplierId")
-                        .HasConstraintName("FK_SupplierContactPerson_Supplier");
+                        .HasConstraintName("FK_SupplierContactPerson_Supplier")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.SupplierContactPersonContact", b =>
@@ -1900,12 +2513,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Contact", "Contact")
                         .WithMany("SupplierContactPersonContact")
                         .HasForeignKey("ContactId")
-                        .HasConstraintName("FK_ContactPersonContacts_Contact");
+                        .HasConstraintName("FK_ContactPersonContacts_Contact")
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.SupplierContactPerson", "SupplierContactPerson")
                         .WithMany("SupplierContactPersonContact")
                         .HasForeignKey("SupplierContactPersonId")
-                        .HasConstraintName("FK_ContactPersonContacts_ContactPerson");
+                        .HasConstraintName("FK_ContactPersonContacts_ContactPerson")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.SupplierProperties", b =>
@@ -1914,13 +2529,15 @@ namespace FuelServices.DBContext.Migrations
                         .WithMany("SupplierProperties")
                         .HasForeignKey("PropertyId")
                         .HasConstraintName("FK_SupplierProperties_Property")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.FuelSupplier", "Supplier")
                         .WithMany("SupplierProperties")
                         .HasForeignKey("SupplierId")
                         .HasConstraintName("FK_SupplierProperties_FuelSupplier")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DBContext.Models.SupplierReview", b =>
@@ -1928,12 +2545,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.Customer", "Customer")
                         .WithMany("SupplierReview")
                         .HasForeignKey("CustomerId")
-                        .HasConstraintName("FK_SupplierReview_Customer");
+                        .HasConstraintName("FK_SupplierReview_Customer")
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.FuelSupplier", "FuelSupplier")
                         .WithMany("SupplierReview")
                         .HasForeignKey("FuelSupplierId")
-                        .HasConstraintName("FK_SupplierReview_FuelSupplier");
+                        .HasConstraintName("FK_SupplierReview_FuelSupplier")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FuelServices.DBContext.Models.ResetPasswordToken", b =>
@@ -1948,12 +2567,14 @@ namespace FuelServices.DBContext.Migrations
                     b.HasOne("DBContext.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DBContext.Models.FuelSupplier", "FuelSupplier")
                         .WithMany("SupplierPackagesLog")
@@ -1970,47 +2591,53 @@ namespace FuelServices.DBContext.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("DBContext.Models.ApplicationRole")
+                    b.HasOne("DBContext.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DBContext.Models.ApplicationUser")
+                    b.HasOne("DBContext.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DBContext.Models.ApplicationUser")
+                    b.HasOne("DBContext.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("DBContext.Models.ApplicationRole")
+                    b.HasOne("DBContext.Models.ApplicationRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("DBContext.Models.ApplicationUser")
+                    b.HasOne("DBContext.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DBContext.Models.ApplicationUser")
+                    b.HasOne("DBContext.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

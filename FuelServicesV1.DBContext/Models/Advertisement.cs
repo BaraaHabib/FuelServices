@@ -1,7 +1,9 @@
 ﻿using Elect.Web.DataTable.Attributes;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DBContext.Models
 {
@@ -10,55 +12,68 @@ namespace DBContext.Models
         public Advertisement()
         {
             AdvertisementProperty = new HashSet<AdvertisementProperty>();
+            AirportAds = new HashSet<AirportAds>();
         }
 
-
-        [DataTable(DisplayName = "Title", Order = 2)]
+        [Display(Name = "Title *")]
+        [Required]
         public string Title { get; set; }
 
-        [DataTable(DisplayName = "Description", Order = 3)]
         public string Description { get; set; }
 
-        [DataTable(DisplayName = "Link", Order = 4)]
+        [Display(Name = "Link *")]
+        [Required]
         public string AnchorUrl { get; set; }
 
-        [DataTable(DisplayName = "Caption", Order = 5)]
+        [Display(Name = "Text to Display")]
         public string Caption { get; set; }
 
-        [Required]
-        [DataTable(DisplayName = "Image", Order = 6)]
-        public string ImageUrl { get; set; }
-
-        [Required]
-        [DataTable(DisplayName = "Clicks Count", Order = 6)]
+        [Display(Name = "Number of clicks *")]
         public int? CaptionClicks { get; set; }
 
-        [DataTable(IsVisible = false, Order = 7)]
+        [Required]
+        [Display(Name = "Owner *")]
         public int? AdvertisementOwnerId { get; set; }
 
-        [DataTable(IsVisible = false, Order = 8)]
+        [Required]
+        [Display(Name = "Category *")]
         public int? AdvertisementCategoryId { get; set; }
 
         [Required]
-        [DataTable(IsVisible = false, Order = 9)]
+        [Display(Name = "Type *")]
         public int? AdvertisementTypeId { get; set; }
 
         [Required]
-        [DataTable(DisplayName = "Price", Order = 10)]
-        public float? Price { get; set; }
+        [Display(Name = "Status *")]
+        public string Status { get; set; }
 
-
-        [Required]
-        [DataTable(DisplayName = "Publish Date", Order = 12)]
-        public DateTime PublishDate { get; set; }
+        [Display(Name = "Image file *")]
+        public string ImageUrl { get; set; }
 
         [Required]
-        [DataTable(DisplayName = "End Date", Order = 13)]
-        public DateTime EndDate { get; set; }
+        [Display(Name = "Image type *")]
+        public int? AdvertisementImageTypeId { get; set; }
+
+        [Required]
+        [Display(Name = "Publish from date *")]
+        public DateTime? PublishDate { get; set; }
+
+        [Required]
+        [Display(Name = "To date *")]
+        public DateTime? EndDate { get; set; }
+
+        [Required]
+        [Display(Name = "Approximate price")]
+        public double? TotalPrice { get; set; }
+
+        [NotMapped]
+        public IFormFile file { get; set; }
 
         public virtual AdvertisementCategory AdvertisementCategory { get; set; }
         public virtual AdvertisementOwner AdvertisementOwner { get; set; }
         public virtual AdvertisementType AdvertisementType { get; set; }
+        public virtual AdvertisementImageType AdvertisementImageType { get; set; }
         public virtual ICollection<AdvertisementProperty> AdvertisementProperty { get; set; }
+        public virtual ICollection<AirportAds> AirportAds { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace FuelServices.DBContext.Domain
 {
@@ -12,9 +11,7 @@ namespace FuelServices.DBContext.Domain
 
         public int? SupplierId { get; set; }
 
-
         public string Name { get; set; }
-
 
         public string JobTitle { get; set; }
 

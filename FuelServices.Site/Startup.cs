@@ -1,7 +1,10 @@
-﻿using Elect.Web.DataTable;
-using Site.Services;
+﻿using AutoMapper;
+using DBContext.Mapping;
 using DBContext.Models;
-using Microsoft.AspNetCore.Authorization;
+using Elect.Web.DataTable;
+using FuelServices.Site.Helpers.Background_Service;
+using FuelServices.Site.Helpers.Configurations;
+using FuelServices.Site.Helpers.Stripe;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,23 +14,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Site.Services;
+using Stripe;
 using System;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
-using AutoMapper;
-using DBContext.Mapping;
-using Newtonsoft.Json.Serialization;
-using FuelServices.Site.Helpers.Configurations;
-using System.Reflection;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Stripe;
-using FuelServices.Site.Helpers.Stripe;
-using FuelServices.Site.Helpers.Background_Service;
-using Microsoft.Extensions.Logging;
 
 namespace Site
 {
@@ -43,7 +38,6 @@ namespace Site
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -80,18 +74,13 @@ namespace Site
                 config.Password.RequireLowercase = false;
                 config.Password.RequireUppercase = false;
                 config.Password.RequireNonAlphanumeric = false;
-                
             })
                 .AddSignInManager<ApplicationSignInManager>()
                     .AddEntityFrameworkStores<AirportCoreContext>()
-                    
+
                     .AddDefaultTokenProviders();
 
-            
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {
@@ -111,24 +100,25 @@ namespace Site
             });
 
             /////
-            
+
             //services.AddScoped<IAuthorizationHandler, PropertyPackageAuthorizationHandler>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddRazorPagesOptions(options =>
                 {
-                    options.AllowAreas = true;
+                    //options.AllowAreas = true; frpm 2.2
                     options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                     options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-                });            
+                });
             services.AddMvc().AddViewOptions(options =>
             {
-                options.SuppressTempDataAttributePrefix = true;
+                //options.SuppressTempDataAttributePrefix = true;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(options =>
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddJsonOptions(options =>
             {
-                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
             })
                 .AddSessionStateTempDataProvider();
 
@@ -158,23 +148,28 @@ namespace Site
             );
 
             services.AddHostedService<TimedHostedService>();
-            //data mapper profiler setting
-            Mapper.Initialize((config) =>
+
+            // Auto Mapper Configurations
+            //IMapper mapper = mappingConfig.CreateMapper();
+            services.AddAutoMapper(opt =>
             {
-                config.AddProfile<MappingProfile>();
+                opt.Advanced.AllowAdditiveTypeMapCreation = true;
+                opt.AddProfile<MappingProfile>();
             });
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, 
-            IHostingEnvironment env, 
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
             IServiceProvider services)
         {
             StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["SecretKey"];
-            if (env.IsDevelopment())
+            if (env.ApplicationName == Environments.Development)
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDatabaseErrorPage();  from 2.2
                 //app.UseExceptionHandler("/Home/Error");
             }
             else
@@ -191,22 +186,34 @@ namespace Site
             app.UseAuthentication();
             app.UseSession();
 
-            app.UseMvc(routes =>
+            app.UseRouting();
+
+            app.UseAuthorization();
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(
+                routes.MapRazorPages();
+
+                routes.MapControllerRoute(
+                name: "areas",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}");
+
+                routes.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
+
+                routes.MapAreaControllerRoute(
                 name: "admin",
-                template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                areaName: "admin",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
               );
 
-                routes.MapRoute(
+                routes.MapAreaControllerRoute(
                name: "supplier",
-               template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+               areaName: "supplier",
+               pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
              );
 
-
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
 
             });
             CreateUserAndClaim(services).Wait();

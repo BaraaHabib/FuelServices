@@ -53,11 +53,30 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class='nav-item has-treeview @(session["Contacts"] == "active" || session["ContactPersons"] == "active" ? "menu-open" : "" )'>
+                    <a href="#" class="nav-link @session["Contacts"] @session["ContactPersons"]">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            My Contacts
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="~/Supplier/Contacts/Index" class="nav-link @session["Contacts.Index"]">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>General Contacts</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="~/Supplier/ContactPersons/Index" class="nav-link @session["ContactPersons.Index"]">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Persons Contacts</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
 </aside>
-
-
-

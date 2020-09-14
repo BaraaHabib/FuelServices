@@ -19,7 +19,6 @@ namespace Site.Authorization
             _userManager = userManager;
         }
 
-
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
                                    PaymentPackageRequirement requirement)
         {
@@ -54,8 +53,8 @@ namespace Site.Authorization
                         {
                             return Task.CompletedTask;
                         }
-                        
-                        if(PaymentPackageNumberOfRequests <= 0)
+
+                        if (PaymentPackageNumberOfRequests <= 0)
                         {
                             return Task.CompletedTask;
                         }

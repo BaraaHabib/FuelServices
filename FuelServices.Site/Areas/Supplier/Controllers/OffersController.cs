@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using DBContext.Models;
+using FuelServices.DBContext.DatatablesModels;
+using FuelServices.DBContext.Domain;
+using FuelServices.Site.Helpers.Toast;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DBContext.Models;
-using FuelServices.DBContext.Domain;
-using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
-using FuelServices.Site.Helpers.Toast;
-using FuelServices.DBContext.DatatablesModels;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Supplier.Controllers
 {
     [Area("Supplier")]
     public class OffersController : BaseController
     {
-
-        public OffersController(AirportCoreContext context,IServiceProvider serviceProvider) : base(context,serviceProvider)
+        public OffersController(AirportCoreContext context, IServiceProvider serviceProvider) : base(context, serviceProvider)
         {
         }
 
@@ -54,7 +53,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 if (!string.IsNullOrEmpty(searchValue))
                 {
                     tableData = tableData.Where(d => !d.IsDeleted).Where(m => m.StartDate.ToString().Contains(searchValue) ||
-                    m.EndDate.ToString().Contains(searchValue) || m.Status.Contains(searchValue) 
+                    m.EndDate.ToString().Contains(searchValue) || m.Status.Contains(searchValue)
                     || m.DuesTaxesLevies.Contains(searchValue));
                 }
                 recordsTotal = tableData.Count();
@@ -64,23 +63,19 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                     draw = draw,
                     recordsFiltered = recordsTotal,
                     recordsTotal = recordsTotal,
-                    data = Mapper.Map<List<OfferDatatableViewModel>>(data)
+                    data = GetService<IMapper>().Map<List<OfferDatatableViewModel>>(data)
                 });
                 return res;
             }
             catch (Exception e)
             {
-                throw;
+                throw e;
             }
         }
-
-
-
 
         // GET: Supplier/Offers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
             try
             {
                 if (id == null)
@@ -95,19 +90,16 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 {
                     return NotFound();
                 }
-               
+
                 return View(offer);
             }
             catch (Exception e)
             {
-
                 Message = new Toast(
                      GetExceptionMessage(e),
                     ToasterType.error);
                 return View();
-
             }
-
         }
 
         // GET: Supplier/Offers/Create
@@ -130,7 +122,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
         }
 
         // POST: Supplier/Offers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -175,35 +167,38 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                         Status = OfferStatus.Active.ToString(),
                         DuesTaxesLevies = model.DuesTaxesLevies,
                         ItemOrder = model.ItemOrder,
-                        
                     };
                     await base.db.Offer.AddAsync(offer);
 
+                    await base.db.SaveChangesAsync();
+
                     List<OfferFuelType> offerFuelType = new List<OfferFuelType>();
                     model.FuelTypes.ForEach(
-                        x => offerFuelType.Add(new OfferFuelType() { OfferId = offer.Id, FuelTypeId = x}
+                        x => offerFuelType.Add(new OfferFuelType() { OfferId = offer.Id, FuelTypeId = x }
                     ));
                     await db.AddRangeAsync(offerFuelType);
 
+                    await base.db.SaveChangesAsync();
+
                     List<AirportOffer> AirportOffers = new List<AirportOffer>();
                     model.AirportOffers.ForEach(
-                         x => {
-                            Airport airport = db.Airport.Find(x.AirportId);
-                            var cityId = airport.CityId;
-                            var countryId = airport.CountryId;
-                            AirportOffer airportOffer = new AirportOffer() 
-                            {
-                                AirportId = airport.Id,
-                                CityId = cityId,
-                                Price = x.Price,
-                                PriceUnit = x.PriceUnit,
-                                OfferId = offer.Id,
-                            };
+                         x =>
+                         {
+                             Airport airport = db.Airport.Find(x.AirportId);
+                             var cityId = airport.CityId;
+                             var countryId = airport.CountryId;
+                             AirportOffer airportOffer = new AirportOffer()
+                             {
+                                 AirportId = airport.Id,
+                                 CityId = cityId,
+                                 Price = x.Price,
+                                 PriceUnit = x.PriceUnit,
+                                 OfferId = offer.Id,
+                             };
                              AirportOffers.Add(airportOffer);
-                        }
+                         }
                     );
                     await db.AddRangeAsync(AirportOffers);
-
 
                     await base.db.SaveChangesAsync();
 
@@ -211,13 +206,11 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                     return RedirectToAction("Details", new { offer.Id });
                 }
 
-                model.AirportOffers.ForEach(x => x.Airport = db.Airport.Find(x.AirportId)); 
+                model.AirportOffers.ForEach(x => x.Airport = db.Airport.Find(x.AirportId));
                 return View(model);
-
             }
             catch (Exception e)
             {
-
                 ViewData["AirportId"] = new SelectList(base.db.Airport.Take(20), "Id", "Name");
                 ModelState.AddModelError("", GetExceptionMessage(e));
                 Serilog.Log.Error(e.Message);
@@ -241,8 +234,14 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 return NotFound();
             }
             List<AirportOfferViewModel> AirportOffers = offer.AirportOffers.Where(q => q.AirportId != null)
-                .Select(x => new AirportOfferViewModel() { AirportId = (int)x.AirportId, Airport = x.Airport, OfferId = offer.Id,
-                    Price = x.Price, PriceUnit = x.PriceUnit }).ToList(); ;
+                .Select(x => new AirportOfferViewModel()
+                {
+                    AirportId = (int)x.AirportId,
+                    Airport = x.Airport,
+                    OfferId = offer.Id,
+                    Price = x.Price,
+                    PriceUnit = x.PriceUnit
+                }).ToList(); ;
             OfferViewModel model = new OfferViewModel()
             {
                 Id = offer.Id,
@@ -260,11 +259,11 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
         }
 
         // POST: Supplier/Offers/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, OfferViewModel model) 
+        public async Task<IActionResult> Edit(int id, OfferViewModel model)
         {
             if (id != model.Id)
             {
@@ -382,12 +381,11 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
-
         private bool OfferExists(int id)
         {
             return db.Offer.Any(e => e.Id == id);
         }
+
         private void AddAirportsOffers(OfferViewModel model, Offer offer)
         {
             foreach (var item in model.Airports)
@@ -396,14 +394,9 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 {
                     OfferId = offer.Id,
                     AirportId = item,
-                    
                 };
                 db.Add(AirportOffer);
             }
         }
-
-
-
-
     }
 }

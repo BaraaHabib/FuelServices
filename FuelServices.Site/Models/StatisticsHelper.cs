@@ -1,7 +1,5 @@
 ﻿using DBContext.Models;
-using FuelServices.DBContext;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace FuelServices.Site.Models
@@ -142,6 +140,5 @@ namespace FuelServices.Site.Models
         //    }
         //    return models;
         //}
-
     }
 }

@@ -9,6 +9,5 @@
         public double? NumberOfPriceUnits { get; set; }
 
         public string Unit { get; set; }
-
     }
 }

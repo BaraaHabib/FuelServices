@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace FuelServices.DBContext
 {
@@ -10,6 +9,8 @@ namespace FuelServices.DBContext
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public bool IsDeleted { get; set; }
+
+        [Display(Name = "Order")]
         public int ItemOrder { get; set; }
     }
 }

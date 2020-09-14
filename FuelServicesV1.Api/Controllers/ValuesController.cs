@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FuelServices.Api.Controllers
 {
@@ -11,13 +9,23 @@ namespace FuelServices.Api.Controllers
     {
         public ValuesController(IServiceProvider provider) : base(provider)
         {
-
         }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Values()
+        public async System.Threading.Tasks.Task<ActionResult<IEnumerable<int>>> Values()
         {
-            return new string[] { "value1", "value2" };
+            int rows1 = 0;
+            int rows2 = 0;
+            var user = await GetCurrentUserAsync();
+            foreach (var item in user.Customer.Request)
+            {
+                db.RemoveRange(item.RequestOffers);
+                rows1 += db.SaveChanges();
+            }
+            db.RemoveRange(user.Customer.Request);
+            rows2 += db.SaveChanges();
+            return new int[] { rows1, rows2};
         }
 
         // GET api/values/5

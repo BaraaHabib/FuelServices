@@ -1,11 +1,9 @@
-﻿
-using System;
+﻿using System;
 
 namespace FuelServices.DBContext.Domain
 {
     public partial class CustomerPackagesLogViewModel : BaseDomain
     {
-
         public int? CustomerId { get; set; }
 
         public int? PaymentPackageId { get; set; }

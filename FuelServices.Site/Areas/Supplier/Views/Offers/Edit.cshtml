@@ -6,7 +6,6 @@
     Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
 }
 
-
 <!-- Select2 -->
 <link rel="stylesheet" href="~/adminlte/plugins/select2/css/select2.min.css">
 <link rel="stylesheet" href="~/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
@@ -47,7 +46,6 @@
                     <div class="input-group">
                         <input asp-for="DuesTaxesLevies" value="@Model.DuesTaxesLevies" class="form-control" />
                         <span asp-validation-for="DuesTaxesLevies" class="text-danger"></span>
-
                     </div>
                 </div>
                 <div class="col-md-offset-1 col-md-5">
@@ -62,7 +60,7 @@
                 <div class="col-md-offset-1 col-md-5">
                     <label class="">Fuel Types</label>
                     <div class="form-group">
-                        <select style="width:100%;" name="FuelTypes" 
+                        <select style="width:100%;" name="FuelTypes"
                                 class="form-control select2" placeholder="" required>
                             @foreach (var item in (List<FuelType>)ViewBag.FuelTypes)
                             {
@@ -77,10 +75,8 @@
                             }
                         </select>
                         <span asp-validation-for="FuelTypes" class="text-danger"></span>
-
                     </div>
                 </div>
-
             </div>
             <br />
             <div class="row">
@@ -152,7 +148,6 @@
                                                                     }
                                                                 </select>
                                                                 @Html.ValidationMessage("AirportOffers[" + i + "].PriceUnit", new { @class = "text-danger" })
-
                                                             </div>
                                                         </div>
                                                         <div class="col-md-1">
@@ -166,7 +161,6 @@
                                             }
                                         }
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -224,7 +218,6 @@
                         }
                     </select>
                     @Html.ValidationMessage("AirportOffers[{?}].PriceUnit", new { @class = "text-danger" })
-
                 </div>
             </div>
             <div class="col-md-1">
@@ -233,10 +226,7 @@
                     <i class=" fa fa-trash delete"></i>
                 </button>
             </div>
-
-
         </div>
-
     </script>
 
     <script>
@@ -324,7 +314,6 @@
             });
         });//.trigger('change');
 
-
         $('.country-select').on('change', function () {
             var selectedCountry = $(this).children("option:selected").val();
             var selectedContinent = $('.continent-select').children("option:selected").val();
@@ -383,9 +372,7 @@
         });
     </script>
 
-
     <script>
-
 
         $('#add-city').on('click', function () {
             var selectedValues = $('.selected-cities').val();
@@ -459,7 +446,6 @@
             $(this).find('.btn').toggleClass('btn-default');
 
         });
-
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -77,26 +77,35 @@
     </div>
 }
 
-<div class="banner banner_video_bg" id="banner">
-    <div class="pattern-overlay">
-        <a id="bgndVideo" class="player" data-property="{videoURL:'https://www.youtube.com/watch?v=GrypM52edHg',containment:'.banner_video_bg', quality:'medium', autoPlay:true, mute:true, opacity:1}">bg</a>
-    </div>
+<div class="banner">
     <div id="bannerCarousole" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
-            <div class="carousel-item banner-max-height active">
-                <div class="carousel-caption banner-slider-inner"></div>
+            <div class="carousel-item item-bg active">
+                <img class="w-100" src="./template/bg.jpg" alt="banner">
+                <div class="carousel-caption banner-slider-inner d-flex text-center clearfix">
+                    <div class="bi-5">
+                        <div class="container">
+                            <div class="text-left">
+                                <h1 style="color:#9d1f60" class="">Solutions </h1>
+                                <h1 style="color:#9d1f60" class=""> to Get Fuel</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="bi-4 bi-6">
-        <div class="container">
-            <div class="text-c">
-                <h1>Solutions to get fuel</h1>
-            </div>
+    <div class="main-categories">
+        <div class="banner-info-3">
+            @*<ul>
+                    <li><a href="#"><i class="flaticon-hotel color-red"></i> <h5>Hotels</h5></a></li>
+                    <li><a href="#"><i class="flaticon-cook color-green"></i> <h5>Resturent</h5></a></li>
+                    <li><a href="#"><i class="flaticon-supermarket color-yellow"></i> <h5>Shops</h5></a></li>
+                    <li><a href="#"><i class="flaticon-gym color-blue"></i> <h5>Gym</h5></a></li>
+                    <li><a href="#"><i class="flaticon-calendar color-grey"></i> <h5>Event</h5></a></li>
+                </ul>*@
         </div>
     </div>
 </div>
-
-@using DBContext.Models
 
 

@@ -100,7 +100,6 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" name="Req.CustomerId" value="@ViewBag.CustomerId" />
         <div class="row">
-
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -146,7 +145,6 @@
                                     }
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>
@@ -243,7 +241,7 @@
 
     <script type="text/javascript" src="~/lib/datepicker/moment.min.js"></script>
     <script src="~/lib/datepicker/flatpickr.js"></script>
-    
+
     <script src="~/lib/datatables/js/dataTables.bootstrap.min.js"></script>
     <script src="~/lib/datatables/js/dataTables.scroller.min.js"></script>
     <script src="~/lib/datatables/js/jquery.dataTables.min.js"></script>
@@ -253,7 +251,7 @@
 
         $(".select2-airports").select2({
             theme:"classic",
-        ajax: { 
+        ajax: {
             url: "@Url.Action("GetAirport", "Airports")",
             dataType: 'json',
             delay: 250,
@@ -326,7 +324,6 @@
             ]
         });
 
-
         $(".select2-airports").on('select2:select', function (e) {
            // console.log($(".select2-airports").val());
             table.ajax.url("@Url.Action("GetSuppliers","Suppliers")");
@@ -346,7 +343,6 @@
         $(".select2-airports").change();
             </Text>
         }*@
-
     </script>
 
     <script>

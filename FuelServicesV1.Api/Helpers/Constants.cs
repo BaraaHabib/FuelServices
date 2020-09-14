@@ -33,15 +33,26 @@ namespace FuelServices.Api.Helpers
 
         public static string INVALID_INPUT = "Invalide Input";
         public static int INVALID_INPUT_CODE = -8;
-        
+
         public static string RESET_PASSWORD_ERR = "Invalide Reset Password Attempt";
         public static int RESET_PASSWORD_ERR_CODE = -9;
+
+        public static string SERVER_ERROR = "Server Error";
+        public static int SERVER_ERROR_CODE = -10;
+
+        #region Email Constants
+
+        public static string EMAIL_FAILED_TO_DELIVER = "Failed to deliver email";
+        public static int EMAIL_FAILED_TO_DELIVER_CODE = -8;
 
         public static string CONFIRMATION_EMAIL_TYPE = "confirm_mail";
         public static string RESET_PASSWORD_EMAIL_TYPE = "reset_password";
         public static string DELETE_ACCOUNT_EMAIL_TYPE = "delete_account";
-        
-        public static partial  class LogTemplates
+        public static string SUPPLLIER_REQUEST_NOTIFICATION = "supplier_request_notification";
+
+        #endregion
+
+        public static partial class LogTemplates
         {
             public static string LOGOUT = "Logout";
             public static string LOGIN = "Login";
@@ -51,6 +62,7 @@ namespace FuelServices.Api.Helpers
             public static string CONFIRM_ACCOUNT_EX = "CONFIRM ACCOUNT EXCEPTION";
             public static string RESET_PASSWORD_EX = "RESET PASSWORD EXCEPTION";
         }
+
         public static List<string> ContentTypes = new List<string>()
         {
             "about_us",
@@ -63,6 +75,7 @@ namespace FuelServices.Api.Helpers
         {
             get => new List<string>() { "$", "€", "USD/USG" };
         }
+
         public static List<string> Roles
         {
             get => new List<string>
@@ -73,6 +86,6 @@ namespace FuelServices.Api.Helpers
                 "Handler"
             };
         }
+        public static string PAYMENT_ERROR = "PAYMENT_ERROR";
     }
-    
 }

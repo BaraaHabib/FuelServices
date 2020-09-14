@@ -1,0 +1,138 @@
+﻿@model IEnumerable<FuelServices.DBContext.Domain.SupplierContactPersonRecordModel>
+
+@{
+    ViewData["Title"] = "My Contacts";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+@using Site.Helpers;
+
+<!-- DataTables -->
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+
+<input id="row_id" type="hidden" />
+
+<!-- Default box -->
+<div class="card">
+    <div class="card-header">
+        <h3>My Contacts <a title="Add Contact" asp-action="Create"><i class="btn btn-default fa fa-plus"></i></a></h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <table class="dataTable table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.JobTitle)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Created)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Modified)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemOrder)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JobTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Modified)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemOrder)
+                                </td>
+                                <td>
+                                    <a class='btn btn-default' title="Edit" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i></a>
+                                    <a class='btn btn-default' title="Details" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info-circle"></i></a>
+                                    <button onclick="showDelete(@(item.Id))" class='btn btn-danger' id='btn_@item.Id'><i class='fa fa-trash'></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->
+
+<div id="modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete item?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button onclick="confirmDelete()" type="button" class="btn btn-primary">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <!-- DataTables -->
+    <script src="~/adminlte/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+
+    <script>
+        $('.dataTable').DataTable({
+            "responsive": true,
+            "autoWidth": true,
+            "processing": true,
+        }).columns.adjust();
+
+                function showDelete(id) {
+            $('#row_id').val(id);
+            $('#modal').modal('show');
+        }
+
+        function confirmDelete() {
+            var mid = $('#row_id').val();
+            $('#row_id').val('');
+            $.post("@Url.Action("DeleteConfirmed", "ContactPersons")",
+                {
+                    id: mid,
+                },
+                function (data, status) {
+                    if (data.Code == @(Constants.SUCCESS_CODE)) {
+                        $('#modal').modal('hide');
+                        toastr['success']('Item deleted successfully.', '', { positionClass: 'toast-top-right' });
+                        location.reload(true);
+                    } else {
+                        $('#modal').modal('hide');
+                        toastr["error"](data.Message, '', { positionClass: 'toast-top-right' });
+                    }
+                });
+        }
+    </script>
+}

@@ -11,9 +11,8 @@ namespace DBContext.Models
             Advertisement = new HashSet<Advertisement>();
         }
 
-
         [Required]
-        [DataTable(DisplayName = "Name", Order = 2)]
+        [Display(Name = "Name *")]
         public string Name { get; set; }
 
         public virtual ICollection<Advertisement> Advertisement { get; set; }

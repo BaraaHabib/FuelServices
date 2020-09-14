@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using DBContext.Models;
-using Microsoft.AspNetCore.Mvc;
-using Site.Controllers;
-using System.Linq.Dynamic.Core;
-using FuelServices.DBContext.DatatablesModels;
+﻿using DBContext.Models;
 using FuelServices.Site.Helpers.Toast;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Site.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Controllers
 {
@@ -18,7 +16,6 @@ namespace FuelServices.Site.Controllers
     {
         public SuppliersController(AirportCoreContext _db, IServiceProvider provider) : base(_db)
         {
-
         }
 
         [HttpPost]
@@ -68,13 +65,13 @@ namespace FuelServices.Site.Controllers
                     recordsFiltered = recordsTotal,
                     recordsTotal = recordsTotal,
                     data = data.Select(x => new
-                    {   
+                    {
                         Id = x.OfferId,
                         Supplier = x.Offer.FuelSupplier.Name,
                         Price = x.Price + " " + x.PriceUnit,
                         EndDate = x.Offer.EndDate.ToShortDateString()
                     }).ToList(),
-                }) ;
+                });
                 return res;
             }
             catch (Exception e)
@@ -83,8 +80,8 @@ namespace FuelServices.Site.Controllers
             }
         }
 
-        [Authorize(Roles ="Customer")]
-        public async Task<IActionResult> Contacts(int? RequestOfferId,int? supplierId)
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Contacts(int? RequestOfferId, int? supplierId)
         {
             try
             {
@@ -107,7 +104,6 @@ namespace FuelServices.Site.Controllers
                 ViewBag.Contacts = supplier.SupplierContact.ToList();
                 return View(res);
             }
-
             catch (Exception e)
             {
                 Message = Toast.ErrorToastFront(GetExceptionMessage(e));

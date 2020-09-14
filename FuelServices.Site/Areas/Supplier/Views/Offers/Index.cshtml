@@ -9,16 +9,14 @@
 <link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-
 <!-- Default box -->
 <div class="card">
     <div class="card-header">
         <h3>Offers   <a title="Add Offer" asp-action="Create"><i class="btn btn-default fa fa-plus"></i></a></h3>
-
     </div>
     <div class="card-body">
         <div class="row">
-            
+
             <div class="col-12">
                 <table class="table">
                     <thead>
@@ -58,7 +56,6 @@
 </div>
 <!-- /.card -->
 
-
 @section Scripts {
 
     <!-- DataTables -->
@@ -66,7 +63,6 @@
     <script src="~/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="~/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-
 
     <script>
     var controllerName = '@HttpContextAccessor.HttpContext.Session.GetString("ControllerName")';

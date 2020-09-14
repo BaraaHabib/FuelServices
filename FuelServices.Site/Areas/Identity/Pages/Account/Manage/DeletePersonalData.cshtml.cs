@@ -1,11 +1,11 @@
-﻿using Site.Helpers;
-using Site.Services;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Site.Helpers;
+using Site.Services;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -102,7 +102,6 @@ namespace Site.Areas.Identity.Pages.Account.Manage
                         await _signInManager.SignOutAsync();
                         transaction.Commit();
                         _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
-
                     }
                     catch (Exception)
                     {

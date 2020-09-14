@@ -3,11 +3,24 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
+@{
+    var UserImageUrl = "";
+    if (ViewBag.UserImageUrl == null || ViewBag.UserImageUrl == "")
+    {
+        UserImageUrl = "/uploads/avatar.png";
+    }
+    else
+    {
+        UserImageUrl = ViewBag.UserImageUrl;
+    }
+
+}
+
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            <img class="avatar" src="@(Url.Content("~"+ViewBag.UserImageUrl) ?? "")" />
+        <a class="nav-link dropdown-toggle" style="padding-bottom: 2px;" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <img class="avatar" src=@UserImageUrl />
         </a>
         <div class="dropdown-menu">
             <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">@User.Identity.Name</a>

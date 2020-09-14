@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Site.Controllers;
 using Site.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using X.PagedList;
 
 namespace FuelServices.Site.Controllers
@@ -15,11 +14,7 @@ namespace FuelServices.Site.Controllers
     {
         public AirportsController(AirportCoreContext _db) : base(_db)
         {
-
-
         }
-
-
 
         /// <summary>
         /// Get airports / autocomplete
@@ -64,11 +59,8 @@ namespace FuelServices.Site.Controllers
             }
             catch (Exception e)
             {
-
                 throw;
             }
-
         }
-
     }
 }

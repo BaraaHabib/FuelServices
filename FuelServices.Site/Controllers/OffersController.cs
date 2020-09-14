@@ -1,17 +1,14 @@
-﻿using Site.DTOs;
-using Site.Helpers;
-using Site.Models;
-using Site.Services;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Site.DTOs;
+using Site.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using X.PagedList;
 
@@ -32,7 +29,7 @@ namespace Site.Controllers
         public async Task<IActionResult> Index()
         {
             List<Advertisement> homeGridAdvertisements = await db.Advertisement.Where(a => a.AdvertisementType.Name
-            == "home_page_grid" && a.EndDate >= DateTime.UtcNow).Where(a => a.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "in_home_page" 
+            == "home_page_grid" && a.EndDate >= DateTime.UtcNow).Where(a => a.AdvertisementProperty.Where(ap => ap.AdvertisementTypeProperty.Name == "in_home_page"
             && ap.Value == "True").FirstOrDefault() != null).OrderBy(a => a.ItemOrder).ToListAsync();
 
             List<Advertisement> popupAdvertisements = db.Advertisement.Where(a => (a.AdvertisementType.Name
@@ -46,7 +43,6 @@ namespace Site.Controllers
             ViewBag.Suppliers = db.FuelSupplier.Take(9).ToList();
             return View();
         }
-
 
         [HttpGet]
         public string ClickCount(int id)
@@ -155,7 +151,6 @@ namespace Site.Controllers
         [HttpGet]
         public Select2DTO SearchItems(string q, int? page)
         {
-            
             try
             {
                 List<Select2ResultDTO> result = new List<Select2ResultDTO>();
@@ -234,7 +229,6 @@ namespace Site.Controllers
                 var Log = new Log()
                 {
                     Message = e.Message,
-
                 };
                 db.Log.Add(Log);
                 db.SaveChanges();
@@ -242,7 +236,6 @@ namespace Site.Controllers
 
                 //throw;
             }
-
         }
 
         [HttpGet]
@@ -250,8 +243,6 @@ namespace Site.Controllers
         {
             return true;
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 
@@ -275,6 +266,7 @@ namespace Site.Controllers
 
             return View(offer);
         }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

@@ -1,8 +1,5 @@
 ﻿using DBContext.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace FuelServices.DBContext.Domain
 {
@@ -17,10 +14,9 @@ namespace FuelServices.DBContext.Domain
         public double Price { get; set; }
 
         [Required]
-        public int OfferId{ get; set; }
+        public int OfferId { get; set; }
 
         [Required]
         public string PriceUnit { get; set; }
-
     }
 }

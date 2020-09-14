@@ -11,10 +11,24 @@ namespace DBContext.Models
             AdvertisementProperty = new HashSet<AdvertisementProperty>();
         }
 
+        //[Required]
+        public string Name { get; set; }
 
         [Required]
-        [DataTable(DisplayName = "Name", Order = 2)]
-        public string Name { get; set; }
+        [Display(Name = "Name *")]
+        public string DisplayName { get; set; }
+
+        public string Options { get; set; }
+
+        public string Unit { get; set; }
+
+        public int? AdvertisementTypeId { get; set; }
+
+        public int? ExceptAdvertisementType1Id { get; set; }
+
+        public int? ExceptAdvertisementType2Id { get; set; }
+
+        public virtual AdvertisementType AdvertisementType { get; set; }
 
         public virtual ICollection<AdvertisementProperty> AdvertisementProperty { get; set; }
     }

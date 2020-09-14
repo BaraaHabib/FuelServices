@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DBContext.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
-using DBContext.Models;
-using FuelServices.Site.Helpers.Toast;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FuelServices.Site.Areas.Supplier.Controllers
 {
     public class HomeController : BaseController
     {
-
-        public HomeController(AirportCoreContext airportCoreContext,IServiceProvider provider) : base(airportCoreContext,provider)
+        public HomeController(AirportCoreContext airportCoreContext, IServiceProvider provider) : base(airportCoreContext, provider)
         {
         }
 
@@ -24,7 +21,6 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 var supplier = user.FuelSupplier;
 
                 var offers = supplier.Offer.Where(x => !x.IsDeleted).Where(x => x.EndDate > DateTime.UtcNow);
-
 
                 var ros = offers.Select(x => x.RequestOffers.ToList())
                     .Aggregate((x, y) =>
@@ -43,14 +39,13 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 ViewBag.PendingRequests = pendingRequests;
 
                 ViewBag.CurrentlyProccessingRequests = CurrentlyProccessingRequests;
-
             }
             catch (Exception e)
             {
                 //Message = Toast.ErrorToastFront();
                 Serilog.Log.Error(e, "HomeController.Index");
             }
-            
+
             return View();
         }
 
@@ -63,6 +58,7 @@ namespace FuelServices.Site.Areas.Supplier.Controllers
                 case ReplyStatus.Rejected:
                 case ReplyStatus.Expired:
                     return false;
+
                 case ReplyStatus.ApprovedBySupplier:
                 case ReplyStatus.ConfirmedByCustomer:
                 case ReplyStatus.AgreedWithASupplier:

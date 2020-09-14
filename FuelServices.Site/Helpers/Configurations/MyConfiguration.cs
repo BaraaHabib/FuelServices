@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FuelServices.Site.Helpers.Configurations
+﻿namespace FuelServices.Site.Helpers.Configurations
 {
     public class MyConfiguration
     {
@@ -17,9 +12,7 @@ namespace FuelServices.Site.Helpers.Configurations
         public string EmailUsername { get; set; }
         public string EmailPassword { get; set; }
 
-
         public string CustomerConfirmationTimeOutInHours { get; set; }
-
 
         // jwt
         public string Secret { get; set; }

@@ -1,19 +1,13 @@
-﻿using Site.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using DBContext.Models;
-using Microsoft.AspNetCore.Authorization;
-using System.Threading.Tasks;
-using Site.Helpers;
 using System;
-using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace FuelServices.Site.Areas.Admin.Controllers
 {
     public class HomeController : BaseController
     {
-
-        public HomeController(AirportCoreContext airportCoreContext,IServiceProvider serviceProvider) : base(airportCoreContext,serviceProvider)
+        public HomeController(AirportCoreContext airportCoreContext, IServiceProvider serviceProvider) : base(airportCoreContext, serviceProvider)
         {
         }
 
@@ -29,25 +23,22 @@ namespace FuelServices.Site.Areas.Admin.Controllers
             //ViewBag.CalculateAdsDetails = statisticsHelper.CalculateAdsDetails();
             return View();
         }
+
         // add install and add roles
         //[OverrideAuthorization]
         [HttpGet]
         public async Task<ActionResult> InstallSupplierRoleAndUser()
         {
-
-
-
             // check if has at least one admin
             ApplicationRole role = await RoleManager.FindByNameAsync("Supplier");
 
             if (role == null)
             {
                 role = await CreateNewRole("Supplier");
-                
             }
             //City city = db.Cities.Where(s => s.Name_en == "city 1").FirstOrDefault();
             if (role != null)
-            { 
+            {
                 // create new user
                 // check if admin@admin.sy exist
                 ApplicationUser userexist = await UserManager.FindByEmailAsync("baraa.habib321@gmail.com");
@@ -59,14 +50,12 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                         Email = "baraa.habib321@gmail.com",
                         PhoneNumber = "xxxxxx",
                         EmailConfirmed = true,
-                        
                     };
 
                     var result = await UserManager.CreateAsync(newuser, "123456");
 
                     if (result.Succeeded)
                     {
-
                         await UserManager.AddToRoleAsync(newuser, "Supplier");
 
                         FuelSupplier fuelSupplier = new FuelSupplier()
@@ -83,18 +72,17 @@ namespace FuelServices.Site.Areas.Admin.Controllers
 
                         TempData["Success"] = "تم إنشاء مدير النظام بنجاح... كلمة المرور 123456";
                     }
-
                 }
                 else
                 {
                     if (!(await UserManager.IsInRoleAsync(userexist, "Supplier")))
                         await UserManager.AddToRoleAsync(userexist, "admin");
                 }
-
             }
 
             return RedirectToAction("Index");
         }
+
         private async Task<ApplicationRole> CreateNewRole(string name)
         {
             ApplicationRole role = await RoleManager.FindByNameAsync(name);
@@ -106,9 +94,6 @@ namespace FuelServices.Site.Areas.Admin.Controllers
                 return await RoleManager.FindByNameAsync(name);
             }
             return null;
-
         }
-
-       
     }
 }

@@ -2,7 +2,6 @@
 {
     public partial class SupplierContactViewModel : BaseDomain
     {
-
         public int? SupplierId { get; set; }
 
         public int? ContactId { get; set; }

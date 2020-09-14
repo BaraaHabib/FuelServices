@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FuelServices.Api.Helpers
 {
@@ -10,6 +7,8 @@ namespace FuelServices.Api.Helpers
         public bool? ExceptionMessage { get; set; }
         public string SuperAdminEmail { get; set; }
 
+        #region Email Configuration
+
         public string EmailSenderDisplayName { get; set; }
         public string EmailHost { get; set; }
         public string EmailPort { get; set; }
@@ -17,10 +16,11 @@ namespace FuelServices.Api.Helpers
         public string EmailUsername { get; set; }
         public string EmailPassword { get; set; }
 
+        #endregion
+
+        public string CustomerConfirmationTimeOutInHours { get; internal set; }
 
         // jwt
         public string Secret { get; set; }
-
-
     }
 }

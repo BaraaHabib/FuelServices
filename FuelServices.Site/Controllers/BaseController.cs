@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DBContext.Models;
+﻿using DBContext.Models;
+using FuelServices.Site.Helpers.Configurations;
+using FuelServices.Site.Helpers.Extensions;
+using FuelServices.Site.Helpers.Toast;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Site.DTOs;
-using X.PagedList;
-using Microsoft.Extensions.DependencyInjection;
-using FuelServices.Site.Helpers.Configurations;
-using Microsoft.Extensions.Options;
-using FuelServices.Site.Helpers.Toast;
-using FuelServices.Site.Helpers.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Site.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Site.Controllers
 {
@@ -27,11 +26,13 @@ namespace Site.Controllers
         private readonly IOptions<MyConfiguration> config;
 
         private string userId;
+
         public string GetUserId()
         {
-            userId = userId ?? GetCurrentUserId();
+            userId ??= GetCurrentUserId();
             return userId;
         }
+
 
         public BaseController(AirportCoreContext context, IServiceProvider provider)
         {
@@ -46,10 +47,8 @@ namespace Site.Controllers
             this.db = db;
         }
 
-
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
             Dictionary<string, string> sessionActive = HttpContext.Session.GetComplexData<Dictionary<string, string>>("Active");
             string controllerName = ControllerContext.RouteData.Values["controller"].ToString();
             string actionName = ControllerContext.RouteData.Values["action"].ToString();
@@ -69,16 +68,12 @@ namespace Site.Controllers
                     { "PaymentPackages.Buy", "" },
                     { "PaymentPackages.BuyS", "" },
 
-
                     { "Offers", "" },
                     { "Offers.Index", "" },
                     { "Offers.Create", "" },
 
                     { "Requests", "" },
                     { "Requests.Create", "" },
-
-
-
                 };
             //}
             SetActive(sessionActive, controllerName, actionName);
@@ -90,21 +85,20 @@ namespace Site.Controllers
 
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-
             // send user image url
             if (User.Identity.IsAuthenticated)
             {
                 var user = db.Users.Find(GetCurrentUserId());
-                string imgUrl = "";
+                string imgUrl = null;
                 if (User.IsInRole("Customer"))
                 {
                     var customer = user.Customer;
-                    imgUrl = customer?.ImageUrl ?? "";
+                    imgUrl = customer?.ImageUrl;
                 }
                 else if (User.IsInRole("Supplier"))
                 {
                     var supplier = user.FuelSupplier;
-                    imgUrl = supplier?.ImageUrl ?? "";
+                    imgUrl = supplier?.ImageUrl;
                 }
 
                 ViewBag.UserImageUrl = imgUrl;
@@ -113,6 +107,7 @@ namespace Site.Controllers
             ////
             base.OnActionExecuted(context);
         }
+
         public Toast Message
         {
             get { return TempData.Get<Toast>("Message"); }
@@ -185,8 +180,6 @@ namespace Site.Controllers
 
         private string GetCurrentUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
-
         protected string GetExceptionMessage(Exception e)
         {
             var ExceptionMessageFormSettings = config?.Value?.ExceptionMessage;
@@ -203,6 +196,7 @@ namespace Site.Controllers
             }
             return Toast.ErrorToast().Message;
         }
+
         protected string GetExceptionMessage(Exception e, string DefaultMessage = null)
         {
             var ExceptionMessageFormSettings = config?.Value?.ExceptionMessage;
@@ -220,7 +214,6 @@ namespace Site.Controllers
 
         protected void SetActive(Dictionary<string, string> sessionActive, string controllerName, string actionName)
         {
-
             if (sessionActive != null)
             {
                 sessionActive[controllerName] = "active";
@@ -233,5 +226,7 @@ namespace Site.Controllers
                 }
             }
         }
+
+        protected T GetService<T>() where T : class => HttpContext.RequestServices.GetRequiredService<T>();
     }
 }

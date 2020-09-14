@@ -1,0 +1,65 @@
+﻿@model FuelServices.DBContext.Domain.ContactRecordModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Supplier/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Select2 -->
+<link rel="stylesheet" href="~/adminlte/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<div class="container">
+    <div class="">
+        <form class="" asp-action="Create">
+            <h2 class="col-md-offset-1">Add Contact</h2>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-5">
+                    <label asp-for="Contact"></label>
+                    <select style="width:100%;" class="select2 form-control" asp-for="ContactId"
+                            asp-items="@ViewBag.Contacts">
+                    </select>
+                    <span asp-validation-for="ContactId" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-5 col-md-offset-1">
+                    <label asp-for="ItemOrder" class="control-label"></label>
+                    <input asp-for="ItemOrder" class="form-control" />
+                    <span asp-validation-for="ItemOrder" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-offset-1 col-md-11">
+                    <label asp-for="Value" class="control-label"></label>
+                    <input asp-for="Value" class="form-control" />
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-offset- col-md-11 1">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input type="text" multiple asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row col-md-offset-1">
+                <a class="btn btn-lg btn-default pull-left" asp-action="Index">Back to List</a>
+                <button class="btn btn-lg btn-default pull-left" type="submit" value="Submit">Create Contact</button>
+                <br />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+        $('.select2').select2();
+    </script>
+}

@@ -1,0 +1,81 @@
+﻿@model DBContext.Models.AirportAds
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        @ViewData["Title"]
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Range)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Range)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.CaptionClicks)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.CaptionClicks)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Advertisement)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Advertisement.Title)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Airport)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Airport.Name)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Created)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Created)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.Modified)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Modified)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.IsDeleted)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.IsDeleted)
+                        </dd>
+                        <dt>
+                            @Html.DisplayNameFor(model => model.ItemOrder)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.ItemOrder)
+                        </dd>
+                    </dl>
+                    <div class="col-md-10">
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                        <a class="btn btn-default" asp-action="Index" asp-route-id="@Model.AdvertisementId"><i class="fas fa-chevron-circle-left"></i>Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

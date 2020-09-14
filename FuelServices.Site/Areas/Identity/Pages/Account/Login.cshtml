@@ -4,6 +4,15 @@
 @{
     ViewData["Title"] = "Log in";
 }
+<!-- Sub banner start -->
+<div class="sub-banner overview-bgi">
+    <div class="container">
+        <div class="breadcrumb-area">
+            @*<h1>Privacy Policy</h1>*@
+        </div>
+    </div>
+</div>
+
 <!-- Contact form start -->
 <div class="contact-form">
     <div class="container">
@@ -42,11 +51,11 @@
                             if ((Model.ExternalLogins?.Count ?? 0) == 0)
                             {
                                 @*<div>
-                                    <p>
-                                        There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                                        for details on setting up this ASP.NET application to support logging in via external services.
-                                    </p>
-                                </div>*@
+                                        <p>
+                                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                            for details on setting up this ASP.NET application to support logging in via external services.
+                                        </p>
+                                    </div>*@
                             }
                             else
                             {
@@ -57,24 +66,24 @@
 
                                                 @foreach (var provider in Model.ExternalLogins)
                                                 {
-                                                <li>
-                                                    @if (provider.Name == "Facebook")
-                                                    {
-                                                        <button type="submit" style="display:none;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" id="facebook_btn">
-                                                        </button>
-                                                        <a class="facebook-bg" href="#" onclick="clickTheHiddenOne(1)"><i class="fa fa-facebook"></i></a>
-                                                    }
-                                                    else if (provider.Name == "Microsoft")
-                                                    {
-                                                        <button type="submit" style="display:none;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" id="microsoft_btn">
-                                                        </button>
-                                                        <a class="google-bg" href="#" onclick="clickTheHiddenOne(2)"><i class="fa fa-windows"></i></a>
-                                                    }
-                                                    else
-                                                    {
-                                                        <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
-                                                    }
-                                                </li>
+                                                    <li>
+                                                        @if (provider.Name == "Facebook")
+                                                        {
+                                                            <button type="submit" style="display:none;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" id="facebook_btn">
+                                                            </button>
+                                                            <a class="facebook-bg" href="#" onclick="clickTheHiddenOne(1)"><i class="fa fa-facebook"></i></a>
+                                                        }
+                                                        else if (provider.Name == "Microsoft")
+                                                        {
+                                                            <button type="submit" style="display:none;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account" id="microsoft_btn">
+                                                            </button>
+                                                            <a class="google-bg" href="#" onclick="clickTheHiddenOne(2)"><i class="fa fa-windows"></i></a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <button type="submit" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+                                                        }
+                                                    </li>
                                                 }
                                             </ul>
                                         </p>

@@ -1,9 +1,9 @@
-﻿using Site.Helpers;
-using DBContext.Models;
+﻿using DBContext.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Site.Helpers;
 using System;
 using System.Threading.Tasks;
 

@@ -8,9 +8,6 @@
 @using FuelServices.Site.Helpers.Extensions;
 @using FuelServices.Site.Helpers.Toast
 
-
-
-
 <!-- DataTables -->
 <link rel="stylesheet" href="~/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="~/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
@@ -21,7 +18,6 @@
 <div class="card">
     <div class="card-header">
         <h3>Content Management </h3>
-
     </div>
     <div class="card-body">
         <div class="row">
@@ -95,7 +91,6 @@
             </div>
             <!-- /.col -->
         </div>
-
     </div>
     <!-- /.card-body -->
 </div>
@@ -133,7 +128,7 @@
 
         $("table").DataTable();
         function showDelete(id) {
-            debugger
+            
             $('#row_id').val(id);
             $('#modal').modal('show');
         }
@@ -146,20 +141,15 @@
                     id: mid,
                 },
                 function (data, status) {
-
                     if (data.Code == @(Constants.SUCCESS_CODE)) {
-                        toastr.success('Item deleted successfully.', '', { positionClass: 'toast-right' });
-                        location.reload(true);
-
+                        toastr['success']('Item deleted successfully.', '', { positionClass: 'toast-top-right' });
+                        //location.reload(true);
                     } else {
-                        toastr.error(data.Message, '', { positionClass: 'toast-right' });
+                        $('#modal').modal('hide');
+                        toastr["error"](data.Message, '', { positionClass: 'toast-top-right' });
                     }
                 });
         }
     </script>
 
 }
-
-
-
-

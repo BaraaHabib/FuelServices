@@ -1,0 +1,83 @@
+﻿@model IEnumerable<DBContext.Models.AdvertisementProperty>
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">
+                        <a href="@Url.Action("Create", HttpContextAccessor.HttpContext.Session.GetString("ControllerName"),
+                                new { id = ViewBag.Id})"><i class="fas fa-plus-circle"></i> Add Record</a>
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ItemOrder)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.AdvertisementTypeProperty)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Value)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.IsDeleted)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var controllerName = '@HttpContextAccessor.HttpContext.Session.GetString("ControllerName")';
+    $(function () {
+        $('table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "/admin/" + controllerName + "/GetData/" + '@ViewBag.Id',
+                "type": "POST",
+                "datatype": "json"
+            },
+            "columnDefs":
+                [{
+                    "targets": [0],
+                    "visible": false,
+                    "searchable": false
+                }],
+            "columns": [
+                { "data": "itemOrder", "name": "ItemOrder", "autoWidth": true },
+                { "data": "id", "name": "Id", "autoWidth": true },
+                { "data": "property_Name", "name": "AdvertisementTypeProperty.Name", "autoWidth": true },
+                { "data": "value", "name": "Value", "autoWidth": true },
+                { "data": "isDeleted", "name": "IsDeleted", "autoWidth": true },
+                {
+                    data: null, render: function (data, type, row)
+                    {
+                        return '<a href="/admin/' + controllerName + '/Edit/' + row.id + '"><i class="far fa-edit"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/Details/' + row.id + '"><i class="fas fa-info-circle"></i></a>' +
+                            '<a href="/admin/' + controllerName + '/Delete/' + row.id + '"><i class="far fa-trash-alt"></i></a>';
+                        }
+                }
+            ]
+        })
+    })
+</script>

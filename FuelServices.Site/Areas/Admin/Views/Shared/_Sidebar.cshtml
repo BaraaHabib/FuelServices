@@ -67,7 +67,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="@Url.Action("Index","Customers")"  class="nav-link @session["Customers.Index"]">
+                            <a href="@Url.Action("Index","Customers")" class="nav-link @session["Customers.Index"]">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
@@ -85,14 +85,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="@Url.Action("Index","ContactUs")"  class="nav-link @session["ContactUs.Index"]">
+                            <a href="@Url.Action("Index","ContactUs")" class="nav-link @session["ContactUs.Index"]">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
 
                 <li class="nav-item nav-header">Content</li>
                 <li class='nav-item has-treeview @(session["ContentManagements"] == "active" ? "menu-open" : "" )'>
@@ -105,7 +104,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="@Url.Action("Index","ContentManagements")"  class="nav-link @session["ContentManagements.Index"]">
+                            <a href="@Url.Action("Index","ContentManagements")" class="nav-link @session["ContentManagements.Index"]">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List</p>
                             </a>
@@ -113,8 +112,62 @@
                     </ul>
                 </li>
 
+                <li class="nav-item nav-header">Ads Management</li>
+                <li class='nav-item has-treeview @(session["AdvertisementCategories"]  == "active" ? "menu-open" : "" )'>
+                <a href="~/admin/AdvertisementCategories/Index">
+                    <i class="fas fa-flag"></i>
+                    <span>Advertisement Categories</span>
+                    </a>
+                </li>
+                <li class="nav-item has-treeview @(session["Advertisements"] == "active" ? "menu-open" : "" )">
+                    <a href="#">
+                        <i class="fas fa-ad"></i> <span>Advertisements</span>
+                        <span class="pull-right-container">
+                            <i class="fas fa-angle-left pull-right"></i>
+                        </span>
+                        <span class="pull-right-container" id="advertisements_counters">
+                            @if (RequestedAdsCount != 0)
+                            {
+                                <strong class="label pull-right bg-red-gradient">@RequestedAdsCount</strong>
+                            }
+                            @if (PiblishedAdsCount != 0)
+                            {
+                                <strong class="label pull-right bg-maroon-gradient">@PiblishedAdsCount</strong>
+                            }
+                            @if (ArchivedAdsCount != 0)
+                            {
+                                <strong class="label pull-right bg-yellow-gradient">@ArchivedAdsCount</strong>
+                            }
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="@session["Advertisements.RequestedIndex"]">
+                            <a href="~/admin/Advertisements/RequestedIndex">
+                                <i class="far fa-circle"></i> <span>Requested Ads</span>
+                                <span class="pull-right-container">
+                                    <strong class="label bg-red-gradient pull-right">@RequestedAdsCount</strong>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="@session["Advertisements.Index"]">
+                            <a href="~/admin/Advertisements/Index">
+                                <i class="far fa-circle"></i> <span>Published Ads</span>
+                                <span class="pull-right-container">
+                                    <strong class="label bg-maroon-gradient pull-right">@PiblishedAdsCount</strong>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="@session["Advertisements.ArchivedIndex"]">
+                            <a href="~/admin/Advertisements/ArchivedIndex">
+                                <i class="far fa-circle"></i> <span>Archived Ads</span>
+                                <span class="pull-right-container">
+                                    <strong class="label bg-yellow-gradient pull-right">@ArchivedAdsCount</strong>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </nav>
     </div>
 </aside>
-

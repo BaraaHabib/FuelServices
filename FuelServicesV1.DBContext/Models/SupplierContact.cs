@@ -19,6 +19,8 @@ namespace DBContext.Models
         [DataTable(DisplayName = "Value", Order = 4)]
         public string Value { get; set; }
 
+        public string Description { get; set; }
+
         public virtual Contact Contact { get; set; }
         public virtual FuelSupplier FuelSupplier { get; set; }
     }
